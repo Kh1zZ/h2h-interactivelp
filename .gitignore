@@ -1,11 +1,10 @@
 # ==============================================================================
-# .gitignore for Scroll-Driven Interactive Websites & Scroll-Craft Projects
+# .gitignore for Hearts2Hearts Interactive Landing Page
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
 # 1. Environment Variables & Secrets (CRITICAL)
 # ------------------------------------------------------------------------------
-# API keys (e.g., KIE_AI_API_KEY, AI endpoints) must never enter Git history
 .env
 .env.local
 .env.development.local
@@ -17,41 +16,7 @@
 *.cert
 
 # ------------------------------------------------------------------------------
-# 2. Heavy Media & Video Scrubbing Assets
-# ------------------------------------------------------------------------------
-# Scroll-driven sites often process multi-hundred megabyte video clips,
-# raw scrubbing frames, or intermediate lab renders. Committing these bloats Git.
-builds/
-lab/
-scrollcraft/
-renders/
-frames/
-raw-assets/
-
-# Heavy video formats (allow selective tracking if needed with !path/to/asset.mp4)
-*.mp4
-*.mov
-*.webm
-*.avi
-*.mkv
-*.m4v
-
-# Keep optimized, lightweight web assets if placed in public/ or assets/
-!public/media/*.webp
-!assets/media/*.webp
-
-# ------------------------------------------------------------------------------
-# 3. Visual Verification & Audit Outputs (Playwright / shoot.mjs)
-# ------------------------------------------------------------------------------
-# Automated scroll screenshot passes produce hundreds of debug PNGs
-screenshots/
-test-results/
-playwright-report/
-blob-report/
-playwright/.cache/
-
-# ------------------------------------------------------------------------------
-# 4. Package Managers & Dependencies
+# 2. Dependencies & Package Managers
 # ------------------------------------------------------------------------------
 node_modules/
 .pnp
@@ -70,23 +35,56 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # ------------------------------------------------------------------------------
-# 5. Build Outputs & Bundlers (Vite, Next, Astro, Webpack, etc.)
+# 3. Build Outputs, Frameworks & Bundlers
 # ------------------------------------------------------------------------------
-dist/
-dist-ssr/
+.next/
 out/
 build/
-.next/
-.nuxt/
-.astro/
+dist/
+dist-ssr/
+.turbo/
 .cache/
 .parcel-cache/
-.turbo/
 .temp/
 *.tsbuildinfo
 
+# Vercel deployment artifacts
+.vercel
+
 # ------------------------------------------------------------------------------
-# 6. Operating System & Editor Artifacts
+# 4. Owner Asset Staging Area (.upl/)
+# ------------------------------------------------------------------------------
+# Raw staging uploads dropped by owner
+.upl/
+
+# ------------------------------------------------------------------------------
+# 5. Heavy & Raw Media Assets
+# ------------------------------------------------------------------------------
+# Raw videos and uncompressed master audio should not bloat Git history
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.m4v
+*.wav
+*.flac
+*.aiff
+
+# Allow optimized web assets inside public/assets/
+!public/assets/**
+
+# ------------------------------------------------------------------------------
+# 6. Test & Benchmark Outputs
+# ------------------------------------------------------------------------------
+coverage/
+screenshots/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# ------------------------------------------------------------------------------
+# 7. OS & Local System Files
 # ------------------------------------------------------------------------------
 # macOS
 .DS_Store
@@ -101,7 +99,9 @@ ehthumbs.db
 ehthumbs_vista.db
 desktop.ini
 
-# Editors & IDEs
+# ------------------------------------------------------------------------------
+# 8. Editors & IDEs
+# ------------------------------------------------------------------------------
 .idea/
 *.suo
 *.ntvs*
@@ -109,9 +109,36 @@ desktop.ini
 *.sln
 *.sw?
 
-# VS Code (preserve recommended workspace extensions/settings if shared)
+# VS Code (preserve workspace settings if shared)
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# ------------------------------------------------------------------------------
+# 9. Local AI Agent Tooling, Skills & Artifacts
+# ------------------------------------------------------------------------------
+# Agent skills, rules, lockfiles, symlinks, and generated logs
+.agents/
+skills-lock.json
+.claude/
+agent/
+.system_generated/
+.codegraph/
+.gemini/
+scratch/
+*.log
+*.tmp
+*.temp
+
+# ------------------------------------------------------------------------------
+# 10. Markdown Documentation Files
+# ------------------------------------------------------------------------------
+# Ignore all markdown files except README
+*.md
+**/*.md
+!README.md
+!readme.md
+!**/README.md
+!**/readme.md

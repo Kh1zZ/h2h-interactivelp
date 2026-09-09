@@ -1,0 +1,394 @@
+'use client';
+
+import React, { useState } from 'react';
+import { MEMBERS_DATA } from '@/data/membersData';
+import { QUIZ_QUESTIONS } from '@/data/quizData';
+import { AssetSlot } from '@/components/ui/AssetSlot';
+import confetti from 'canvas-confetti';
+import {
+  Gamepad2,
+  CheckCircle2,
+  RotateCcw,
+  Sparkles,
+  ArrowDown,
+  HelpCircle,
+  Trophy,
+} from 'lucide-react';
+
+/**
+ * Scene 5 — Optional Mini-Game (PRD v5 Section 13)
+ * Features BOTH:
+ * 1. "Match the Heart" (Member portrait matching)
+ * 2. "Quick Quiz" (Interactive 4-question introductory trivia)
+ * 
+ * Upgraded with large legible typography, grand scale, and zero unreadable text.
+ */
+export const MiniGameScene: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'match' | 'quiz'>('match');
+
+  const handleSkipToClosing = () => {
+    const closingEl = document.getElementById('scene-closing');
+    if (closingEl) {
+      closingEl.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // ----------------------------------------------------
+  // Match the Heart State
+  // ----------------------------------------------------
+  const matchCandidates = MEMBERS_DATA.slice(0, 4);
+  const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
+  const [matchedIds, setMatchedIds] = useState<string[]>([]);
+  const [matchError, setMatchError] = useState<string | null>(null);
+
+  const handleNameSelect = (name: string, memberId: string) => {
+    if (!selectedCandidate) {
+      setMatchError('Please select a portrait first!');
+      return;
+    }
+
+    if (selectedCandidate === memberId) {
+      const nextMatched = [...matchedIds, memberId];
+      setMatchedIds(nextMatched);
+      setSelectedCandidate(null);
+      setMatchError(null);
+
+      if (nextMatched.length === matchCandidates.length) {
+        try {
+          confetti({
+            particleCount: 60,
+            spread: 70,
+            origin: { y: 0.7 },
+            colors: ['#6FA8FF', '#FFA6D9', '#D6E9FF'],
+          });
+        } catch {}
+      }
+    } else {
+      setMatchError('Not quite! Try another match.');
+      setTimeout(() => setMatchError(null), 1800);
+    }
+  };
+
+  const resetMatchGame = () => {
+    setMatchedIds([]);
+    setSelectedCandidate(null);
+    setMatchError(null);
+  };
+
+  // ----------------------------------------------------
+  // Quick Quiz State
+  // ----------------------------------------------------
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [quizScore, setQuizScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [quizFinished, setQuizFinished] = useState(false);
+
+  const handleQuizAnswer = (optionIdx: number) => {
+    if (selectedOption !== null) return;
+    setSelectedOption(optionIdx);
+
+    const currentQ = QUIZ_QUESTIONS[quizIndex];
+    if (optionIdx === currentQ.correctIndex) {
+      setQuizScore((prev) => prev + 1);
+    }
+
+    setTimeout(() => {
+      if (quizIndex + 1 < QUIZ_QUESTIONS.length) {
+        setQuizIndex((prev) => prev + 1);
+        setSelectedOption(null);
+      } else {
+        setQuizFinished(true);
+        try {
+          confetti({
+            particleCount: 70,
+            spread: 80,
+            origin: { y: 0.6 },
+            colors: ['#6FA8FF', '#FFA6D9'],
+          });
+        } catch {}
+      }
+    }, 1200);
+  };
+
+  const resetQuiz = () => {
+    setQuizIndex(0);
+    setQuizScore(0);
+    setSelectedOption(null);
+    setQuizFinished(false);
+  };
+
+  return (
+    <section
+      id="scene-game"
+      aria-label="Hearts2Hearts Mini-Game"
+      className="relative min-h-screen py-28 px-6 sm:px-12 flex flex-col justify-center"
+    >
+      <div className="max-w-5xl mx-auto w-full z-10">
+        {/* Header with Skip Option */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-10 pb-6 border-b border-h2h-blue-sky/40">
+          <div>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-h2h-blue-sky/50 text-h2h-blue-deep font-display font-bold text-sm tracking-wider uppercase mb-2">
+              <Gamepad2 className="w-4 h-4 text-h2h-blue-primary" />
+              <span>Chapter 05 • Candy Playroom</span>
+            </div>
+            <h2 className="font-display font-black text-4xl sm:text-5xl text-h2h-blue-primary">
+              Hearts Playroom
+            </h2>
+            <p className="font-sans text-base sm:text-lg text-h2h-muted mt-1">
+              Reinforce what you learned! 100% optional, sweet, and purely for fun.
+            </p>
+          </div>
+
+          {/* Skip Button */}
+          <button
+            onClick={handleSkipToClosing}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-h2h-blue-sky/30 text-h2h-ink font-display text-sm font-bold border-2 border-h2h-blue-sky/70 shadow-xs transition-all cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary shrink-0"
+            aria-label="Skip mini-game and jump to closing section"
+          >
+            <span>Skip to Finale</span>
+            <ArrowDown className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Tab Switcher */}
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex p-1.5 rounded-2xl bg-h2h-blue-sky/40 border border-h2h-blue-sky/60 shadow-xs">
+            <button
+              onClick={() => setActiveTab('match')}
+              className={`px-6 py-3 rounded-xl text-sm sm:text-base font-display font-black transition-all cursor-pointer ${
+                activeTab === 'match'
+                  ? 'bg-white text-h2h-blue-deep shadow-cute'
+                  : 'text-h2h-ink/70 hover:text-h2h-ink'
+              }`}
+            >
+              1. Match the Heart
+            </button>
+            <button
+              onClick={() => setActiveTab('quiz')}
+              className={`px-6 py-3 rounded-xl text-sm sm:text-base font-display font-black transition-all cursor-pointer ${
+                activeTab === 'quiz'
+                  ? 'bg-white text-h2h-pink-deep shadow-cute'
+                  : 'text-h2h-ink/70 hover:text-h2h-ink'
+              }`}
+            >
+              2. Quick Quiz
+            </button>
+          </div>
+        </div>
+
+        {/* ==================================================== */}
+        {/* GAME 1: MATCH THE HEART */}
+        {/* ==================================================== */}
+        {activeTab === 'match' && (
+          <div className="bg-white/95 rounded-3xl p-8 sm:p-12 border-2 border-h2h-blue-sky/70 shadow-cute-lg">
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-h2h-blue-sky/30">
+              <div>
+                <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-ink">
+                  Match Member to Portrait
+                </h3>
+                <p className="font-sans text-sm sm:text-base text-h2h-muted mt-1">
+                  Click a portrait card first, then tap the matching stage name!
+                </p>
+              </div>
+              <button
+                onClick={resetMatchGame}
+                className="p-3 rounded-2xl bg-h2h-blue-sky/30 text-h2h-blue-deep hover:bg-h2h-pink-soft hover:text-h2h-pink-deep transition-colors cursor-pointer"
+                title="Reset Game"
+                aria-label="Reset Match Game"
+              >
+                <RotateCcw className="w-5 h-5" />
+              </button>
+            </div>
+
+            {matchError && (
+              <div className="mb-6 p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-sm font-sans text-center font-bold">
+                {matchError}
+              </div>
+            )}
+
+            {matchedIds.length === matchCandidates.length ? (
+              <div className="text-center py-12 space-y-5">
+                <div className="w-20 h-20 rounded-full bg-h2h-pink-soft text-h2h-pink-deep mx-auto flex items-center justify-center">
+                  <Trophy className="w-10 h-10 text-h2h-pink-primary" />
+                </div>
+                <h4 className="font-display font-black text-3xl sm:text-4xl text-h2h-ink">
+                  Perfect Match! ✨
+                </h4>
+                <p className="font-sans text-base sm:text-lg text-h2h-muted max-w-md mx-auto">
+                  You recognized all member portraits flawlessly! You are officially ready for the S2U family.
+                </p>
+                <button
+                  onClick={resetMatchGame}
+                  className="px-8 py-3.5 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-sm shadow-cute hover:bg-h2h-blue-deep transition-all cursor-pointer"
+                >
+                  Play Again
+                </button>
+              </div>
+            ) : (
+              <div>
+                {/* Step 1: Portraits Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mb-8">
+                  {matchCandidates.map((m) => {
+                    const isMatched = matchedIds.includes(m.id);
+                    const isSelected = selectedCandidate === m.id;
+
+                    return (
+                      <button
+                        key={m.id}
+                        disabled={isMatched}
+                        onClick={() => {
+                          setSelectedCandidate(m.id);
+                          setMatchError(null);
+                        }}
+                        className={`relative rounded-3xl p-3 transition-all duration-200 cursor-pointer border-2 ${
+                          isMatched
+                            ? 'opacity-40 border-green-400 bg-green-50 pointer-events-none'
+                            : isSelected
+                            ? 'ring-4 ring-h2h-blue-primary border-transparent bg-h2h-blue-sky/30 scale-105'
+                            : 'border-h2h-blue-sky/60 bg-white hover:border-h2h-blue-primary'
+                        }`}
+                        aria-label={`Select portrait for ${m.stageName}`}
+                      >
+                        <AssetSlot
+                          assetKey={m.portraitAssetKey}
+                          aspectRatio="3/4"
+                          roundedClassName="rounded-2xl"
+                          showPlaceholderLabel={false}
+                        />
+                        {isMatched && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-3xl">
+                            <CheckCircle2 className="w-10 h-10 text-green-500" />
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Step 2: Large Name Chips */}
+                <div className="border-t border-h2h-blue-sky/40 pt-6">
+                  <span className="block text-sm font-display font-bold text-h2h-blue-deep uppercase tracking-wider mb-4 text-center">
+                    Select the matching stage name:
+                  </span>
+                  <div className="flex flex-wrap justify-center gap-4">
+                    {matchCandidates.map((m) => {
+                      const isMatched = matchedIds.includes(m.id);
+
+                      return (
+                        <button
+                          key={m.id}
+                          disabled={isMatched}
+                          onClick={() => handleNameSelect(m.stageName, m.id)}
+                          className={`px-7 py-3 rounded-2xl font-display font-black text-base sm:text-lg transition-all cursor-pointer border-2 ${
+                            isMatched
+                              ? 'bg-gray-100 text-gray-400 border-gray-200 line-through'
+                              : 'bg-white text-h2h-ink border-h2h-blue-sky hover:bg-h2h-blue-sky/40 hover:border-h2h-blue-primary shadow-xs hover:shadow-cute'
+                          }`}
+                        >
+                          {m.stageName}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ==================================================== */}
+        {/* GAME 2: QUICK QUIZ */}
+        {/* ==================================================== */}
+        {activeTab === 'quiz' && (
+          <div className="bg-white/95 rounded-3xl p-8 sm:p-12 border-2 border-h2h-pink-soft shadow-cute-lg">
+            {!quizFinished ? (
+              <div className="space-y-8">
+                {/* Progress bar */}
+                <div className="flex items-center justify-between text-sm font-display font-bold text-h2h-muted">
+                  <span>Question {quizIndex + 1} of {QUIZ_QUESTIONS.length}</span>
+                  <span>Score: {quizScore}</span>
+                </div>
+                <div className="w-full h-3 bg-h2h-pink-soft/60 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-h2h-pink-primary transition-all duration-300 rounded-full"
+                    style={{
+                      width: `${((quizIndex + 1) / QUIZ_QUESTIONS.length) * 100}%`,
+                    }}
+                  />
+                </div>
+
+                {/* Question */}
+                <div className="py-2">
+                  <h3 className="font-display font-black text-2xl sm:text-4xl text-h2h-ink leading-snug">
+                    {QUIZ_QUESTIONS[quizIndex].question}
+                  </h3>
+                  <p className="text-sm sm:text-base font-sans text-h2h-blue-deep font-bold mt-2 flex items-center gap-1.5">
+                    <HelpCircle className="w-4 h-4 text-h2h-blue-primary" />
+                    {QUIZ_QUESTIONS[quizIndex].hint}
+                  </p>
+                </div>
+
+                {/* Options Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {QUIZ_QUESTIONS[quizIndex].options.map((opt, idx) => {
+                    const isSelected = selectedOption === idx;
+                    const isCorrect = idx === QUIZ_QUESTIONS[quizIndex].correctIndex;
+                    let btnStyle =
+                      'bg-white border-h2h-pink-soft hover:border-h2h-pink-primary hover:bg-h2h-pink-soft/30 text-h2h-ink';
+
+                    if (selectedOption !== null) {
+                      if (isCorrect) {
+                        btnStyle = 'bg-green-100 border-green-500 text-green-900 font-black';
+                      } else if (isSelected) {
+                        btnStyle = 'bg-red-100 border-red-400 text-red-900 font-black';
+                      } else {
+                        btnStyle = 'opacity-40 bg-gray-50 border-gray-200';
+                      }
+                    }
+
+                    return (
+                      <button
+                        key={idx}
+                        disabled={selectedOption !== null}
+                        onClick={() => handleQuizAnswer(idx)}
+                        className={`p-5 rounded-2xl border-2 text-left font-sans text-base sm:text-lg font-bold transition-all cursor-pointer shadow-xs ${btnStyle}`}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-12 space-y-5">
+                <div className="w-20 h-20 rounded-full bg-h2h-pink-soft text-h2h-pink-deep mx-auto flex items-center justify-center">
+                  <Sparkles className="w-10 h-10 text-h2h-pink-primary" />
+                </div>
+                <h4 className="font-display font-black text-3xl sm:text-4xl text-h2h-ink">
+                  Quiz Completed!
+                </h4>
+                <p className="font-sans text-base sm:text-lg text-h2h-muted max-w-md mx-auto">
+                  You scored <span className="font-black text-h2h-pink-deep text-xl">{quizScore} / {QUIZ_QUESTIONS.length}</span>! You know the Hearts2Hearts story inside out.
+                </p>
+                <div className="pt-4 flex justify-center gap-4">
+                  <button
+                    onClick={resetQuiz}
+                    className="px-7 py-3 rounded-full bg-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-sm hover:bg-h2h-pink-soft/80 transition-all cursor-pointer"
+                  >
+                    Try Again
+                  </button>
+                  <button
+                    onClick={handleSkipToClosing}
+                    className="px-7 py-3 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-sm hover:bg-h2h-blue-deep transition-all cursor-pointer"
+                  >
+                    Finish Journey
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
