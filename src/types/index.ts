@@ -23,6 +23,7 @@ export interface Release {
   tracks: string[];
   coverAssetKey: string;
   streamingHint?: string;
+  audioSrc?: string;
 }
 
 export type AssetType = 'image' | 'video' | 'audio' | 'font';

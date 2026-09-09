@@ -7,9 +7,10 @@ export const DISCOGRAPHY_DATA: Release[] = [
     type: 'Debut Single Album',
     releaseDate: '24 February 2025',
     description: 'The monumental debut single album by Hearts2Hearts introducing their vibrant signature sound to the world.',
-    tracks: ['The Chase (Title)', 'RUDE'],
+    tracks: ['The Chase (Title)', 'The Chase (Inst.)'],
     coverAssetKey: 'release-cover-the-chase',
     streamingHint: 'Available on all major streaming platforms',
+    audioSrc: '/assets/audio/discography/the-chase.aac',
   },
   {
     id: 'style',
@@ -20,6 +21,7 @@ export const DISCOGRAPHY_DATA: Release[] = [
     tracks: ['STYLE'],
     coverAssetKey: 'release-cover-style',
     streamingHint: 'Digital Streaming',
+    audioSrc: '/assets/audio/discography/style.aac',
   },
   {
     id: 'focus',
@@ -30,6 +32,7 @@ export const DISCOGRAPHY_DATA: Release[] = [
     tracks: ['FOCUS'],
     coverAssetKey: 'release-cover-focus',
     streamingHint: 'Digital Streaming',
+    audioSrc: '/assets/audio/discography/focus.aac',
   },
   {
     id: 'rude',
@@ -38,8 +41,9 @@ export const DISCOGRAPHY_DATA: Release[] = [
     releaseDate: '2025',
     description: 'Global hit resmi Hearts2Hearts yang meledak di tangga musik internasional dengan hook adiktif, vokal berenergi tinggi, dan koreografi viral.',
     tracks: ['RUDE (Global Hit)'],
-    coverAssetKey: 'release-cover-butterflies',
+    coverAssetKey: 'release-cover-rude',
     streamingHint: 'Official Global Hit • Billboard & Streaming Charts',
+    audioSrc: '/assets/audio/discography/rude.aac',
   },
   {
     id: 'lemon-tang',
@@ -50,5 +54,17 @@ export const DISCOGRAPHY_DATA: Release[] = [
     tracks: ['Lemon Tang'],
     coverAssetKey: 'release-cover-lemon-tang',
     streamingHint: 'Digital Streaming',
+    audioSrc: '/assets/audio/discography/lemon-tang.aac',
+  },
+  {
+    id: 'iconic-heart',
+    title: 'Iconic Heart',
+    type: 'Japan Debut Single Album',
+    releaseDate: '2025',
+    description: "Hearts2Hearts' monumental debut into the Japanese music market, delivering a blend of sweet J-Pop melodies, cheerful bilingual vocals, and captivating positive energy.",
+    tracks: ['Iconic Heart (Title)', 'Iconic Heart (Inst.)'],
+    coverAssetKey: 'release-cover-iconic-heart',
+    streamingHint: 'Official Japan Debut • Oricon & Global Streaming',
+    audioSrc: '/assets/audio/discography/iconic-heart.aac',
   },
 ];
