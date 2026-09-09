@@ -1,0 +1,117 @@
+# ==============================================================================
+# .gitignore for Scroll-Driven Interactive Websites & Scroll-Craft Projects
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Environment Variables & Secrets (CRITICAL)
+# ------------------------------------------------------------------------------
+# API keys (e.g., KIE_AI_API_KEY, AI endpoints) must never enter Git history
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+*.key
+*.pem
+*.cert
+
+# ------------------------------------------------------------------------------
+# 2. Heavy Media & Video Scrubbing Assets
+# ------------------------------------------------------------------------------
+# Scroll-driven sites often process multi-hundred megabyte video clips,
+# raw scrubbing frames, or intermediate lab renders. Committing these bloats Git.
+builds/
+lab/
+scrollcraft/
+renders/
+frames/
+raw-assets/
+
+# Heavy video formats (allow selective tracking if needed with !path/to/asset.mp4)
+*.mp4
+*.mov
+*.webm
+*.avi
+*.mkv
+*.m4v
+
+# Keep optimized, lightweight web assets if placed in public/ or assets/
+!public/media/*.webp
+!assets/media/*.webp
+
+# ------------------------------------------------------------------------------
+# 3. Visual Verification & Audit Outputs (Playwright / shoot.mjs)
+# ------------------------------------------------------------------------------
+# Automated scroll screenshot passes produce hundreds of debug PNGs
+screenshots/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# ------------------------------------------------------------------------------
+# 4. Package Managers & Dependencies
+# ------------------------------------------------------------------------------
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnpm-store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ------------------------------------------------------------------------------
+# 5. Build Outputs & Bundlers (Vite, Next, Astro, Webpack, etc.)
+# ------------------------------------------------------------------------------
+dist/
+dist-ssr/
+out/
+build/
+.next/
+.nuxt/
+.astro/
+.cache/
+.parcel-cache/
+.turbo/
+.temp/
+*.tsbuildinfo
+
+# ------------------------------------------------------------------------------
+# 6. Operating System & Editor Artifacts
+# ------------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+
+# Editors & IDEs
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# VS Code (preserve recommended workspace extensions/settings if shared)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
