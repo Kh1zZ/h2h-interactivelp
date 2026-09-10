@@ -57,11 +57,10 @@ export const HeroScene: React.FC = () => {
       className={`relative w-full ${!shouldAnimate ? 'min-h-[100svh] py-14 sm:py-16' : 'min-h-[100svh] lg:h-[180vh]'}`}
     >
       <div
-        className={`${
-          !shouldAnimate
+        className={`${!shouldAnimate
             ? 'relative min-h-[100svh] flex flex-col justify-between items-center'
             : 'sticky top-0 h-screen overflow-hidden flex flex-col justify-between items-center'
-        } w-full pt-20 sm:pt-28 pb-6 sm:pb-10 px-4 sm:px-8 max-w-7xl mx-auto`}
+          } w-full pt-20 sm:pt-28 pb-6 sm:pb-10 px-4 sm:px-8 max-w-7xl mx-auto`}
       >
         {/* Soft, Clean Ambient Background Glows */}
         <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
@@ -89,7 +88,7 @@ export const HeroScene: React.FC = () => {
               />
             </div>
             <span className="font-display font-bold text-xs sm:text-sm text-h2h-blue-deep tracking-wider uppercase">
-              Official Debut Era • 8 Hearts As One
+              8 Hearts As One
             </span>
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary" />
           </div>
