@@ -4,6 +4,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Heart, Building2 } from 'lucide-react';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 
 /**
  * Chapter 01: The Cheerful Hello (IntroScene)
@@ -16,6 +18,8 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
  */
 export const IntroScene: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
+  const { language } = useLanguage();
+  const t = getTranslation(language);
 
   return (
     <section
@@ -33,7 +37,7 @@ export const IntroScene: React.FC = () => {
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-4 sm:mb-6 shadow-2xs"
         >
           <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary" />
-          <span>Chapter 01 • Introduction</span>
+          <span>{t.intro.eyebrow}</span>
         </motion.div>
 
         {/* Grand Headline Lines */}
@@ -45,10 +49,10 @@ export const IntroScene: React.FC = () => {
           className="space-y-1 sm:space-y-2 mb-6 sm:mb-8"
         >
           <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-h2h-blue-primary leading-tight">
-            Eight cheerful voices.
+            {t.intro.headlinePart1}
           </h2>
           <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-h2h-blue-deep leading-tight">
-            One sweet harmony.
+            {t.intro.headlinePart2}
           </h2>
         </motion.div>
 
@@ -65,18 +69,18 @@ export const IntroScene: React.FC = () => {
             <div className="space-y-3">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-h2h-pink-soft text-h2h-pink-deep text-xs font-display font-bold uppercase tracking-wider">
                 <Heart className="w-3.5 h-3.5 fill-h2h-pink-primary text-h2h-pink-primary" />
-                <span>The Hearts2Hearts Story</span>
+                <span>{t.intro.storyPill}</span>
               </div>
               <h3 className="font-display font-black text-xl sm:text-2xl text-h2h-blue-deep leading-snug">
-                A Cheerful New Dawn in Pop
+                {t.intro.storyTitle}
               </h3>
               <p className="font-sans text-xs sm:text-sm text-h2h-ink/85 leading-relaxed">
-                <strong className="font-bold text-h2h-ink">Hearts2Hearts (하츠투하츠)</strong> is an eight-member girl group bringing radiant daylight energy, sparkling sweetness, and uplifting vocal harmonies to listeners worldwide. Debuting on <span className="font-bold text-h2h-pink-deep">24 February 2025</span> with their single album <strong className="font-bold text-h2h-ink">The Chase</strong>, they celebrate friendship, authenticity, and heart-to-heart connections.
+                {t.intro.storyDesc}
               </p>
             </div>
             <div className="pt-3 border-t border-h2h-pink-soft/60 flex items-center justify-between text-xs font-display font-bold text-h2h-pink-deep">
-              <span>8 Hearts Beating As One</span>
-              <span className="text-h2h-muted font-sans font-medium">Fandom: S2U</span>
+              <span>{t.intro.storySubLeft}</span>
+              <span className="text-h2h-muted font-sans font-medium">{t.intro.storySubRight}</span>
             </div>
           </motion.div>
 
@@ -91,29 +95,29 @@ export const IntroScene: React.FC = () => {
             <div className="space-y-3">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-h2h-blue-sky/60 text-h2h-blue-deep text-xs font-display font-bold uppercase tracking-wider">
                 <Building2 className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                <span>The Agency • SM Entertainment</span>
+                <span>{t.intro.agencyPill}</span>
               </div>
               <h3 className="font-display font-black text-xl sm:text-2xl text-h2h-blue-primary leading-snug">
-                Pioneering Legacy &amp; SM 3.0
+                {t.intro.agencyTitle}
               </h3>
               <p className="font-sans text-xs sm:text-sm text-h2h-ink/85 leading-relaxed">
-                Formed and developed under <strong className="font-bold text-h2h-blue-deep">SM Entertainment</strong>—the historic pioneer of modern K-pop known for trailblazing generations from S.E.S. to aespa. Under SM&apos;s dynamic multi-production center system, Hearts2Hearts was envisioned with a warm, refreshing daylight pop sound, uniting standout talents from South Korea, Indonesia, and Canada.
+                {t.intro.agencyDesc}
               </p>
             </div>
             <div className="pt-3 border-t border-h2h-blue-sky/40 flex items-center justify-between text-xs font-display font-bold text-h2h-blue-deep">
-              <span>Agency: SM Entertainment</span>
-              <span className="text-h2h-muted font-sans font-medium">Seoul, South Korea</span>
+              <span>{t.intro.agencySubLeft}</span>
+              <span className="text-h2h-muted font-sans font-medium">{t.intro.agencySubRight}</span>
             </div>
           </motion.div>
         </div>
 
-        {/* 4 Uniform Symmetrical Candy Stat Badges — staggered mobile animation */}
+        {/* 4 Uniform Symmetrical Candy Stat Badges */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 w-full max-w-4xl mx-auto mb-6 sm:mb-8">
           {[
-            { emoji: '🌸', label: '8 Hearts', sub: 'Members', border: 'border-h2h-blue-sky/70', text: 'text-h2h-blue-deep' },
-            { emoji: '📅', label: '24 Feb', sub: '2025 Debut', border: 'border-h2h-pink-soft', text: 'text-h2h-pink-deep' },
-            { emoji: '💿', label: 'The Chase', sub: 'Debut Single', border: 'border-h2h-blue-sky/70', text: 'text-h2h-blue-deep', small: true },
-            { emoji: '💖', label: 'S2U', sub: 'Official Fandom', border: 'border-h2h-pink-soft', text: 'text-h2h-pink-primary' },
+            { emoji: t.intro.stats[0].emoji, label: t.intro.stats[0].label, sub: t.intro.stats[0].sub, border: 'border-h2h-blue-sky/70', text: 'text-h2h-blue-deep' },
+            { emoji: t.intro.stats[1].emoji, label: t.intro.stats[1].label, sub: t.intro.stats[1].sub, border: 'border-h2h-pink-soft', text: 'text-h2h-pink-deep' },
+            { emoji: t.intro.stats[2].emoji, label: t.intro.stats[2].label, sub: t.intro.stats[2].sub, border: 'border-h2h-blue-sky/70', text: 'text-h2h-blue-deep', small: true },
+            { emoji: t.intro.stats[3].emoji, label: t.intro.stats[3].label, sub: t.intro.stats[3].sub, border: 'border-h2h-pink-soft', text: 'text-h2h-pink-primary' },
           ].map((stat, i) => (
             <motion.div
               key={stat.sub}
@@ -132,12 +136,10 @@ export const IntroScene: React.FC = () => {
 
         {/* Scroll Forward Cue */}
         <div className="flex items-center justify-center gap-2 text-xs sm:text-sm font-display font-bold text-h2h-muted">
-          <span>Scroll to meet each member</span>
+          <span>{t.intro.scrollCue}</span>
           <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-h2h-pink-primary text-h2h-pink-primary" />
         </div>
       </div>
     </section>
   );
 };
-
-

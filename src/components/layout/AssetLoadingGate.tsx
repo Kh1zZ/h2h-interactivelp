@@ -2,8 +2,10 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Heart, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { AssetLoadingProgress } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 
 interface AssetLoadingGateProps {
   progress: AssetLoadingProgress;
@@ -15,9 +17,12 @@ interface AssetLoadingGateProps {
  * - Tracks actual asset state without fake timers.
  * - Displays Hearts2Hearts wordmark, pulsing heart, real percentage.
  * - Smoothly transitions into main experience once prepared.
+ * - Bilingual support for EN and ID
  */
 export const AssetLoadingGate: React.FC<AssetLoadingGateProps> = ({ progress, children }) => {
   const [hasLoaded, setHasLoaded] = React.useState(false);
+  const { language } = useLanguage();
+  const t = getTranslation(language);
 
   React.useEffect(() => {
     if (progress.isReady) {
@@ -60,7 +65,7 @@ export const AssetLoadingGate: React.FC<AssetLoadingGateProps> = ({ progress, ch
             Hearts2Hearts
           </h1>
           <p className="font-display text-sm text-h2h-blue-deep font-semibold tracking-wider uppercase">
-            하츠투하츠 • Immersive Introduction
+            {t.loading.subtitle}
           </p>
         </div>
 
@@ -74,7 +79,7 @@ export const AssetLoadingGate: React.FC<AssetLoadingGateProps> = ({ progress, ch
           </div>
 
           <div className="flex justify-between items-center text-xs font-sans text-h2h-ink/70 font-semibold px-1">
-            <span>Preparing the world...</span>
+            <span>{t.loading.preparing}</span>
             <span className="font-display text-h2h-pink-deep font-bold">
               {progress.progressPercent}%
             </span>
@@ -83,7 +88,7 @@ export const AssetLoadingGate: React.FC<AssetLoadingGateProps> = ({ progress, ch
 
         {/* Subtle note */}
         <p className="text-[11px] font-sans text-h2h-muted">
-          Optimizing visuals & interactive elements
+          {t.loading.optimizing}
         </p>
       </div>
     </div>

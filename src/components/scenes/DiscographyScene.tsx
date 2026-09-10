@@ -3,7 +3,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { DISCOGRAPHY_DATA } from '@/data/discographyData';
+import { getDiscographyData } from '@/data/discographyData';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 import { AssetSlot } from '@/components/ui/AssetSlot';
 import { Disc3, Calendar, Music, Sparkles, Play, Pause, X } from 'lucide-react';
 
@@ -16,11 +18,16 @@ import { Disc3, Calendar, Music, Sparkles, Play, Pause, X } from 'lucide-react';
  * - Interactive 20-Second Audio Preview player for all 6 tracks
  * - Spinning vinyl turntable with interactive center Play/Pause disc
  * - Dynamic Concept & Story Box with zero layout shifts and complete story modal
+ * - Bilingual support for EN and ID
  */
 export const DiscographyScene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
+  const { language } = useLanguage();
+  const t = getTranslation(language);
+  const discographyData = getDiscographyData(language);
+
   const [activeReleaseIdx, setActiveReleaseIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -61,7 +68,7 @@ export const DiscographyScene: React.FC = () => {
       // Only drive release switching via scroll when on desktop screens
       if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
 
-      const totalReleases = DISCOGRAPHY_DATA.length;
+      const totalReleases = discographyData.length;
       // Dwell cushions: 0.00 - 0.05 keeps Release 01 locked; 0.95 - 1.00 keeps Release 06 locked before natural unpin
       const clamped = Math.max(0.05, Math.min(0.95, latest));
       const normalized = (clamped - 0.05) / (0.95 - 0.05);
@@ -73,9 +80,9 @@ export const DiscographyScene: React.FC = () => {
     });
 
     return () => unsubscribe();
-  }, [smoothProgress, prefersReducedMotion]);
+  }, [smoothProgress, prefersReducedMotion, discographyData.length]);
 
-  const activeRelease = DISCOGRAPHY_DATA[activeReleaseIdx] || DISCOGRAPHY_DATA[0];
+  const activeRelease = discographyData[activeReleaseIdx] || discographyData[0];
 
   const jumpToRelease = (index: number) => {
     setActiveReleaseIdx(index);
@@ -84,7 +91,7 @@ export const DiscographyScene: React.FC = () => {
     if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
       const el = containerRef.current;
       if (!el) return;
-      const totalReleases = DISCOGRAPHY_DATA.length;
+      const totalReleases = discographyData.length;
       const normalized = (index + 0.5) / totalReleases;
       const targetProgress = 0.05 + normalized * (0.95 - 0.05);
       const rect = el.getBoundingClientRect();
@@ -181,14 +188,14 @@ export const DiscographyScene: React.FC = () => {
         <div className="text-center max-w-2xl mx-auto mb-3 sm:mb-4 shrink-0">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs tracking-wider uppercase mb-1.5">
             <Disc3 className="w-3.5 h-3.5 text-h2h-blue-primary" />
-            <span>Chapter 03 • Musical Turntable</span>
+            <span>{t.discography.eyebrow}</span>
           </div>
 
           <h2 className="font-display font-black text-2xl sm:text-4xl lg:text-5xl text-h2h-blue-primary leading-tight">
-            The Sound of Hearts
+            {t.discography.title}
           </h2>
           <p className="font-sans text-xs sm:text-sm text-h2h-muted mt-0.5 max-w-lg mx-auto">
-            Scroll or tap releases to spin the pastel turntable and listen to official highlights.
+            {t.discography.subtitle}
           </p>
         </div>
 
@@ -209,8 +216,8 @@ export const DiscographyScene: React.FC = () => {
                       {/* Center Label (Clickable Play/Pause Button) */}
                       <button
                         onClick={togglePlay}
-                        aria-label={isPlaying ? 'Pause preview' : 'Play 20s preview'}
-                        title={isPlaying ? 'Pause preview' : 'Play 20s preview'}
+                        aria-label={isPlaying ? t.discography.pausePreviewAria : t.discography.playPreviewAria}
+                        title={isPlaying ? t.discography.pausePreviewAria : t.discography.playPreviewAria}
                         className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-h2h-pink-soft border-2 border-white flex flex-col items-center justify-center text-center p-1 shadow-xs hover:scale-105 transition-transform cursor-pointer group"
                       >
                         {isPlaying ? (
@@ -219,7 +226,7 @@ export const DiscographyScene: React.FC = () => {
                           <Play className="w-4 h-4 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep ml-0.5" />
                         )}
                         <span className="font-display text-[7px] sm:text-[9px] font-black text-h2h-ink tracking-wider mt-0.5">
-                          {isPlaying ? 'PAUSE' : 'PLAY 20s'}
+                          {isPlaying ? t.discography.pause : t.discography.play20s}
                         </span>
                       </button>
                     </div>
@@ -236,7 +243,7 @@ export const DiscographyScene: React.FC = () => {
 
               {/* Release Selector Pills (01 to 06) */}
               <div className="mt-3 sm:mt-5 flex gap-1.5 sm:gap-2 flex-wrap justify-center">
-                {DISCOGRAPHY_DATA.map((rel, i) => (
+                {discographyData.map((rel, i) => (
                   <button
                     key={rel.id}
                     onClick={() => jumpToRelease(i)}
@@ -298,7 +305,7 @@ export const DiscographyScene: React.FC = () => {
                           <button
                             onClick={togglePlay}
                             className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-h2h-blue-primary hover:bg-h2h-blue-deep text-white flex items-center justify-center shadow-xs hover:scale-105 transition-all cursor-pointer shrink-0"
-                            aria-label={isPlaying ? 'Pause' : 'Play'}
+                            aria-label={isPlaying ? t.discography.pause : t.discography.play20s}
                           >
                             {isPlaying ? (
                               <Pause className="w-4 h-4 fill-white" />
@@ -308,10 +315,10 @@ export const DiscographyScene: React.FC = () => {
                           </button>
                           <div className="text-left">
                             <span className="text-xs font-display font-bold text-h2h-blue-primary block leading-none">
-                              {isPlaying ? 'Playing 20s Highlight' : '20s Audio Highlight'}
+                              {isPlaying ? t.discography.playingHighlight : t.discography.audioHighlight}
                             </span>
                             <span className="text-[10px] sm:text-[11px] font-sans text-h2h-muted">
-                              Official Master • AAC Stereo
+                              {t.discography.audioMasterQuality}
                             </span>
                           </div>
                         </div>
@@ -332,7 +339,7 @@ export const DiscographyScene: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Dynamic Concept & Description Box (Fixed height: zero layout shifts) */}
+                    {/* Dynamic Concept & Description Box */}
                     <div className="p-2.5 sm:p-3 rounded-2xl bg-h2h-blue-light/50 border border-h2h-blue-sky/70 text-left space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
@@ -344,7 +351,7 @@ export const DiscographyScene: React.FC = () => {
                                 : 'text-h2h-blue-deep hover:text-h2h-blue-primary'
                             }`}
                           >
-                            Concept Story
+                            {t.discography.conceptStoryTab}
                           </button>
                           <button
                             onClick={() => setActiveTab('info')}
@@ -354,7 +361,7 @@ export const DiscographyScene: React.FC = () => {
                                 : 'text-h2h-blue-deep hover:text-h2h-blue-primary'
                             }`}
                           >
-                            Release Info
+                            {t.discography.releaseInfoTab}
                           </button>
                         </div>
 
@@ -363,7 +370,7 @@ export const DiscographyScene: React.FC = () => {
                           className="text-[11px] font-display font-bold text-h2h-pink-deep hover:text-h2h-ink flex items-center gap-1 transition-colors cursor-pointer group"
                           title="View complete liner notes"
                         >
-                          <span>Full Story</span>
+                          <span>{t.discography.fullStoryBtn}</span>
                           <Sparkles className="w-3 h-3 group-hover:rotate-12 transition-transform" />
                         </button>
                       </div>
@@ -375,11 +382,11 @@ export const DiscographyScene: React.FC = () => {
                         ) : (
                           <div className="space-y-1 text-[11px] text-h2h-muted">
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-h2h-blue-deep">Format:</span>
+                              <span className="font-bold text-h2h-blue-deep">{t.discography.formatLabel}</span>
                               <span>{activeRelease.type}</span>
                             </div>
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-h2h-blue-deep">Distribution:</span>
+                              <span className="font-bold text-h2h-blue-deep">{t.discography.distributionLabel}</span>
                               <span className="truncate ml-2">{activeRelease.streamingHint || 'Digital Streaming'}</span>
                             </div>
                           </div>
@@ -391,15 +398,15 @@ export const DiscographyScene: React.FC = () => {
                     <div className="pt-2 border-t border-h2h-blue-sky/40">
                       <span className="text-[11px] sm:text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider block mb-1.5 flex items-center justify-center sm:justify-start gap-1.5">
                         <Music className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                        Official Tracklist
+                        {t.discography.officialTracklist}
                       </span>
                       <div className="flex flex-wrap justify-center sm:justify-start gap-1.5">
-                        {activeRelease.tracks.map((t, idx) => (
+                        {activeRelease.tracks.map((tItem, idx) => (
                           <span
                             key={idx}
                             className="px-2.5 py-0.5 bg-h2h-blue-sky/40 border border-h2h-blue-sky/60 rounded-lg text-xs font-sans font-bold text-h2h-ink"
                           >
-                            {t}
+                            {tItem}
                           </span>
                         ))}
                       </div>
@@ -432,7 +439,7 @@ export const DiscographyScene: React.FC = () => {
               <button
                 onClick={() => setIsStoryModalOpen(false)}
                 className="absolute top-4 right-4 w-8 h-8 rounded-full bg-h2h-blue-sky/50 hover:bg-h2h-pink-soft text-h2h-ink flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Close story"
+                aria-label={t.discography.closeStoryAria}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -454,7 +461,7 @@ export const DiscographyScene: React.FC = () => {
                     {activeRelease.title}
                   </h4>
                   <span className="text-xs font-sans text-h2h-muted">
-                    Released: {activeRelease.releaseDate}
+                    Release: {activeRelease.releaseDate}
                   </span>
                 </div>
               </div>
@@ -462,7 +469,7 @@ export const DiscographyScene: React.FC = () => {
               <div className="p-4 rounded-2xl bg-h2h-blue-light/50 border border-h2h-blue-sky/50 space-y-2">
                 <span className="text-xs font-display font-bold uppercase tracking-wider text-h2h-blue-deep flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-h2h-pink-deep" />
-                  Full Album Concept & Story
+                  {t.discography.linerNotesTitle}
                 </span>
                 <p className="font-sans text-sm sm:text-base text-h2h-ink leading-relaxed">
                   {activeRelease.description}
@@ -471,15 +478,15 @@ export const DiscographyScene: React.FC = () => {
 
               <div className="space-y-1.5">
                 <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider block">
-                  Official Tracklist
+                  {t.discography.officialTracklist}
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {activeRelease.tracks.map((t, idx) => (
+                  {activeRelease.tracks.map((tItem, idx) => (
                     <span
                       key={idx}
                       className="px-3 py-1 bg-h2h-blue-sky/30 border border-h2h-blue-sky/60 rounded-xl text-xs font-sans font-bold text-h2h-ink"
                     >
-                      {t}
+                      {tItem}
                     </span>
                   ))}
                 </div>
@@ -491,7 +498,7 @@ export const DiscographyScene: React.FC = () => {
                   onClick={() => setIsStoryModalOpen(false)}
                   className="px-4 py-1.5 bg-h2h-blue-primary hover:bg-h2h-blue-deep text-white font-display font-bold rounded-full transition-colors cursor-pointer shrink-0"
                 >
-                  Close Note
+                  OK
                 </button>
               </div>
             </motion.div>
@@ -501,4 +508,3 @@ export const DiscographyScene: React.FC = () => {
     </section>
   );
 };
-

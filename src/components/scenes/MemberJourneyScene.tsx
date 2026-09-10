@@ -4,7 +4,9 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useLenis } from '@/components/layout/SmoothScrollProvider';
-import { MEMBERS_DATA } from '@/data/membersData';
+import { getMembersData } from '@/data/membersData';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 import { AssetSlot } from '@/components/ui/AssetSlot';
 import {
   Sparkles,
@@ -34,8 +36,11 @@ export const MemberJourneyScene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
   const { lenis } = useLenis();
+  const { language } = useLanguage();
+  const t = getTranslation(language);
+  const membersData = getMembersData(language);
   const [activeIdx, setActiveIdx] = useState(0);
-  const totalMembers = MEMBERS_DATA.length; // 8
+  const totalMembers = membersData.length; // 8
 
   // Scroll Progress across the h-[750vh] container
   const { scrollYProgress } = useScroll({
@@ -160,19 +165,19 @@ export const MemberJourneyScene: React.FC = () => {
         <div className="w-full pt-12 pb-8 px-4 text-center">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-h2h-pink-soft/60 border border-h2h-pink-primary/30 text-h2h-pink-deep font-display font-bold text-xs uppercase tracking-wider mb-2.5 shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
-            <span>Chapter 02 • Eight Hearts</span>
+            <span>{t.members.eyebrow}</span>
           </div>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-h2h-blue-deep tracking-tight">
-            Meet The 8 Hearts
+            {t.members.title}
           </h2>
           <p className="text-xs sm:text-sm font-sans font-medium text-h2h-muted mt-1.5">
-            하츠투하츠 • Scroll through the members
+            {t.members.mobileSubtitle}
           </p>
         </div>
 
         {/* Compact Continuous Flow of 8 Members (Unboxed, Full Portrait with Uniform Blazer Fade) */}
         <div className="w-full max-w-sm mx-auto px-4 pb-4 flex flex-col items-center">
-          {MEMBERS_DATA.map((member, index) => (
+          {membersData.map((member, index) => (
             <React.Fragment key={member.id}>
               {/* Connector line between members */}
               {index > 0 && (
@@ -227,7 +232,7 @@ export const MemberJourneyScene: React.FC = () => {
         <div className="w-full pt-4 pb-12 flex flex-col items-center justify-center text-center">
           <div className="w-[1.5px] h-10 bg-gradient-to-b from-h2h-pink-primary/50 to-h2h-blue-primary/50 rounded-full mb-3" />
           <span className="text-[11px] font-display font-bold uppercase tracking-widest text-h2h-muted">
-            Scroll to Discography ↓
+            {t.members.scrollToDisco}
           </span>
         </div>
       </div>
@@ -247,7 +252,7 @@ export const MemberJourneyScene: React.FC = () => {
               <span className="text-h2h-muted text-xl font-bold">/</span>
               <span className="text-h2h-muted text-xl font-bold">08</span>
               <span className="text-h2h-blue-deep font-display font-bold text-xs sm:text-sm uppercase tracking-wider ml-1">
-                Member Spotlight
+                {t.members.desktopSpotlight}
               </span>
             </div>
 
@@ -256,7 +261,7 @@ export const MemberJourneyScene: React.FC = () => {
               className="flex items-center gap-1 sm:gap-1.5 p-1.5 rounded-full bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute overflow-x-auto max-w-full"
               aria-label="Member selection rail"
             >
-              {MEMBERS_DATA.map((member, i) => {
+              {membersData.map((member, i) => {
                 const isActive = activeIdx === i;
                 return (
                   <button
@@ -281,7 +286,7 @@ export const MemberJourneyScene: React.FC = () => {
               style={{ x: translateX }}
               className="flex h-full will-change-transform"
             >
-              {MEMBERS_DATA.map((member, index) => {
+              {membersData.map((member, index) => {
                 const isSelected = activeIdx === index;
                 return (
                   <article
@@ -355,7 +360,7 @@ export const MemberJourneyScene: React.FC = () => {
                           <div className="flex-[1.5_1_220px] min-w-[200px] p-3.5 rounded-2xl bg-white/95 border border-h2h-blue-sky/60 shadow-xs flex flex-col gap-0.5">
                             <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider flex items-center gap-1.5">
                               <User className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                              Real Name
+                              {t.members.realName}
                             </span>
                             <span className="font-sans font-bold text-base sm:text-lg text-h2h-ink break-words leading-tight">
                               {member.realName}
@@ -365,7 +370,7 @@ export const MemberJourneyScene: React.FC = () => {
                           <div className="flex-[1_1_130px] min-w-[120px] p-3.5 rounded-2xl bg-white/95 border border-h2h-pink-soft shadow-xs flex flex-col gap-0.5">
                             <span className="text-xs font-display font-bold text-h2h-pink-deep uppercase tracking-wider flex items-center gap-1.5">
                               <Calendar className="w-3.5 h-3.5 text-h2h-pink-primary" />
-                              Birthday
+                              {t.members.birthday}
                             </span>
                             <span className="font-sans font-bold text-base sm:text-lg text-h2h-ink whitespace-nowrap">
                               {member.birthday}
@@ -375,7 +380,7 @@ export const MemberJourneyScene: React.FC = () => {
                           <div className="flex-[1_1_130px] min-w-[120px] p-3.5 rounded-2xl bg-white/95 border border-h2h-blue-sky/60 shadow-xs flex flex-col gap-0.5">
                             <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider flex items-center gap-1.5">
                               <Star className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                              Zodiac
+                              {t.members.zodiac}
                             </span>
                             <span className="font-sans font-bold text-base sm:text-lg text-h2h-ink whitespace-nowrap">
                               {member.zodiac}
@@ -385,7 +390,7 @@ export const MemberJourneyScene: React.FC = () => {
                           <div className="flex-[1_1_110px] min-w-[100px] p-3.5 rounded-2xl bg-white/95 border border-h2h-pink-soft shadow-xs flex flex-col gap-0.5">
                             <span className="text-xs font-display font-bold text-h2h-pink-deep uppercase tracking-wider flex items-center gap-1.5">
                               <Compass className="w-3.5 h-3.5 text-h2h-pink-primary" />
-                              MBTI
+                              {t.members.mbti}
                             </span>
                             <span className="font-sans font-bold text-base sm:text-lg text-h2h-ink whitespace-nowrap">
                               {member.mbti}
@@ -396,7 +401,7 @@ export const MemberJourneyScene: React.FC = () => {
                             <div className="flex-[1.3_1_170px] min-w-[150px] p-3.5 rounded-2xl bg-white/95 border border-h2h-blue-sky/60 shadow-xs flex flex-col gap-0.5">
                               <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider flex items-center gap-1.5">
                                 <MapPin className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                                Origin
+                                {t.members.origin}
                               </span>
                               <span className="font-sans font-bold text-base sm:text-lg text-h2h-ink">
                                 {member.nationality}
@@ -415,7 +420,7 @@ export const MemberJourneyScene: React.FC = () => {
             {activeIdx > 0 && (
               <button
                 onClick={handlePrev}
-                aria-label="Previous member"
+                aria-label={t.members.prevMemberAria}
                 className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 border-2 border-h2h-blue-sky/70 shadow-cute hover:scale-110 hover:bg-white text-h2h-blue-deep transition-all cursor-pointer"
               >
                 <ChevronLeft className="w-6 h-6" />
@@ -425,7 +430,7 @@ export const MemberJourneyScene: React.FC = () => {
             {activeIdx < totalMembers - 1 && (
               <button
                 onClick={handleNext}
-                aria-label="Next member"
+                aria-label={t.members.nextMemberAria}
                 className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 border-2 border-h2h-blue-sky/70 shadow-cute hover:scale-110 hover:bg-white text-h2h-blue-deep transition-all cursor-pointer"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -437,12 +442,12 @@ export const MemberJourneyScene: React.FC = () => {
           <footer className="w-full max-w-7xl mx-auto px-6 sm:px-12 pt-2 pb-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm font-display font-bold text-h2h-muted border-t border-h2h-blue-sky/30 z-30 shrink-0">
             <div className="flex items-center gap-2 text-h2h-ink/70">
               <span className="text-h2h-pink-deep">●</span>
-              <span>Scroll down to explore members • Continuous journey</span>
+              <span>{t.members.scrollCue}</span>
             </div>
 
             {/* 8 Hearts Indicator */}
             <div className="flex items-center gap-1.5" aria-hidden="true">
-              {MEMBERS_DATA.map((_, i) => (
+              {membersData.map((_, i) => (
                 <span
                   key={i}
                   className={`h-2.5 rounded-full transition-all duration-300 ${
@@ -460,14 +465,14 @@ export const MemberJourneyScene: React.FC = () => {
         <div className="hidden lg:block w-full max-w-7xl mx-auto space-y-20 px-6 sm:px-12 py-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="font-display font-black text-4xl sm:text-6xl text-h2h-blue-primary">
-              Meet the Eight Hearts
+              {t.members.allProfilesTitle}
             </h2>
             <p className="font-sans text-lg text-h2h-muted mt-2">
-              All 8 official profiles of Hearts2Hearts.
+              {t.members.allProfilesDesc}
             </p>
           </div>
 
-          {MEMBERS_DATA.map((member, i) => (
+          {membersData.map((member, i) => (
             <div
               key={member.id}
               className="p-8 rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/60 shadow-cute-lg grid grid-cols-1 lg:grid-cols-12 gap-10 items-center"
@@ -494,20 +499,20 @@ export const MemberJourneyScene: React.FC = () => {
                 </p>
                 <div className="flex flex-wrap gap-3 text-sm font-sans font-bold">
                   <div className="p-3 bg-h2h-blue-sky/30 rounded-2xl flex-[1.4_1_180px] min-w-[160px]">
-                    Real: {member.realName}
+                    {t.members.realName}: {member.realName}
                   </div>
                   <div className="p-3 bg-h2h-pink-soft/40 rounded-2xl flex-1 min-w-[120px]">
-                    Birth: {member.birthday}
+                    {t.members.birthday}: {member.birthday}
                   </div>
                   <div className="p-3 bg-h2h-blue-sky/30 rounded-2xl flex-1 min-w-[110px]">
-                    Zodiac: {member.zodiac}
+                    {t.members.zodiac}: {member.zodiac}
                   </div>
                   <div className="p-3 bg-h2h-pink-soft/40 rounded-2xl flex-1 min-w-[100px]">
-                    MBTI: {member.mbti}
+                    {t.members.mbti}: {member.mbti}
                   </div>
                   {member.nationality && (
                     <div className="p-3 bg-h2h-blue-sky/30 rounded-2xl flex-[1.2_1_140px] min-w-[130px]">
-                      Origin: {member.nationality}
+                      {t.members.origin}: {member.nationality}
                     </div>
                   )}
                 </div>

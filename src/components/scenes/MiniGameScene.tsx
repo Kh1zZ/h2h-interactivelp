@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import { MEMBERS_DATA } from '@/data/membersData';
-import { QUIZ_QUESTIONS } from '@/data/quizData';
+import React, { useState, useEffect } from 'react';
+import { getMembersData } from '@/data/membersData';
+import { getQuizQuestions } from '@/data/quizData';
 import { QuizQuestion } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 import { AssetSlot } from '@/components/ui/AssetSlot';
 import confetti from 'canvas-confetti';
 import {
@@ -31,8 +33,14 @@ function shuffleArray<T>(array: T[]): T[] {
  * Features BOTH:
  * 1. "Match the Heart" (Member portrait matching — pure shuffle)
  * 2. "Quick Quiz" (Interactive 5-question trivia randomized from a 20-question bank)
+ * Bilingual support for EN and ID.
  */
 export const MiniGameScene: React.FC = () => {
+  const { language } = useLanguage();
+  const t = getTranslation(language);
+  const currentMembers = getMembersData(language);
+  const allQuizQuestions = getQuizQuestions(language);
+
   const [activeTab, setActiveTab] = useState<'match' | 'quiz'>('match');
 
   const handleSkipToClosing = () => {
@@ -46,10 +54,10 @@ export const MiniGameScene: React.FC = () => {
   // Match the Heart State (Pure Shuffle Only)
   // ----------------------------------------------------
   const [matchCandidates, setMatchCandidates] = useState(() =>
-    shuffleArray(MEMBERS_DATA).slice(0, 4)
+    shuffleArray(currentMembers).slice(0, 4)
   );
   const [shuffledNames, setShuffledNames] = useState(() => {
-    const candidates = shuffleArray(MEMBERS_DATA).slice(0, 4);
+    const candidates = shuffleArray(currentMembers).slice(0, 4);
     return shuffleArray(candidates);
   });
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
@@ -57,7 +65,7 @@ export const MiniGameScene: React.FC = () => {
   const [matchError, setMatchError] = useState<string | null>(null);
 
   const shuffleRandomCombo = () => {
-    const randomized = shuffleArray(MEMBERS_DATA).slice(0, 4);
+    const randomized = shuffleArray(currentMembers).slice(0, 4);
     setMatchCandidates(randomized);
     setShuffledNames(shuffleArray(randomized));
     setSelectedCandidate(null);
@@ -71,7 +79,7 @@ export const MiniGameScene: React.FC = () => {
 
   const handleNameSelect = (name: string, memberId: string) => {
     if (!selectedCandidate) {
-      setMatchError('Please select a portrait first!');
+      setMatchError(t.miniGame.matchErrorSelectFirst);
       return;
     }
 
@@ -92,7 +100,7 @@ export const MiniGameScene: React.FC = () => {
         } catch {}
       }
     } else {
-      setMatchError('Not quite! Try another match.');
+      setMatchError(t.miniGame.matchErrorWrong);
       setTimeout(() => setMatchError(null), 1800);
     }
   };
@@ -101,12 +109,20 @@ export const MiniGameScene: React.FC = () => {
   // Quick Quiz State (5 Randomized Questions from 20-bank)
   // ----------------------------------------------------
   const [activeQuestions, setActiveQuestions] = useState<QuizQuestion[]>(() =>
-    shuffleArray(QUIZ_QUESTIONS).slice(0, 5)
+    shuffleArray(allQuizQuestions).slice(0, 5)
   );
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [quizFinished, setQuizFinished] = useState(false);
+
+  // Sync quiz questions language when language toggles without resetting score/position
+  useEffect(() => {
+    setActiveQuestions((prev) => {
+      const currentIds = prev.map((q) => q.id);
+      return currentIds.map((id) => allQuizQuestions.find((q) => q.id === id) || allQuizQuestions[0]);
+    });
+  }, [language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleQuizAnswer = (optionIdx: number) => {
     if (selectedOption !== null) return;
@@ -136,7 +152,7 @@ export const MiniGameScene: React.FC = () => {
   };
 
   const resetQuiz = () => {
-    setActiveQuestions(shuffleArray(QUIZ_QUESTIONS).slice(0, 5));
+    setActiveQuestions(shuffleArray(allQuizQuestions).slice(0, 5));
     setQuizIndex(0);
     setQuizScore(0);
     setSelectedOption(null);
@@ -157,13 +173,13 @@ export const MiniGameScene: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-h2h-blue-sky/50 text-h2h-blue-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-2">
               <Gamepad2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary" />
-              <span>Chapter 05 • Candy Playroom</span>
+              <span>{t.miniGame.eyebrow}</span>
             </div>
             <h2 className="font-display font-black text-3xl sm:text-5xl text-h2h-blue-primary">
-              Hearts Playroom
+              {t.miniGame.title}
             </h2>
             <p className="font-sans text-sm sm:text-base lg:text-lg text-h2h-muted mt-1">
-              Reinforce what you learned! 100% optional, sweet, and purely for fun.
+              {t.miniGame.subtitle}
             </p>
           </div>
 
@@ -173,7 +189,7 @@ export const MiniGameScene: React.FC = () => {
             className="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white hover:bg-h2h-blue-sky/30 text-h2h-ink font-display text-xs sm:text-sm font-bold border-2 border-h2h-blue-sky/70 shadow-xs transition-all cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary shrink-0"
             aria-label="Skip mini-game and jump to closing section"
           >
-            <span>Skip to Finale</span>
+            <span>{t.miniGame.skipBtn}</span>
             <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
@@ -189,7 +205,7 @@ export const MiniGameScene: React.FC = () => {
                   : 'text-h2h-ink/70 hover:text-h2h-ink'
               }`}
             >
-              1. Match the Heart
+              {t.miniGame.tabMatch}
             </button>
             <button
               onClick={() => setActiveTab('quiz')}
@@ -199,7 +215,7 @@ export const MiniGameScene: React.FC = () => {
                   : 'text-h2h-ink/70 hover:text-h2h-ink'
               }`}
             >
-              2. Quick Quiz (5 of 20)
+              {t.miniGame.tabQuiz}
             </button>
           </div>
         </div>
@@ -212,26 +228,26 @@ export const MiniGameScene: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-3 border-b border-h2h-blue-sky/30">
               <div>
                 <h3 className="font-display font-black text-xl sm:text-3xl text-h2h-ink">
-                  Match Member to Portrait
+                  {t.miniGame.matchTitle}
                 </h3>
                 <p className="font-sans text-xs sm:text-sm text-h2h-muted mt-0.5">
-                  Click a portrait card first, then tap the matching stage name!
+                  {t.miniGame.matchDesc}
                 </p>
               </div>
               <div className="flex items-center gap-2 self-end sm:self-auto">
                 <button
                   onClick={shuffleRandomCombo}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-h2h-pink-soft/60 hover:bg-h2h-pink-soft text-h2h-pink-deep text-xs font-display font-bold transition-colors cursor-pointer"
-                  title="Randomize Combination"
+                  title={t.miniGame.shuffleBtn}
                 >
                   <Shuffle className="w-3.5 h-3.5" />
-                  <span>Shuffle</span>
+                  <span>{t.miniGame.shuffleBtn}</span>
                 </button>
                 <button
                   onClick={resetMatchGame}
                   className="p-2 rounded-xl bg-h2h-blue-sky/30 text-h2h-blue-deep hover:bg-h2h-pink-soft hover:text-h2h-pink-deep transition-colors cursor-pointer"
                   title="Reset Game"
-                  aria-label="Reset Match Game"
+                  aria-label={t.miniGame.resetAria}
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
@@ -250,10 +266,10 @@ export const MiniGameScene: React.FC = () => {
                   <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-h2h-pink-primary" />
                 </div>
                 <h4 className="font-display font-black text-2xl sm:text-4xl text-h2h-ink">
-                  Perfect Match! ✨
+                  {t.miniGame.perfectMatchTitle}
                 </h4>
                 <p className="font-sans text-sm sm:text-base text-h2h-muted max-w-md mx-auto">
-                  You matched all portraits flawlessly! Shuffle for a new random group of 4 members.
+                  {t.miniGame.perfectMatchDesc}
                 </p>
                 <div className="pt-2 flex flex-wrap justify-center gap-3">
                   <button
@@ -261,13 +277,13 @@ export const MiniGameScene: React.FC = () => {
                     className="px-6 py-2.5 sm:py-3 rounded-full bg-h2h-pink-primary text-white font-display font-bold text-xs sm:text-sm shadow-cute hover:bg-h2h-pink-deep transition-all cursor-pointer flex items-center gap-2"
                   >
                     <Shuffle className="w-4 h-4" />
-                    Shuffle New 4
+                    {t.miniGame.shuffleNew4Btn}
                   </button>
                   <button
                     onClick={resetMatchGame}
                     className="px-5 py-2.5 sm:py-3 rounded-full bg-h2h-blue-sky/40 text-h2h-blue-deep font-display font-bold text-xs sm:text-sm hover:bg-h2h-blue-sky/70 transition-all cursor-pointer"
                   >
-                    Replay Same
+                    {t.miniGame.replaySameBtn}
                   </button>
                 </div>
               </div>
@@ -316,7 +332,7 @@ export const MiniGameScene: React.FC = () => {
                 {/* Step 2: Scrambled Name Chips */}
                 <div className="border-t border-h2h-blue-sky/40 pt-4 sm:pt-6">
                   <span className="block text-xs sm:text-sm font-display font-bold text-h2h-blue-deep uppercase tracking-wider mb-3 sm:mb-4 text-center">
-                    Select the matching stage name:
+                    {t.miniGame.step2Title}
                   </span>
                   <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4">
                     {shuffledNames.map((m) => {
@@ -353,8 +369,12 @@ export const MiniGameScene: React.FC = () => {
               <div className="space-y-5 sm:space-y-8">
                 {/* Progress bar */}
                 <div className="flex items-center justify-between text-xs sm:text-sm font-display font-bold text-h2h-muted">
-                  <span>Question {quizIndex + 1} of {activeQuestions.length}</span>
-                  <span>Score: {quizScore}</span>
+                  <span>
+                    {t.miniGame.quizQuestionOf
+                      .replace('{current}', String(quizIndex + 1))
+                      .replace('{total}', String(activeQuestions.length))}
+                  </span>
+                  <span>{t.miniGame.quizScoreLabel.replace('{score}', String(quizScore))}</span>
                 </div>
                 <div className="w-full h-2.5 sm:h-3 bg-h2h-pink-soft/60 rounded-full overflow-hidden">
                   <div
@@ -422,20 +442,24 @@ export const MiniGameScene: React.FC = () => {
                     : 'Sweet Explorer! 🐰'}
                 </h4>
                 <p className="font-sans text-sm sm:text-base text-h2h-muted max-w-md mx-auto">
-                  You scored <span className="font-black text-h2h-pink-deep text-lg sm:text-xl">{quizScore} / {activeQuestions.length}</span>! Questions are randomly sampled from our 20-question bank.
+                  {quizScore === 5
+                    ? t.miniGame.quizPerfectDesc.replace('{score}', String(quizScore)).replace('{total}', String(activeQuestions.length))
+                    : quizScore >= 3
+                    ? t.miniGame.quizGreatDesc.replace('{score}', String(quizScore)).replace('{total}', String(activeQuestions.length))
+                    : t.miniGame.quizPracticeDesc.replace('{score}', String(quizScore)).replace('{total}', String(activeQuestions.length))}
                 </p>
                 <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
                   <button
                     onClick={resetQuiz}
                     className="w-full sm:w-auto px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-xs sm:text-sm hover:bg-h2h-pink-soft/80 transition-all cursor-pointer"
                   >
-                    Try 5 New Questions 🔀
+                    {t.miniGame.quizTryAgainBtn} 🔀
                   </button>
                   <button
                     onClick={handleSkipToClosing}
                     className="w-full sm:w-auto px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-xs sm:text-sm hover:bg-h2h-blue-deep transition-all cursor-pointer"
                   >
-                    Finish Journey
+                    {t.miniGame.skipBtn}
                   </button>
                 </div>
               </div>

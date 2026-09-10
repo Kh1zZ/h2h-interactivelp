@@ -2,7 +2,9 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Headphones, Users, Sparkles, ExternalLink, Disc3 } from 'lucide-react';
+import { Headphones, Users, ExternalLink, Disc3 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 
 /**
  * Act 6: Warm Hugs Finale (ClosingScene)
@@ -11,8 +13,12 @@ import { Headphones, Users, Sparkles, ExternalLink, Disc3 } from 'lucide-react';
  * - Brand Logo badge
  * - Compact Multi-Platform Streaming Hub (Spotify, YT Music, Apple Music, Deezer, Genius)
  * - Seamless in-page continuity navigation
+ * - Bilingual support for EN and ID
  */
 export const ClosingScene: React.FC = () => {
+  const { language } = useLanguage();
+  const t = getTranslation(language);
+
   const handleMeetMembersAgain = () => {
     const membersEl = document.getElementById('scene-members');
     if (membersEl) {
@@ -50,12 +56,19 @@ export const ClosingScene: React.FC = () => {
         {/* Grand Closing Headline */}
         <div className="space-y-2 sm:space-y-4">
           <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-7xl text-h2h-blue-primary tracking-tight leading-tight">
-            Two Hearts, One Rhythm. <br />
-            Welcome to <span className="text-h2h-pink-primary">Hearts2Hearts</span>.
+            {t.closing.headlinePre} <br />
+            {t.closing.headlinePost.includes('Hearts2Hearts') ? (
+              <>
+                {t.closing.headlinePost.replace('Hearts2Hearts', '')}
+                <span className="text-h2h-pink-primary">Hearts2Hearts</span>.
+              </>
+            ) : (
+              t.closing.headlinePost
+            )}
           </h2>
 
           <p className="font-sans text-sm sm:text-base lg:text-xl text-h2h-ink/80 max-w-2xl mx-auto leading-relaxed font-normal px-2">
-            Thank you for exploring our world. Whether you are discovering us for the first time or returning as S2U, our door is always open.
+            {t.closing.subhead}
           </p>
         </div>
 
@@ -65,11 +78,11 @@ export const ClosingScene: React.FC = () => {
             <div className="flex items-center gap-2">
               <Headphones className="w-5 h-5 text-h2h-blue-primary" />
               <span className="font-display font-black text-base sm:text-lg text-h2h-blue-deep">
-                Stream Official Releases
+                {t.closing.streamTitle}
               </span>
             </div>
             <span className="text-xs font-sans text-h2h-muted font-medium">
-              Choose your favorite streaming platform
+              {t.closing.streamSubtitle}
             </span>
           </div>
 
@@ -138,7 +151,7 @@ export const ClosingScene: React.FC = () => {
               className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-h2h-blue-sky/50 hover:bg-h2h-blue-primary hover:text-white text-h2h-blue-deep text-xs font-display font-bold transition-all cursor-pointer"
             >
               <Disc3 className="w-3.5 h-3.5" />
-              <span>Spin Turntable Preview (Scene 03)</span>
+              <span>{t.closing.listenMusicBtn}</span>
             </button>
 
             <button
@@ -146,7 +159,7 @@ export const ClosingScene: React.FC = () => {
               className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-h2h-pink-soft/60 hover:bg-h2h-pink-primary hover:text-white text-h2h-pink-deep text-xs font-display font-bold transition-all cursor-pointer"
             >
               <Users className="w-3.5 h-3.5 text-h2h-pink-primary group-hover:text-white" />
-              <span>Meet Members Again (Scene 02)</span>
+              <span>{t.closing.meetMembersBtn}</span>
             </button>
           </div>
         </div>

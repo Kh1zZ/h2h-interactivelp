@@ -3,7 +3,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AssetSlot } from '@/components/ui/AssetSlot';
-import { CURRENT_LATEST_RELEASE } from '@/data/latestReleaseData';
+import { getLatestReleaseData } from '@/data/latestReleaseData';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import {
   Sparkles,
@@ -24,11 +26,14 @@ import {
  * Minimalist, high-focus showcase introducing the single latest drop:
  * - Clean layout with artwork, Kia Korea collaboration details, and facts.
  * - Interactive 20-second audio preview.
- * - Modular design driven by CURRENT_LATEST_RELEASE.
+ * - Bilingual support for EN and ID.
  */
 export const LatestReleaseScene: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { language } = useLanguage();
+  const t = getTranslation(language);
+  const currentRelease = getLatestReleaseData(language);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -97,10 +102,10 @@ export const LatestReleaseScene: React.FC = () => {
       className="relative w-full py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-h2h-cream via-h2h-blue-light/30 to-h2h-cream select-none z-10"
     >
       {/* Hidden Audio Element */}
-      {CURRENT_LATEST_RELEASE.audioSrc && (
+      {currentRelease.audioSrc && (
         <audio
           ref={audioRef}
-          src={CURRENT_LATEST_RELEASE.audioSrc}
+          src={currentRelease.audioSrc}
           preload="metadata"
         />
       )}
@@ -120,14 +125,14 @@ export const LatestReleaseScene: React.FC = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-h2h-pink-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-h2h-pink-primary"></span>
             </span>
-            <span>{CURRENT_LATEST_RELEASE.badgeText || 'Fresh Drop • Latest Release'}</span>
+            <span>{currentRelease.badgeText || t.latestRelease.eyebrow}</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl text-h2h-blue-primary tracking-tight">
-            Latest Single Spotlight
+            {t.latestRelease.title}
           </h2>
           <p className="font-sans text-xs sm:text-sm text-h2h-muted mt-1 max-w-md mx-auto">
-            Discover the newest music and special project from Hearts2Hearts.
+            {t.latestRelease.subtitle}
           </p>
         </motion.div>
 
@@ -144,9 +149,9 @@ export const LatestReleaseScene: React.FC = () => {
             <div className="lg:col-span-5 flex flex-col items-center space-y-4">
               <div className="relative w-48 sm:w-60 lg:w-full aspect-square rounded-2xl sm:rounded-3xl overflow-hidden shadow-cute border-2 border-h2h-blue-sky/50 group">
                 <AssetSlot
-                  assetKey={CURRENT_LATEST_RELEASE.coverAssetKey}
+                  assetKey={currentRelease.coverAssetKey}
                   aspectRatio="1/1"
-                  alt={`${CURRENT_LATEST_RELEASE.title} Single Cover`}
+                  alt={`${currentRelease.title} Single Cover`}
                   roundedClassName="rounded-2xl sm:rounded-3xl"
                   className="w-full h-full object-cover"
                 />
@@ -154,7 +159,7 @@ export const LatestReleaseScene: React.FC = () => {
                 {/* Corner Tag */}
                 <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-h2h-blue-deep/80 backdrop-blur-xs text-white text-[10px] font-display font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-xs">
                   <Radio className="w-3 h-3 text-h2h-pink-primary animate-pulse" />
-                  <span>New Drop</span>
+                  <span>{t.nav.newBadge}</span>
                 </div>
               </div>
 
@@ -165,7 +170,7 @@ export const LatestReleaseScene: React.FC = () => {
                     <button
                       onClick={togglePlay}
                       className="w-9 h-9 rounded-full bg-h2h-blue-primary hover:bg-h2h-blue-deep text-white flex items-center justify-center shadow-xs hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0"
-                      aria-label={isPlaying ? 'Pause preview' : 'Play 20s preview'}
+                      aria-label={isPlaying ? t.discography.pause : t.latestRelease.playAudio}
                     >
                       {isPlaying ? (
                         <Pause className="w-4 h-4 fill-white" />
@@ -175,7 +180,7 @@ export const LatestReleaseScene: React.FC = () => {
                     </button>
                     <div className="text-left">
                       <span className="text-xs font-display font-bold text-h2h-blue-primary block leading-none">
-                        {isPlaying ? 'Playing Preview' : '20s Audio Preview'}
+                        {isPlaying ? t.latestRelease.playingAudio : t.latestRelease.playAudio}
                       </span>
                       <span className="text-[10px] font-sans text-h2h-muted">
                         Official Highlight • AAC
@@ -187,7 +192,7 @@ export const LatestReleaseScene: React.FC = () => {
                     <button
                       onClick={toggleMute}
                       className="text-h2h-muted hover:text-h2h-ink transition-colors cursor-pointer"
-                      aria-label={isMuted ? 'Unmute' : 'Mute'}
+                      aria-label={isMuted ? t.latestRelease.unmute : t.latestRelease.mute}
                     >
                       {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                     </button>
@@ -215,44 +220,44 @@ export const LatestReleaseScene: React.FC = () => {
               <div className="flex flex-wrap items-center gap-2">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-h2h-blue-sky/70 text-h2h-blue-deep text-xs font-display font-bold uppercase tracking-wider">
                   <Car className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                  <span>Hearts2Hearts × {CURRENT_LATEST_RELEASE.collaborator}</span>
+                  <span>Hearts2Hearts × {currentRelease.collaborator}</span>
                 </div>
                 <span className="text-[11px] font-sans font-semibold text-h2h-pink-deep bg-h2h-pink-soft/50 px-2.5 py-0.5 rounded-full border border-h2h-pink-primary/20">
-                  {CURRENT_LATEST_RELEASE.type}
+                  {currentRelease.type}
                 </span>
               </div>
 
               {/* Title & Date */}
               <div className="space-y-1">
                 <h3 className="font-display font-black text-3xl sm:text-5xl text-h2h-blue-primary tracking-tight leading-none">
-                  {CURRENT_LATEST_RELEASE.title}
+                  {currentRelease.title}
                 </h3>
                 <div className="flex flex-wrap items-center gap-3 text-xs font-sans text-h2h-muted font-medium pt-1">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                    <span>Released: {CURRENT_LATEST_RELEASE.releaseDate}</span>
+                    <span>{currentRelease.releaseDate}</span>
                   </div>
                   <span>•</span>
                   <div className="flex items-center gap-1">
                     <Compass className="w-3.5 h-3.5 text-h2h-pink-primary" />
-                    <span>{CURRENT_LATEST_RELEASE.genre}</span>
+                    <span>{currentRelease.genre}</span>
                   </div>
                 </div>
               </div>
 
               {/* Description */}
               <p className="font-sans text-xs sm:text-sm text-h2h-ink/85 leading-relaxed">
-                {CURRENT_LATEST_RELEASE.description}
+                {currentRelease.description}
               </p>
 
               {/* Campaign Highlights Card */}
               <div className="p-3.5 rounded-2xl bg-h2h-blue-light/50 border border-h2h-blue-sky/60 space-y-2">
                 <div className="flex items-center gap-1.5 text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider">
                   <Sparkles className="w-3.5 h-3.5 text-h2h-pink-deep" />
-                  <span>Official Collaboration Facts</span>
+                  <span>{t.latestRelease.highlightsTitle}</span>
                 </div>
                 <ul className="space-y-1.5 text-xs font-sans text-h2h-ink/80">
-                  {CURRENT_LATEST_RELEASE.highlights?.map((fact, idx) => (
+                  {currentRelease.highlights?.map((fact, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <span className="text-h2h-pink-primary font-bold">●</span>
                       <span>{fact}</span>
@@ -266,10 +271,10 @@ export const LatestReleaseScene: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-display font-bold text-h2h-blue-deep flex items-center gap-1">
                     <Music className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                    Tracks:
+                    {t.discography.officialTracklist}:
                   </span>
                   <div className="flex flex-wrap gap-1.5">
-                    {CURRENT_LATEST_RELEASE.tracks.map((track, i) => (
+                    {currentRelease.tracks.map((track, i) => (
                       <span
                         key={i}
                         className="px-2.5 py-0.5 rounded-lg bg-white border border-h2h-blue-sky/70 text-[11px] font-sans font-bold text-h2h-ink shadow-2xs"
@@ -281,7 +286,7 @@ export const LatestReleaseScene: React.FC = () => {
                 </div>
 
                 <span className="text-[11px] font-sans text-h2h-muted italic">
-                  {CURRENT_LATEST_RELEASE.streamingHint}
+                  {currentRelease.streamingHint}
                 </span>
               </div>
             </div>

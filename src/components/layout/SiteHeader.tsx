@@ -2,18 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Heart, Menu, X } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { useLenis } from '@/components/layout/SmoothScrollProvider';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 
 /**
- * Minimalist SiteHeader (PRD v5 Section 27)
+ * Minimalist SiteHeader with EN/ID Language Switcher
  * - Transparent, non-intrusive.
  * - Large, clear typography and accessible quick jump anchors.
+ * - Seamless client-side language switching between English and Bahasa Indonesia.
  */
 export const SiteHeader: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { lenis } = useLenis();
+  const { language, setLanguage } = useLanguage();
+  const t = getTranslation(language);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,54 +70,114 @@ export const SiteHeader: React.FC = () => {
           </span>
         </button>
 
-        {/* Lightweight Desktop Nav */}
+        {/* Lightweight Desktop Nav & Language Switcher */}
         <nav
-          className="hidden md:flex items-center gap-8 text-base font-display font-bold text-h2h-ink/80"
+          className="hidden md:flex items-center gap-6 lg:gap-8 text-base font-display font-bold text-h2h-ink/80"
           aria-label="Main Navigation"
         >
           <button
             onClick={() => scrollToSection('scene-intro')}
             className="hover:text-h2h-blue-deep transition-colors focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary rounded-lg px-2 py-1 cursor-pointer"
           >
-            About
+            {t.nav.about}
           </button>
           <button
             onClick={() => scrollToSection('scene-members')}
             className="hover:text-h2h-pink-deep transition-colors focus:outline-hidden focus:ring-2 focus:ring-h2h-pink-primary rounded-lg px-2 py-1 cursor-pointer"
           >
-            Members
+            {t.nav.members}
           </button>
           <div className="flex items-center gap-1">
             <button
               onClick={() => scrollToSection('scene-discography')}
               className="hover:text-h2h-blue-deep transition-colors focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary rounded-lg px-2 py-1 cursor-pointer"
             >
-              Music
+              {t.nav.music}
             </button>
             <button
               onClick={() => scrollToSection('scene-latest-release')}
               className="px-2 py-0.5 rounded-full bg-h2h-pink-soft text-h2h-pink-deep text-[10px] font-extrabold uppercase tracking-wider hover:bg-h2h-pink-primary hover:text-white transition-all cursor-pointer animate-pulse"
               title="Jump to latest release: MOONRIDE"
             >
-              New
+              {t.nav.newBadge}
             </button>
           </div>
           <button
             onClick={() => scrollToSection('scene-world')}
             className="hover:text-h2h-blue-deep transition-colors focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary rounded-lg px-2 py-1 cursor-pointer"
           >
-            World
+            {t.nav.world}
           </button>
           <button
             onClick={() => scrollToSection('scene-game')}
             className="px-4 py-2 rounded-full bg-h2h-pink-soft text-h2h-pink-deep font-bold hover:bg-h2h-pink-primary hover:text-white transition-all focus:outline-hidden focus:ring-2 focus:ring-h2h-pink-primary cursor-pointer text-sm shadow-2xs"
           >
-            Playroom
+            {t.nav.playroom}
           </button>
+
+          {/* Desktop Language Switcher (EN / ID Pill Toggle) */}
+          <div
+            className="flex items-center p-1 rounded-full bg-white/95 border border-h2h-blue-sky/70 shadow-2xs"
+            role="group"
+            aria-label="Language Selector"
+          >
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-2.5 py-1 rounded-full text-xs font-display font-black transition-all cursor-pointer ${
+                language === 'en'
+                  ? 'bg-h2h-blue-primary text-white shadow-2xs scale-105'
+                  : 'text-h2h-ink/60 hover:text-h2h-blue-deep hover:bg-h2h-blue-sky/30'
+              }`}
+              title="English"
+              aria-pressed={language === 'en'}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLanguage('id')}
+              className={`px-2.5 py-1 rounded-full text-xs font-display font-black transition-all cursor-pointer ${
+                language === 'id'
+                  ? 'bg-h2h-pink-primary text-white shadow-2xs scale-105'
+                  : 'text-h2h-ink/60 hover:text-h2h-pink-deep hover:bg-h2h-pink-soft/40'
+              }`}
+              title="Bahasa Indonesia"
+              aria-pressed={language === 'id'}
+            >
+              ID
+            </button>
+          </div>
         </nav>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
+        {/* Mobile Header Controls: Quick Language Switcher & Menu Button */}
+        <div className="md:hidden flex items-center gap-2">
+          {/* Mobile Fast Language Toggle */}
+          <div
+            className="flex items-center p-0.5 rounded-full bg-white/95 border border-h2h-blue-sky/70 shadow-2xs text-[11px] font-display font-black"
+            role="group"
+            aria-label="Language Selector"
+          >
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-2 py-1 rounded-full transition-all cursor-pointer ${
+                language === 'en'
+                  ? 'bg-h2h-blue-primary text-white shadow-2xs'
+                  : 'text-h2h-ink/60'
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLanguage('id')}
+              className={`px-2 py-1 rounded-full transition-all cursor-pointer ${
+                language === 'id'
+                  ? 'bg-h2h-pink-primary text-white shadow-2xs'
+                  : 'text-h2h-ink/60'
+              }`}
+            >
+              ID
+            </button>
+          </div>
+
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
@@ -130,21 +195,21 @@ export const SiteHeader: React.FC = () => {
             onClick={() => scrollToSection('scene-intro')}
             className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-ink hover:bg-h2h-blue-sky/30 hover:text-h2h-blue-deep transition-all cursor-pointer"
           >
-            <span>About Hearts2Hearts</span>
+            <span>{t.nav.aboutH2H}</span>
             <span className="text-[11px] text-h2h-muted font-mono">01</span>
           </button>
           <button
             onClick={() => scrollToSection('scene-members')}
             className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-ink hover:bg-h2h-pink-soft/40 hover:text-h2h-pink-deep transition-all cursor-pointer"
           >
-            <span>Eight Members (Cards)</span>
+            <span>{t.nav.eightMembersCards}</span>
             <span className="text-[11px] text-h2h-pink-deep font-mono font-bold">02</span>
           </button>
           <button
             onClick={() => scrollToSection('scene-discography')}
             className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-ink hover:bg-h2h-blue-sky/30 hover:text-h2h-blue-deep transition-all cursor-pointer"
           >
-            <span>Music & Turntable</span>
+            <span>{t.nav.musicTurntable}</span>
             <span className="text-[11px] text-h2h-muted font-mono">03</span>
           </button>
           <button
@@ -152,8 +217,10 @@ export const SiteHeader: React.FC = () => {
             className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-pink-deep bg-h2h-pink-soft/30 hover:bg-h2h-pink-soft/60 transition-all cursor-pointer"
           >
             <div className="flex items-center gap-2">
-              <span>Latest Drop (MOONRIDE)</span>
-              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-h2h-pink-primary text-white">NEW</span>
+              <span>{t.nav.latestDrop}</span>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-h2h-pink-primary text-white">
+                {t.nav.newBadge}
+              </span>
             </div>
             <span className="text-[11px] text-h2h-pink-deep font-mono font-bold">★</span>
           </button>
@@ -161,16 +228,46 @@ export const SiteHeader: React.FC = () => {
             onClick={() => scrollToSection('scene-world')}
             className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-ink hover:bg-h2h-blue-sky/30 hover:text-h2h-blue-deep transition-all cursor-pointer"
           >
-            <span>Visual World & Lore</span>
+            <span>{t.nav.visualWorldLore}</span>
             <span className="text-[11px] text-h2h-muted font-mono">04</span>
           </button>
           <button
             onClick={() => scrollToSection('scene-game')}
             className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-pink-deep bg-h2h-pink-soft/40 hover:bg-h2h-pink-soft transition-all cursor-pointer"
           >
-            <span>Candy Playroom</span>
+            <span>{t.nav.candyPlayroom}</span>
             <span className="text-[11px] text-h2h-pink-deep font-mono font-bold">05</span>
           </button>
+
+          {/* Language Switcher Section inside Drawer */}
+          <div className="pt-3 mt-2 border-t border-h2h-blue-sky/30 flex items-center justify-between px-2">
+            <span className="text-xs font-display font-bold text-h2h-ink/70 flex items-center gap-1.5">
+              <Globe className="w-3.5 h-3.5 text-h2h-blue-primary" />
+              <span>Language / Bahasa</span>
+            </span>
+            <div className="flex items-center gap-1.5 bg-h2h-blue-sky/30 p-1 rounded-full border border-h2h-blue-sky/60">
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-3 py-1 rounded-full text-xs font-display font-black transition-all ${
+                  language === 'en'
+                    ? 'bg-h2h-blue-primary text-white shadow-2xs'
+                    : 'text-h2h-ink/70'
+                }`}
+              >
+                English
+              </button>
+              <button
+                onClick={() => setLanguage('id')}
+                className={`px-3 py-1 rounded-full text-xs font-display font-black transition-all ${
+                  language === 'id'
+                    ? 'bg-h2h-pink-primary text-white shadow-2xs'
+                    : 'text-h2h-ink/70'
+                }`}
+              >
+                Indonesia
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </header>

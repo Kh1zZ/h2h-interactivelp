@@ -6,6 +6,8 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { AssetSlot } from '@/components/ui/AssetSlot';
 import { Heart, Sparkles, ChevronDown } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 
 /**
  * Act 0: Sunshine Sky Opening (HeroScene)
@@ -35,6 +37,9 @@ export const HeroScene: React.FC = () => {
     damping: 24,
     restDelta: 0.001,
   });
+
+  const { language } = useLanguage();
+  const t = getTranslation(language);
 
   const titleY = useTransform(smoothProgress, [0, 1], ['0%', '-30%']);
   const titleScale = useTransform(smoothProgress, [0, 1], [1, 0.92]);
@@ -88,7 +93,7 @@ export const HeroScene: React.FC = () => {
               />
             </div>
             <span className="font-display font-bold text-xs sm:text-sm text-h2h-blue-deep tracking-wider uppercase">
-              8 Hearts As One
+              {t.hero.eyebrow}
             </span>
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary" />
           </div>
@@ -99,11 +104,11 @@ export const HeroScene: React.FC = () => {
           </h1>
 
           <p className="font-display font-bold text-xl sm:text-3xl lg:text-4xl text-h2h-blue-deep tracking-wide mb-2 sm:mb-4">
-            Meet Hearts2Hearts.
+            {t.hero.headline}
           </p>
 
           <p className="font-sans text-sm sm:text-base lg:text-xl text-h2h-ink/80 max-w-xl mx-auto font-normal leading-relaxed mb-4 sm:mb-8 px-2">
-            An open gateway into a bright, airy, and cheerful universe. Take your time, discover each voice, and explore our world at your own pace.
+            {t.hero.subhead}
           </p>
 
           {/* Group Visual Card in Grand Scale */}
@@ -133,7 +138,7 @@ export const HeroScene: React.FC = () => {
             aria-label="Scroll down to begin the journey"
             className="flex flex-col items-center gap-1.5 sm:gap-2 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-white/95 hover:bg-white text-xs sm:text-sm font-display font-bold text-h2h-blue-deep border border-h2h-blue-sky shadow-xs hover:shadow-cute transition-all cursor-pointer"
           >
-            <span>Scroll to Explore</span>
+            <span>{t.hero.scrollCue}</span>
             <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-bounce text-h2h-pink-primary" />
           </button>
         </motion.div>

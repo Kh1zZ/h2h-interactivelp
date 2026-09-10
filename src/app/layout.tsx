@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Fredoka, Nunito } from 'next/font/google';
+import { LanguageProvider } from '@/context/LanguageContext';
 import './globals.css';
 
 const fredoka = Fredoka({
@@ -95,7 +96,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fredoka.variable} ${nunito.variable}`}>
       <body className="min-h-screen relative selection:bg-h2h-pink-soft selection:text-h2h-pink-deep">
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

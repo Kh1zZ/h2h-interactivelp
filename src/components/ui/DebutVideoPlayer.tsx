@@ -13,10 +13,13 @@ const YOUTUBE_URL = 'https://www.youtube.com/watch?v=srEUps3-5mo';
  * - Clicking anywhere on the video opens the full YouTube trailer in a new tab.
  * - Overlaid "Watch Full Trailer ▶" label for discoverability.
  */
+import { useLanguage } from '@/context/LanguageContext';
+
 export const DebutVideoPlayer: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const { isId } = useLanguage();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -105,7 +108,7 @@ export const DebutVideoPlayer: React.FC = () => {
         {/* Right: YouTube CTA pill */}
         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FF0000]/90 group-hover:bg-[#FF0000] text-white text-[11px] sm:text-xs font-display font-bold shadow-xs transition-all shrink-0 ml-3">
           <Play className="w-3 h-3 fill-white" />
-          <span>Full Trailer</span>
+          <span>{isId ? 'Trailer Lengkap' : 'Full Trailer'}</span>
           <ExternalLink className="w-2.5 h-2.5 opacity-70" />
         </div>
       </div>

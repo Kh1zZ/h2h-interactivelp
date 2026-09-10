@@ -1,6 +1,7 @@
 import { Release } from '@/types';
+import { Language } from '@/context/LanguageContext';
 
-export const DISCOGRAPHY_DATA: Release[] = [
+export const DISCOGRAPHY_DATA_EN: Release[] = [
   {
     id: 'the-chase',
     title: 'The Chase',
@@ -68,3 +69,78 @@ export const DISCOGRAPHY_DATA: Release[] = [
     audioSrc: '/assets/audio/discography/iconic-heart.aac',
   },
 ];
+
+export const DISCOGRAPHY_DATA_ID: Release[] = [
+  {
+    id: 'the-chase',
+    title: 'The Chase',
+    type: 'Album Singel Debut',
+    releaseDate: '24 Februari 2025',
+    description: 'Album singel debut monumental oleh Hearts2Hearts yang memperkenalkan warna musik khas mereka yang penuh semangat ke hadapan dunia.',
+    tracks: ['The Chase (Title)', 'The Chase (Inst.)'],
+    coverAssetKey: 'release-cover-the-chase',
+    streamingHint: 'Tersedia di semua platform streaming utama',
+    audioSrc: '/assets/audio/discography/the-chase.aac',
+  },
+  {
+    id: 'style',
+    title: 'STYLE',
+    type: 'Singel Digital',
+    releaseDate: '18 Juni 2025',
+    description: 'Lagu penuh percaya diri yang adiktif, menampilkan pesona energik dan warna modern yang khas dari Hearts2Hearts.',
+    tracks: ['STYLE'],
+    coverAssetKey: 'release-cover-style',
+    streamingHint: 'Streaming Digital',
+    audioSrc: '/assets/audio/discography/style.aac',
+  },
+  {
+    id: 'focus',
+    title: 'FOCUS',
+    type: 'Mini Album ke-1',
+    releaseDate: '20 Oktober 2025',
+    description: 'Berirama dinamis, fokus, dan memikat untuk berdansa, menarik pendengar semakin dalam ke orbit Hearts2Hearts.',
+    tracks: ['FOCUS (Title)'],
+    coverAssetKey: 'release-cover-focus',
+    streamingHint: 'Streaming Digital & EP Fisik',
+    audioSrc: '/assets/audio/discography/focus.aac',
+  },
+  {
+    id: 'rude',
+    title: 'RUDE!',
+    type: 'Singel Digital',
+    releaseDate: '20 Februari 2026',
+    description: 'Lagu dansa berirama house yang dinamis dan memancarkan rasa percaya diri tanpa ragu, dipadukan dengan alunan bassline adiktif, hook tajam, serta koreografi viral.',
+    tracks: ['RUDE! (Title)'],
+    coverAssetKey: 'release-cover-rude',
+    streamingHint: 'Singel Digital Resmi • Streaming Global',
+    audioSrc: '/assets/audio/discography/rude.aac',
+  },
+  {
+    id: 'lemon-tang',
+    title: 'Lemon Tang',
+    type: 'Mini Album ke-2',
+    releaseDate: '22 Juni 2026',
+    description: 'Ledakan kesegaran pop manis yang ceria dengan melodi memikat dan vokal berseri bak buah lemon di musim panas.',
+    tracks: ['Lemon Tang (Title)', 'RUDE!'],
+    coverAssetKey: 'release-cover-lemon-tang',
+    streamingHint: 'Streaming Digital & Mini Album Fisik',
+    audioSrc: '/assets/audio/discography/lemon-tang.aac',
+  },
+  {
+    id: 'iconic-heart',
+    title: 'ICONIC HEART',
+    type: 'Album Singel Debut Jepang',
+    releaseDate: '12 Agustus 2026',
+    description: 'Debut monumental Hearts2Hearts di pasar musik Jepang, menghadirkan paduan melodi manis J-Pop, vokal dwibahasa yang ceria, dan energi positif yang menawan.',
+    tracks: ['ICONIC HEART (Title)', 'Lemon Tang (Japanese Ver.)', 'RUDE! (Japanese Ver.)'],
+    coverAssetKey: 'release-cover-iconic-heart',
+    streamingHint: 'Debut Resmi Jepang • Oricon & Streaming Global',
+    audioSrc: '/assets/audio/discography/iconic-heart.aac',
+  },
+];
+
+export const DISCOGRAPHY_DATA = DISCOGRAPHY_DATA_EN;
+
+export const getDiscographyData = (lang: Language = 'en'): Release[] => {
+  return lang === 'id' ? DISCOGRAPHY_DATA_ID : DISCOGRAPHY_DATA_EN;
+};

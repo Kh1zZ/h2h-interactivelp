@@ -3,6 +3,8 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 import { AssetSlot } from '@/components/ui/AssetSlot';
 import { DebutVideoPlayer } from '@/components/ui/DebutVideoPlayer';
 import { Sparkles, Heart, Compass, Palette, Users, Play } from 'lucide-react';
@@ -13,11 +15,14 @@ import { Sparkles, Heart, Compass, Palette, Users, Play } from 'lucide-react';
  * Purpose:
  * Explains the complete artistic vision, debut storyline ('The Chase'),
  * signature daylight color palette, and the global fandom universe ('S2U').
+ * Bilingual support for EN and ID.
  */
 export const VisualWorldScene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
   const [isDesktop, setIsDesktop] = React.useState(false);
+  const { language } = useLanguage();
+  const t = getTranslation(language);
 
   React.useEffect(() => {
     const check = () => setIsDesktop(window.innerWidth >= 1024);
@@ -63,15 +68,15 @@ export const VisualWorldScene: React.FC = () => {
         >
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-h2h-pink-soft/70 border border-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-3 sm:mb-4">
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-pink-primary" />
-            <span>Chapter 04 • Concept Lore &amp; Aesthetic Universe</span>
+            <span>{t.visualWorld.eyebrow}</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-h2h-blue-primary leading-tight">
-            The Aesthetic Universe
+            {t.visualWorld.title}
           </h2>
 
           <p className="font-sans text-sm sm:text-base lg:text-lg text-h2h-muted mt-2 sm:mt-3 max-w-2xl mx-auto leading-relaxed px-2">
-            Discover the three core pillars of Hearts2Hearts&apos; artistic identity: the debut storyline of <strong className="text-h2h-ink font-semibold">&apos;The Chase&apos;</strong>, the refreshing <strong className="text-h2h-ink font-semibold">Daylight Pastel</strong> aesthetic, and the heartfelt connection with their global fandom, <strong className="text-h2h-ink font-semibold">S2U</strong>.
+            {t.visualWorld.subtitle}
           </p>
         </motion.div>
 
@@ -92,25 +97,25 @@ export const VisualWorldScene: React.FC = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider">
-                  Pillar 01 • Narrative Lore
+                  {t.visualWorld.pillar1Eyebrow}
                 </span>
                 <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-primary">
-                  The Chase
+                  {t.visualWorld.pillar1Title}
                 </h3>
               </div>
               <p className="font-sans text-sm sm:text-base text-h2h-ink/80 leading-relaxed">
-                The story of eight girls from diverse backgrounds united by a single pure dream. In a fast-paced world, <em>The Chase</em> symbolizes the courage to pursue authentic identity with fearless youthful enthusiasm.
+                {t.visualWorld.pillar1Desc}
               </p>
             </div>
 
             <div className="pt-6 border-t border-h2h-blue-sky/30 mt-6 space-y-2">
               <div className="text-xs font-display font-bold text-h2h-blue-deep uppercase">
-                Harmonic Palette
+                {t.visualWorld.harmonicPalette}
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-[#6FA8FF] border-2 border-white shadow-xs" title="Sky Blue #6FA8FF" />
                 <span className="w-6 h-6 rounded-full bg-[#D6E9FF] border-2 border-white shadow-xs" title="Breeze #D6E9FF" />
-                <span className="text-xs font-sans text-h2h-muted ml-1">Sky Blue & Breeze</span>
+                <span className="text-xs font-sans text-h2h-muted ml-1">{t.visualWorld.pillar1PaletteName}</span>
               </div>
             </div>
           </motion.article>
@@ -130,25 +135,25 @@ export const VisualWorldScene: React.FC = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-xs font-display font-bold text-h2h-pink-deep uppercase tracking-wider">
-                  Pillar 02 • Visual Identity
+                  {t.visualWorld.pillar2Eyebrow}
                 </span>
                 <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-primary">
-                  Daylight Pastel
+                  {t.visualWorld.pillar2Title}
                 </h3>
               </div>
               <p className="font-sans text-sm sm:text-base text-h2h-ink/80 leading-relaxed">
-                Steering away from dark palettes and cyberpunk dystopias, Hearts2Hearts introduces a sunlit warmth with airy clouds and cheerful pastels—a welcoming, comforting space filled with radiant optimism.
+                {t.visualWorld.pillar2Desc}
               </p>
             </div>
 
             <div className="pt-6 border-t border-h2h-pink-soft/40 mt-6 space-y-2">
               <div className="text-xs font-display font-bold text-h2h-pink-deep uppercase">
-                Harmonic Palette
+                {t.visualWorld.harmonicPalette}
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-[#FFA6D9] border-2 border-white shadow-xs" title="Blossom Pink #FFA6D9" />
                 <span className="w-6 h-6 rounded-full bg-[#FFE1F0] border-2 border-white shadow-xs" title="Soft Cloud #FFE1F0" />
-                <span className="text-xs font-sans text-h2h-muted ml-1">Blossom & Soft Cloud</span>
+                <span className="text-xs font-sans text-h2h-muted ml-1">{t.visualWorld.pillar2PaletteName}</span>
               </div>
             </div>
           </motion.article>
@@ -168,25 +173,25 @@ export const VisualWorldScene: React.FC = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider">
-                  Pillar 03 • Community Universe
+                  {t.visualWorld.pillar3Eyebrow}
                 </span>
                 <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-primary">
-                  S2U (Hearts to You)
+                  {t.visualWorld.pillar3Title}
                 </h3>
               </div>
               <p className="font-sans text-sm sm:text-base text-h2h-ink/80 leading-relaxed">
-                The official fandom name <strong className="text-h2h-ink font-semibold">S2U</strong> (pronounced <em>Hearts to You</em> / 에스투유) reflects a boundless two-way emotional connection between the members and fans worldwide: heart to heart.
+                {t.visualWorld.pillar3Desc}
               </p>
             </div>
 
             <div className="pt-6 border-t border-h2h-blue-sky/30 mt-6 space-y-2">
               <div className="text-xs font-display font-bold text-h2h-blue-deep uppercase">
-                Harmonic Palette
+                {t.visualWorld.harmonicPalette}
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-[#FFFCF8] border-2 border-gray-300 shadow-xs" title="Warm Cream #FFFCF8" />
                 <span className="w-6 h-6 rounded-full bg-[#24284A] border-2 border-white shadow-xs" title="Deep Midnight #24284A" />
-                <span className="text-xs font-sans text-h2h-muted ml-1">Warm Cream & Midnight</span>
+                <span className="text-xs font-sans text-h2h-muted ml-1">{t.visualWorld.pillar3PaletteName}</span>
               </div>
             </div>
           </motion.article>
@@ -207,7 +212,7 @@ export const VisualWorldScene: React.FC = () => {
           <div className="pt-6 pb-2 text-center space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider">
               <Users className="w-4 h-4 text-h2h-blue-primary" />
-              <span>Hearts2Hearts Official Debut Era • The Chase Universe</span>
+              <span>{t.visualWorld.eraGroupLabel}</span>
             </div>
             <p className="font-sans text-sm text-h2h-muted">
               Jiwoo • Carmen • Yuha • Stella • Juun • A-na • Ian • Ye-on
@@ -228,7 +233,7 @@ export const VisualWorldScene: React.FC = () => {
             <div className="flex items-center gap-2">
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-h2h-blue-sky/50 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs tracking-wider uppercase">
                 <Play className="w-3 h-3 text-h2h-blue-primary fill-h2h-blue-primary" />
-                <span>Chapter 04 • Debut Trailer</span>
+                <span>{t.visualWorld.trailerEyebrow}</span>
               </div>
             </div>
             <a
@@ -238,7 +243,7 @@ export const VisualWorldScene: React.FC = () => {
               className="text-xs font-display font-bold text-h2h-pink-deep hover:text-h2h-pink-primary transition-colors flex items-center gap-1 underline underline-offset-2"
               onClick={(e) => e.stopPropagation()}
             >
-              Watch on YouTube ↗
+              {t.visualWorld.watchOnYT}
             </a>
           </div>
 
@@ -246,7 +251,7 @@ export const VisualWorldScene: React.FC = () => {
           <DebutVideoPlayer />
 
           <p className="text-center text-xs font-sans text-h2h-muted mt-3">
-            Click the video to watch the full <strong className="text-h2h-ink font-semibold">&#39;Chase Your Choice&#39;</strong> debut trailer on YouTube. Video is muted — sound on YouTube.
+            {t.visualWorld.trailerCaption}
           </p>
         </motion.div>
       </div>

@@ -1,14 +1,7 @@
 import { QuizQuestion } from '@/types';
+import { Language } from '@/context/LanguageContext';
 
-/**
- * 20 Relevant, straightforward quiz questions based directly on the website content:
- * - Group overview & SM Entertainment
- * - Members & Leader & Maknae
- * - Countries & Member Symbols
- * - Discography releases & Kia Collaboration Single
- * - Aesthetic Lore & Fandom
- */
-export const QUIZ_QUESTIONS: QuizQuestion[] = [
+export const QUIZ_QUESTIONS_EN: QuizQuestion[] = [
   {
     id: 1,
     question: 'How many members are in Hearts2Hearts?',
@@ -56,56 +49,56 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     question: 'Who is the dependable leader of Hearts2Hearts?',
     options: ['Carmen', 'Yuha', 'Stella', 'Jiwoo'],
     correctIndex: 3,
-    hint: 'Represented by the gentle bunny symbol 🐰.',
+    hint: 'Represented by the gentle flower symbol 🌸.',
   },
   {
     id: 8,
     question: 'Who is the maknae (youngest member) of Hearts2Hearts?',
     options: ['Ye-on', 'Ian', 'A-na', 'Juun'],
     correctIndex: 0,
-    hint: 'Born in late December 2008, holding the swan symbol 🦢.',
+    hint: 'A golden-voiced vocalist born in 2010 with the smile symbol 😊.',
   },
   {
     id: 9,
     question: 'Which country is member Carmen from?',
     options: ['South Korea', 'Indonesia', 'Canada', 'Japan'],
     correctIndex: 1,
-    hint: 'Hailing from Jakarta, Indonesia!',
+    hint: 'Hailing from Bali, Indonesia!',
   },
   {
     id: 10,
-    question: 'Which country is member Stella from?',
+    question: 'Which country was member Stella raised in before returning to Korea?',
     options: ['Canada', 'Australia', 'United States', 'New Zealand'],
     correctIndex: 0,
-    hint: 'Bringing warm international flair from Toronto, Canada.',
+    hint: 'Bringing warm international flair from Vancouver, Canada.',
   },
   {
     id: 11,
-    question: 'What animal emoji represents Jiwoo in her member profile?',
-    options: ['🐱 Cat', '🐰 Bunny', '🐻 Bear', '🦊 Fox'],
+    question: 'What symbol represents Jiwoo in her member profile?',
+    options: ['🐱 Cat', '🌸 Flower', '⭐ Star', '🌴 Palm Tree'],
     correctIndex: 1,
     hint: 'Gentle, warm, and cute leader!',
   },
   {
     id: 12,
-    question: 'What animal emoji represents Carmen in her member profile?',
-    options: ['🦊 Fox', '🐰 Bunny', '🐱 Cat', '🦢 Swan'],
-    correctIndex: 2,
-    hint: 'Chic, playful, and charming feline energy!',
+    question: 'What symbol represents Carmen in her member profile?',
+    options: ['🌴 Palm Tree', '🌸 Flower', '🧁 Cupcake', '🌙 Moon'],
+    correctIndex: 0,
+    hint: 'Chic, sunny island vibes from Bali!',
   },
   {
     id: 13,
-    question: 'What animal emoji represents Yuha in her member profile?',
-    options: ['🐻 Bear', '🐱 Cat', '🐰 Bunny', '🦊 Fox'],
+    question: 'What symbol represents Yuha in her member profile?',
+    options: ['⭐ Star', '🌸 Flower', '🌙 Moon', '🌻 Sunflower'],
     correctIndex: 0,
-    hint: 'Warm, huggable, and full of dancer energy!',
+    hint: 'Shining as the definitive All-Rounder of Hearts2Hearts!',
   },
   {
     id: 14,
-    question: 'What animal emoji represents A-na in her member profile?',
-    options: ['🐱 Cat', '🦊 Fox', '🐻 Bear', '🦢 Swan'],
-    correctIndex: 1,
-    hint: 'Quick-witted, clever, and charismatic stage presence!',
+    question: 'What symbol represents A-na in her member profile?',
+    options: ['🌻 Sunflower', '🌸 Flower', '🧁 Cupcake', '🫛 Pea Pod'],
+    correctIndex: 0,
+    hint: 'Bright, cheerful, and sunshine energy standing 171 cm tall!',
   },
   {
     id: 15,
@@ -123,7 +116,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 17,
-    question: 'What was the title of Hearts2Hearts’ second digital single released in April 2025?',
+    question: 'What was the title of Hearts2Hearts’ digital single released in June 2025?',
     options: ['STYLE', 'RUDE!', 'Lemon Tang', 'FOCUS'],
     correctIndex: 0,
     hint: 'A chic, confidence-boosting anthem about owning your personal style.',
@@ -131,22 +124,171 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     id: 18,
     question: 'Which single marks Hearts2Hearts’ energetic Japan debut?',
-    options: ['Tokyo Beat', 'Iconic Heart', 'Cherry Blossom', 'Pure Shine'],
+    options: ['Tokyo Beat', 'ICONIC HEART', 'Cherry Blossom', 'Pure Shine'],
     correctIndex: 1,
-    hint: 'Released in January 2026 as their Japan Debut Single Album.',
+    hint: 'Released in August 2026 as their Japan Debut Single Album.',
   },
   {
     id: 19,
-    question: 'Which bold dance-pop track with an exclamation point dropped in July 2025?',
+    question: 'Which bold dance-pop track with an exclamation point dropped in February 2026?',
     options: ['POP!', 'RUDE!', 'HEY!', 'JUMP!'],
     correctIndex: 1,
-    hint: 'A punchy, dynamic summer dance-pop sensation.',
+    hint: 'A punchy, dynamic house-based dance anthem.',
   },
   {
     id: 20,
-    question: 'Which refreshing summer track brought sweet citrus vibes in August 2025?',
+    question: 'Which refreshing summer mini-album brought sweet citrus vibes in June 2026?',
     options: ['Orange Glow', 'Lemon Tang', 'Berry Sweet', 'Lime Soda'],
     correctIndex: 1,
     hint: 'A vibrant, tangy pop confection perfect for sunny days!',
   },
 ];
+
+export const QUIZ_QUESTIONS_ID: QuizQuestion[] = [
+  {
+    id: 1,
+    question: 'Berapa jumlah member dalam grup Hearts2Hearts?',
+    options: ['6 Member', '7 Member', '8 Member', '9 Member'],
+    correctIndex: 2,
+    hint: 'Delapan suara ceria, satu harmoni manis!',
+  },
+  {
+    id: 2,
+    question: 'Kapan tanggal debut resmi Hearts2Hearts?',
+    options: ['14 Februari 2025', '24 Februari 2025', '1 Maret 2025', '24 Maret 2025'],
+    correctIndex: 1,
+    hint: 'Akhir Februari 2025, membawa hangatnya sinar mentari musim semi!',
+  },
+  {
+    id: 3,
+    question: 'Agensi pelopor K-pop mana yang membentuk Hearts2Hearts?',
+    options: ['JYP Entertainment', 'HYBE Labels', 'SM Entertainment', 'YG Entertainment'],
+    correctIndex: 2,
+    hint: 'Agensi legendaris yang melahirkan generasi ikonik dari S.E.S. hingga aespa.',
+  },
+  {
+    id: 4,
+    question: 'Apa nama fandom resmi dari Hearts2Hearts?',
+    options: ['S2U (Hearts to You)', 'Heartbeats', 'TwoHearts', 'StarHearts'],
+    correctIndex: 0,
+    hint: 'S, 2, dan U — melambangkan jalinan hati dua arah!',
+  },
+  {
+    id: 5,
+    question: 'Apa judul album singel debut Hearts2Hearts yang dirilis pada Februari 2025?',
+    options: ['STYLE', 'The Chase', 'FOCUS', 'RUDE!'],
+    correctIndex: 1,
+    hint: 'Melambangkan keberanian mengejar mimpi sejati tanpa rasa ragu.',
+  },
+  {
+    id: 6,
+    question: 'Lagu B-side apa yang mendampingi "The Chase" di album singel debut mereka?',
+    options: ['Butterflies', 'Lemon Tang', 'MOONRIDE', 'Iconic Heart'],
+    correctIndex: 0,
+    hint: 'Kepakan sayap kupu-kupu yang merayakan antusiasme awal yang baru.',
+  },
+  {
+    id: 7,
+    question: 'Siapakah leader Hearts2Hearts yang berdedikasi dan dapat diandalkan?',
+    options: ['Carmen', 'Yuha', 'Stella', 'Jiwoo'],
+    correctIndex: 3,
+    hint: 'Diwakili oleh simbol bunga yang lembut 🌸.',
+  },
+  {
+    id: 8,
+    question: 'Siapakah maknae (member termuda) di Hearts2Hearts?',
+    options: ['Ye-on', 'Ian', 'A-na', 'Juun'],
+    correctIndex: 0,
+    hint: 'Vokalis bersuara emas kelahiran 2010 dengan simbol senyuman 😊.',
+  },
+  {
+    id: 9,
+    question: 'Dari negara manakah member Carmen berasal?',
+    options: ['Korea Selatan', 'Indonesia', 'Kanada', 'Jepang'],
+    correctIndex: 1,
+    hint: 'Berasal dari pulau dewata Bali, Indonesia!',
+  },
+  {
+    id: 10,
+    question: 'Di negara manakah member Stella dibesarkan sebelum kembali ke Korea Selatan?',
+    options: ['Kanada', 'Australia', 'Amerika Serikat', 'Selandia Baru'],
+    correctIndex: 0,
+    hint: 'Membawa pesona internasional dari kota Vancouver, Kanada.',
+  },
+  {
+    id: 11,
+    question: 'Simbol apa yang mewakili Jiwoo dalam profil resminya?',
+    options: ['🐱 Kucing', '🌸 Bunga', '⭐ Bintang', '🌴 Pohon Palem'],
+    correctIndex: 1,
+    hint: 'Leader yang lembut, anggun, dan penuh kehangatan!',
+  },
+  {
+    id: 12,
+    question: 'Simbol apa yang mewakili Carmen dalam profil resminya?',
+    options: ['🌴 Pohon Palem', '🌸 Bunga', '🧁 Cupcake', '🌙 Bulan'],
+    correctIndex: 0,
+    hint: 'Nuansa pulau tropis Bali yang cerah dan hangat!',
+  },
+  {
+    id: 13,
+    question: 'Simbol apa yang mewakili Yuha dalam profil resminya?',
+    options: ['⭐ Bintang', '🌸 Bunga', '🌙 Bulan', '🌻 Bunga Matahari'],
+    correctIndex: 0,
+    hint: 'Bersinar terang sebagai "All-Rounder" sejati di Hearts2Hearts!',
+  },
+  {
+    id: 14,
+    question: 'Simbol apa yang mewakili A-na dalam profil resminya?',
+    options: ['🌻 Bunga Matahari', '🌸 Bunga', '🧁 Cupcake', '🫛 Polong Kacang'],
+    correctIndex: 0,
+    hint: 'Penuh pesona cerah layaknya sinar matahari dengan tinggi 171 cm!',
+  },
+  {
+    id: 15,
+    question: 'Apa judul singel kolaborasi spesial Hearts2Hearts bersama Kia Korea?',
+    options: ['STARLIGHT', 'SUNSHINE', 'MOONRIDE', 'NIGHTGLOW'],
+    correctIndex: 2,
+    hint: 'Lagu elektropop bertema perjalanan malam untuk merayakan Kia RV Black Edition.',
+  },
+  {
+    id: 16,
+    question: 'Konsep estetika utama apa yang menjadi ciri khas Bab 04 semesta Hearts2Hearts?',
+    options: ['Cyberpunk Dystopia', 'Daylight Pastel', 'Gothic Fantasy', 'Vintage 80s Disco'],
+    correctIndex: 1,
+    hint: 'Langit cerah berhias mentari, awan sepoi-sepoi, dan warna-warni pastel hangat.',
+  },
+  {
+    id: 17,
+    question: 'Apa judul singel digital Hearts2Hearts yang dirilis pada Juni 2025?',
+    options: ['STYLE', 'RUDE!', 'Lemon Tang', 'FOCUS'],
+    correctIndex: 0,
+    hint: 'Lagu penuh percaya diri yang merayakan gaya autentik diri sendiri.',
+  },
+  {
+    id: 18,
+    question: 'Singel apa yang menandai debut penuh energi Hearts2Hearts di Jepang?',
+    options: ['Tokyo Beat', 'ICONIC HEART', 'Cherry Blossom', 'Pure Shine'],
+    correctIndex: 1,
+    hint: 'Dirilis pada Agustus 2026 sebagai Album Singel Debut Jepang.',
+  },
+  {
+    id: 19,
+    question: 'Lagu dance-pop berirama house berani dengan tanda seru yang rilis Februari 2026 adalah...',
+    options: ['POP!', 'RUDE!', 'HEY!', 'JUMP!'],
+    correctIndex: 1,
+    hint: 'Lagu dansa berirama house yang energik dan viral.',
+  },
+  {
+    id: 20,
+    question: 'Mini album musim panas bernuansa citrus manis yang rilis pada Juni 2026 adalah...',
+    options: ['Orange Glow', 'Lemon Tang', 'Berry Sweet', 'Lime Soda'],
+    correctIndex: 1,
+    hint: 'Karya musik pop asam manis yang menyegarkan hari-hari terik!',
+  },
+];
+
+export const QUIZ_QUESTIONS = QUIZ_QUESTIONS_EN;
+
+export const getQuizQuestions = (lang: Language = 'en'): QuizQuestion[] => {
+  return lang === 'id' ? QUIZ_QUESTIONS_ID : QUIZ_QUESTIONS_EN;
+};

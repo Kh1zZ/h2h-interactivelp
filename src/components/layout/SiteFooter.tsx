@@ -3,6 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Heart, ExternalLink, Github, Sparkles, Building2, BookOpen } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { getTranslation } from '@/locales';
 
 /**
  * SiteFooter component
@@ -13,8 +15,12 @@ import { Heart, ExternalLink, Github, Sparkles, Building2, BookOpen } from 'luci
  * - Direct copyright acknowledgement to SM Entertainment
  * - Information sources & references used across the showcase
  * - Developer credit to Kh1zZ (with GitHub link) & Gemini 3.8 Flash
+ * - Bilingual support for EN and ID
  */
 export const SiteFooter: React.FC = () => {
+  const { language } = useLanguage();
+  const t = getTranslation(language);
+
   return (
     <footer className="w-full py-14 px-4 sm:px-8 bg-white/75 backdrop-blur-xs border-t border-h2h-blue-sky/50 text-center font-sans relative z-10 select-none">
       <div className="max-w-4xl mx-auto flex flex-col items-center space-y-8">
@@ -30,17 +36,17 @@ export const SiteFooter: React.FC = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <span>Created with</span>
+            <span>{t.footer.createdWith}</span>
             <Heart className="w-4 h-4 fill-h2h-pink-primary text-h2h-pink-primary inline" />
-            <span>for Hearts2Hearts & S2U</span>
+            <span>{t.footer.forH2H}</span>
           </div>
 
           <div className="text-[11px] sm:text-xs text-h2h-muted flex flex-wrap justify-center items-center gap-2 sm:gap-4 font-medium">
-            <span>Debut: 24 February 2025</span>
+            <span>{t.footer.debutDate}</span>
             <span>•</span>
-            <span>Single Album: The Chase</span>
+            <span>{t.footer.singleAlbum}</span>
             <span>•</span>
-            <span>Official Fandom: S2U</span>
+            <span>{t.footer.officialFandom}</span>
           </div>
         </div>
 
@@ -50,10 +56,10 @@ export const SiteFooter: React.FC = () => {
           <div className="p-4 sm:p-5 rounded-2xl bg-white/95 border border-h2h-blue-sky/60 shadow-2xs space-y-2.5">
             <div className="flex items-center gap-2 font-display font-bold text-h2h-blue-deep uppercase tracking-wider text-[11px]">
               <Building2 className="w-3.5 h-3.5 text-h2h-blue-primary" />
-              <span>Official Agency & Rights</span>
+              <span>{t.footer.agencyRightsTitle}</span>
             </div>
             <p className="text-h2h-ink/80 leading-relaxed font-sans">
-              Hearts2Hearts is an artist under <strong className="font-bold text-h2h-blue-deep">SM Entertainment</strong>. All official music rights, visual concepts, trademarks, and master recordings belong directly to SM Entertainment and respective copyright holders.
+              {t.footer.agencyRightsDesc}
             </p>
             <div className="pt-2 flex flex-wrap gap-2 text-[11px] font-display font-bold">
               <a
@@ -90,23 +96,23 @@ export const SiteFooter: React.FC = () => {
           <div className="p-4 sm:p-5 rounded-2xl bg-white/95 border border-h2h-pink-soft shadow-2xs space-y-2.5">
             <div className="flex items-center gap-2 font-display font-bold text-h2h-pink-deep uppercase tracking-wider text-[11px]">
               <BookOpen className="w-3.5 h-3.5 text-h2h-pink-primary" />
-              <span>References & Data Sources</span>
+              <span>{t.footer.referencesTitle}</span>
             </div>
             <p className="text-h2h-ink/80 leading-relaxed font-sans">
-              This interactive landing page synthesizes official liner notes, promotional materials, and discography details from verified sources:
+              {t.footer.referencesDesc}
             </p>
             <ul className="space-y-1 text-[11px] text-h2h-muted list-disc list-inside">
-              <li>SM Entertainment Press Archives & SMTOWN Artist Profile</li>
-              <li>The Chase Official Debut Single Album Liner Notes & Credits</li>
-              <li>Official Digital Release Catalogs (MelOn, Genie, Apple Music, Spotify)</li>
-              <li>K-Pop Archive Databases (KpopProfiles & Community Documentation)</li>
+              <li>{t.footer.source1}</li>
+              <li>{t.footer.source2}</li>
+              <li>{t.footer.source3}</li>
+              <li>{t.footer.source4}</li>
             </ul>
           </div>
         </div>
 
         {/* Independent Fan Disclaimer */}
         <p className="text-[11px] text-h2h-muted max-w-lg leading-relaxed">
-          This is an independent, non-commercial fan-made informational showcase created to introduce Hearts2Hearts to fans and music listeners worldwide.
+          {t.footer.fanDisclaimer}
         </p>
 
         {/* The Very Bottom: Gemini 3.8 Flash & Kh1zZ Developer Credit */}
@@ -114,7 +120,7 @@ export const SiteFooter: React.FC = () => {
           {/* AI Model Credit */}
           <div className="inline-flex items-center gap-1.5 font-display font-bold text-h2h-blue-deep bg-h2h-blue-sky/40 px-3.5 py-1.5 rounded-full border border-h2h-blue-sky/70 shadow-2xs">
             <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
-            <span>Built with</span>
+            <span>{t.footer.builtWith}</span>
             <span className="text-h2h-blue-primary font-black">Gemini 3.8 Flash</span>
           </div>
 
@@ -122,7 +128,7 @@ export const SiteFooter: React.FC = () => {
 
           {/* Developer Credit */}
           <div className="inline-flex items-center gap-1.5 font-sans text-h2h-ink/90 bg-white/90 px-3.5 py-1.5 rounded-full border border-h2h-blue-sky/50 shadow-2xs">
-            <span className="text-h2h-muted font-medium">Developed by</span>
+            <span className="text-h2h-muted font-medium">{t.footer.developedBy}</span>
             <a
               href="https://github.com/Kh1zZ"
               target="_blank"
