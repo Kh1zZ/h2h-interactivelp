@@ -71,6 +71,9 @@ export const HeroScene: React.FC = () => {
 
         {/* Brand & Wordmark Area */}
         <motion.div
+          initial={!prefersReducedMotion ? { opacity: 0, y: 16 } : {}}
+          animate={!prefersReducedMotion ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
           style={!shouldAnimate ? undefined : { y: titleY, scale: titleScale }}
           className="relative z-10 w-full text-center my-auto flex flex-col items-center"
         >
@@ -106,6 +109,9 @@ export const HeroScene: React.FC = () => {
 
           {/* Group Visual Card in Grand Scale */}
           <motion.div
+            initial={!prefersReducedMotion ? { opacity: 0, scale: 0.96 } : {}}
+            animate={!prefersReducedMotion ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
             style={!shouldAnimate ? undefined : { scale: cardScale }}
             className="w-full max-w-xs sm:max-w-md md:max-w-2xl mx-auto rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute-lg"
           >

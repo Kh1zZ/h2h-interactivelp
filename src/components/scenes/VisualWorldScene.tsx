@@ -4,7 +4,8 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { AssetSlot } from '@/components/ui/AssetSlot';
-import { Sparkles, Heart, Compass, Palette, Users } from 'lucide-react';
+import { DebutVideoPlayer } from '@/components/ui/DebutVideoPlayer';
+import { Sparkles, Heart, Compass, Palette, Users, Play } from 'lucide-react';
 
 /**
  * Chapter 04: Concept Lore & Aesthetic Universe (VisualWorldScene)
@@ -25,7 +26,10 @@ export const VisualWorldScene: React.FC = () => {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  const shouldAnimate = isDesktop && !prefersReducedMotion;
+  // Parallax only on desktop (heavy scroll-based motion)
+  const shouldParallax = isDesktop && !prefersReducedMotion;
+  // Fade/slide animations on all devices (lightweight)
+  const shouldAnimate = !prefersReducedMotion;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -42,6 +46,16 @@ export const VisualWorldScene: React.FC = () => {
   const card2Y = useTransform(smoothProgress, [0, 1], ['-15px', '25px']);
   const card3Y = useTransform(smoothProgress, [0, 1], ['25px', '-15px']);
 
+  const fadeUp = (delay = 0) =>
+    shouldAnimate
+      ? {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: '-40px' },
+          transition: { duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] },
+        }
+      : {};
+
   return (
     <section
       ref={containerRef}
@@ -50,10 +64,13 @@ export const VisualWorldScene: React.FC = () => {
     >
       <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto flex flex-col items-center">
         {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+        <motion.div
+          {...fadeUp(0)}
+          className="text-center max-w-3xl mx-auto mb-10 sm:mb-16"
+        >
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-h2h-pink-soft/70 border border-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-3 sm:mb-4">
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-pink-primary" />
-            <span>Chapter 04 • Concept Lore & Aesthetic Universe</span>
+            <span>Chapter 04 • Concept Lore &amp; Aesthetic Universe</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-h2h-blue-primary leading-tight">
@@ -63,13 +80,14 @@ export const VisualWorldScene: React.FC = () => {
           <p className="font-sans text-sm sm:text-base lg:text-lg text-h2h-muted mt-2 sm:mt-3 max-w-2xl mx-auto leading-relaxed px-2">
             Discover the three core pillars of Hearts2Hearts&apos; artistic identity: the debut storyline of <strong className="text-h2h-ink font-semibold">&apos;The Chase&apos;</strong>, the refreshing <strong className="text-h2h-ink font-semibold">Daylight Pastel</strong> aesthetic, and the heartfelt connection with their global fandom, <strong className="text-h2h-ink font-semibold">S2U</strong>.
           </p>
-        </div>
+        </motion.div>
 
         {/* 3 Pillars Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 w-full max-w-6xl mx-auto mb-10 sm:mb-16">
           {/* Card 1: The Debut Lore ('The Chase') */}
           <motion.article
-            style={!shouldAnimate ? {} : { y: card1Y }}
+            {...fadeUp(0.06)}
+            style={!shouldParallax ? {} : { y: card1Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">
@@ -103,7 +121,8 @@ export const VisualWorldScene: React.FC = () => {
 
           {/* Card 2: Signature Daylight World */}
           <motion.article
-            style={!shouldAnimate ? {} : { y: card2Y }}
+            {...fadeUp(0.12)}
+            style={!shouldParallax ? {} : { y: card2Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">
@@ -137,7 +156,8 @@ export const VisualWorldScene: React.FC = () => {
 
           {/* Card 3: S2U Fandom Galaxy */}
           <motion.article
-            style={!shouldAnimate ? {} : { y: card3Y }}
+            {...fadeUp(0.18)}
+            style={!shouldParallax ? {} : { y: card3Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/60 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">
@@ -192,6 +212,41 @@ export const VisualWorldScene: React.FC = () => {
             </p>
           </div>
         </div>
+
+        {/* Debut Trailer Video */}
+        <motion.div
+          initial={prefersReducedMotion ? {} : { opacity: 0, y: 24 }}
+          whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.1 }}
+          className="w-full max-w-5xl mx-auto mt-8 sm:mt-12"
+        >
+          {/* Eyebrow */}
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+            <div className="flex items-center gap-2">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-h2h-blue-sky/50 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs tracking-wider uppercase">
+                <Play className="w-3 h-3 text-h2h-blue-primary fill-h2h-blue-primary" />
+                <span>Chapter 04 • Debut Trailer</span>
+              </div>
+            </div>
+            <a
+              href="https://www.youtube.com/watch?v=srEUps3-5mo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-display font-bold text-h2h-pink-deep hover:text-h2h-pink-primary transition-colors flex items-center gap-1 underline underline-offset-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Watch on YouTube ↗
+            </a>
+          </div>
+
+          {/* Video Player */}
+          <DebutVideoPlayer />
+
+          <p className="text-center text-xs font-sans text-h2h-muted mt-3">
+            Click the video to watch the full <strong className="text-h2h-ink font-semibold">&#39;Chase Your Choice&#39;</strong> debut trailer on YouTube. Video is muted — sound on YouTube.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

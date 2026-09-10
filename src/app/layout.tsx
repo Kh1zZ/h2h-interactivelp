@@ -17,6 +17,9 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hearts2hearts-showcase.vercel.app'
+  ),
   title: 'Hearts2Hearts — Meet the Group',
   description:
     'An immersive, fan-made interactive introduction to Hearts2Hearts (하츠투하츠), the 8-member girl group. Explore the members, debut single album The Chase, discography, and their cheerful visual universe.',
@@ -45,12 +48,22 @@ export const metadata: Metadata = {
     siteName: 'Hearts2Hearts Showcase',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/assets/images/branding/hero-group.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Hearts2Hearts — 8 Members, One Sweet Harmony',
+        type: 'image/webp',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Hearts2Hearts — Meet the Group',
     description:
       'Immersive fan-made guide to Hearts2Hearts (하츠투하츠). 8 members, debut single album The Chase, and cheerful visual world.',
+    images: ['/assets/images/branding/hero-group.webp'],
   },
   robots: {
     index: true,

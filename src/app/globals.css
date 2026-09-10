@@ -53,3 +53,44 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================================
+   Mobile-Smooth Animation Utilities
+   Used via Framer Motion whileInView on mobile viewport
+   ========================================================= */
+
+@keyframes h2h-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes h2h-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes h2h-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Smooth tap feedback for interactive elements on mobile */
+@media (hover: none) {
+  button:active,
+  a:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
+  }
+}

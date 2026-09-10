@@ -15,15 +15,7 @@ import {
   HelpCircle,
   Trophy,
   Shuffle,
-  Layers,
 } from 'lucide-react';
-
-const MATCH_COMBOS = [
-  { id: 'combo-vocal', label: 'Vocal Line', ids: ['member-jiwoo', 'member-carmen', 'member-yuha', 'member-stella'] },
-  { id: 'combo-rhythm', label: 'Rhythm Line', ids: ['member-juun', 'member-a-na', 'member-ian', 'member-ye-on'] },
-  { id: 'combo-sunshine', label: 'Sunshine Mix', ids: ['member-jiwoo', 'member-yuha', 'member-a-na', 'member-ye-on'] },
-  { id: 'combo-chic', label: 'Chic Quad', ids: ['member-carmen', 'member-stella', 'member-juun', 'member-ian'] },
-];
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -37,7 +29,7 @@ function shuffleArray<T>(array: T[]): T[] {
 /**
  * Scene 5 — Optional Mini-Game (PRD v5 Section 13)
  * Features BOTH:
- * 1. "Match the Heart" (Member portrait matching with multiple combinations + shuffle)
+ * 1. "Match the Heart" (Member portrait matching — pure shuffle)
  * 2. "Quick Quiz" (Interactive 5-question trivia randomized from a 20-question bank)
  */
 export const MiniGameScene: React.FC = () => {
@@ -51,35 +43,20 @@ export const MiniGameScene: React.FC = () => {
   };
 
   // ----------------------------------------------------
-  // Match the Heart State (Multiple Combinations + Shuffle)
+  // Match the Heart State (Pure Shuffle Only)
   // ----------------------------------------------------
-  const [selectedComboIdx, setSelectedComboIdx] = useState(0);
-  const [matchCandidates, setMatchCandidates] = useState(() => {
-    const ids = MATCH_COMBOS[0].ids;
-    return MEMBERS_DATA.filter((m) => ids.includes(m.id));
-  });
+  const [matchCandidates, setMatchCandidates] = useState(() =>
+    shuffleArray(MEMBERS_DATA).slice(0, 4)
+  );
   const [shuffledNames, setShuffledNames] = useState(() => {
-    const ids = MATCH_COMBOS[0].ids;
-    const candidates = MEMBERS_DATA.filter((m) => ids.includes(m.id));
+    const candidates = shuffleArray(MEMBERS_DATA).slice(0, 4);
     return shuffleArray(candidates);
   });
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
   const [matchedIds, setMatchedIds] = useState<string[]>([]);
   const [matchError, setMatchError] = useState<string | null>(null);
 
-  const applyCombo = (comboIdx: number) => {
-    setSelectedComboIdx(comboIdx);
-    const ids = MATCH_COMBOS[comboIdx].ids;
-    const candidates = MEMBERS_DATA.filter((m) => ids.includes(m.id));
-    setMatchCandidates(candidates);
-    setShuffledNames(shuffleArray(candidates));
-    setSelectedCandidate(null);
-    setMatchedIds([]);
-    setMatchError(null);
-  };
-
   const shuffleRandomCombo = () => {
-    setSelectedComboIdx(-1);
     const randomized = shuffleArray(MEMBERS_DATA).slice(0, 4);
     setMatchCandidates(randomized);
     setShuffledNames(shuffleArray(randomized));
@@ -89,16 +66,7 @@ export const MiniGameScene: React.FC = () => {
   };
 
   const resetMatchGame = () => {
-    if (selectedComboIdx >= 0) {
-      applyCombo(selectedComboIdx);
-    } else {
-      shuffleRandomCombo();
-    }
-  };
-
-  const handleNextCombo = () => {
-    const nextIdx = (selectedComboIdx + 1) % MATCH_COMBOS.length;
-    applyCombo(nextIdx);
+    shuffleRandomCombo();
   };
 
   const handleNameSelect = (name: string, memberId: string) => {
@@ -270,37 +238,6 @@ export const MiniGameScene: React.FC = () => {
               </div>
             </div>
 
-            {/* Combination Selector Bar */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 sm:gap-2 mb-6">
-              <span className="text-[11px] sm:text-xs font-display font-extrabold uppercase tracking-wider text-h2h-muted mr-1 flex items-center gap-1">
-                <Layers className="w-3 h-3 text-h2h-blue-primary" />
-                Sets:
-              </span>
-              {MATCH_COMBOS.map((combo, idx) => (
-                <button
-                  key={combo.id}
-                  onClick={() => applyCombo(idx)}
-                  className={`px-3 py-1 rounded-full text-xs font-display font-bold transition-all cursor-pointer ${
-                    selectedComboIdx === idx
-                      ? 'bg-h2h-blue-primary text-white shadow-xs scale-105'
-                      : 'bg-h2h-blue-sky/40 text-h2h-blue-deep hover:bg-h2h-blue-sky/70'
-                  }`}
-                >
-                  {combo.label}
-                </button>
-              ))}
-              <button
-                onClick={shuffleRandomCombo}
-                className={`px-3 py-1 rounded-full text-xs font-display font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                  selectedComboIdx === -1
-                    ? 'bg-h2h-pink-primary text-white shadow-xs scale-105'
-                    : 'bg-h2h-pink-soft/50 text-h2h-pink-deep hover:bg-h2h-pink-soft'
-                }`}
-              >
-                <span>🔀 Random 4</span>
-              </button>
-            </div>
-
             {matchError && (
               <div className="mb-4 sm:mb-6 p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-sans text-center font-bold">
                 {matchError}
@@ -316,26 +253,21 @@ export const MiniGameScene: React.FC = () => {
                   Perfect Match! ✨
                 </h4>
                 <p className="font-sans text-sm sm:text-base text-h2h-muted max-w-md mx-auto">
-                  You matched all portraits flawlessly! Try another combination or challenge yourself with a random mix.
+                  You matched all portraits flawlessly! Shuffle for a new random group of 4 members.
                 </p>
                 <div className="pt-2 flex flex-wrap justify-center gap-3">
                   <button
-                    onClick={handleNextCombo}
-                    className="px-6 py-2.5 sm:py-3 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-xs sm:text-sm shadow-cute hover:bg-h2h-blue-deep transition-all cursor-pointer"
-                  >
-                    Next Combination →
-                  </button>
-                  <button
                     onClick={shuffleRandomCombo}
-                    className="px-6 py-2.5 sm:py-3 rounded-full bg-h2h-pink-primary text-white font-display font-bold text-xs sm:text-sm shadow-cute hover:bg-h2h-pink-deep transition-all cursor-pointer"
+                    className="px-6 py-2.5 sm:py-3 rounded-full bg-h2h-pink-primary text-white font-display font-bold text-xs sm:text-sm shadow-cute hover:bg-h2h-pink-deep transition-all cursor-pointer flex items-center gap-2"
                   >
-                    🔀 Shuffle Random 4
+                    <Shuffle className="w-4 h-4" />
+                    Shuffle New 4
                   </button>
                   <button
                     onClick={resetMatchGame}
                     className="px-5 py-2.5 sm:py-3 rounded-full bg-h2h-blue-sky/40 text-h2h-blue-deep font-display font-bold text-xs sm:text-sm hover:bg-h2h-blue-sky/70 transition-all cursor-pointer"
                   >
-                    Replay Set
+                    Replay Same
                   </button>
                 </div>
               </div>
