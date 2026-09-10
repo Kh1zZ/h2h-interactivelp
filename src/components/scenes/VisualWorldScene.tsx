@@ -196,7 +196,7 @@ export const VisualWorldScene: React.FC = () => {
         <div className="w-full max-w-5xl mx-auto rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/70 p-3 sm:p-6 shadow-cute-lg flex flex-col items-center">
           <div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm">
             <AssetSlot
-              assetKey="hero-group-visual"
+              assetKey="debut-group-visual"
               aspectRatio="16/9"
               alt="Hearts2Hearts Official Group Concept Photo"
               roundedClassName="rounded-2xl sm:rounded-3xl"

@@ -32,6 +32,16 @@ export const ASSET_MANIFEST: AssetItem[] = [
     fallbackDescription: 'Hearts2Hearts Official Group Visual',
     aspectRatio: '16/9',
   },
+  {
+    key: 'debut-group-visual',
+    src: '/assets/images/branding/h2hdebut.webp',
+    type: 'image',
+    scene: 'visualWorld',
+    priority: 'high',
+    required: true,
+    fallbackDescription: 'Hearts2Hearts Official Debut Concept Photo',
+    aspectRatio: '16/9',
+  },
 
   // Member Portraits (Scene 2: Eight Hearts)
   {

@@ -53,7 +53,7 @@ export const DebutVideoPlayer: React.FC = () => {
   return (
     <div
       className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer group shadow-cute-lg border-2 border-h2h-blue-sky/70 bg-h2h-blue-deep"
-      style={{ aspectRatio: '690/480' }}
+      style={{ aspectRatio: '1034/720' }}
       onClick={handleClick}
       role="button"
       tabIndex={0}
