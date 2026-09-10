@@ -15,6 +15,8 @@ import {
   MapPin,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  Heart,
 } from 'lucide-react';
 
 /**
@@ -151,83 +153,82 @@ export const MemberJourneyScene: React.FC = () => {
       aria-label="Hearts2Hearts Member Showcase"
     >
       {/* ========================================================================= */}
-      {/* 1. MOBILE VIEW (< lg): Unboxed Continuous Member Journey (Blazer Navy)     */}
+      {/* 1. MOBILE VIEW (< lg): Unboxed Continuous Member Journey                   */}
       {/* ========================================================================= */}
-      <div className="block lg:hidden w-full bg-[#0c1222] text-white">
-        {/* Continuous Entrance from Chapter 1 Cream into Deep Navy */}
-        <div className="w-full bg-gradient-to-b from-[#FFFCF8] via-[#0c1222] to-[#0c1222] pt-14 pb-8 px-4 text-center">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-h2h-pink-primary font-display font-bold text-xs uppercase tracking-wider mb-3">
+      <div className="block lg:hidden w-full bg-transparent text-h2h-ink">
+        {/* Continuous Header on Cream Canvas */}
+        <div className="w-full pt-12 pb-8 px-4 text-center">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-h2h-pink-soft/60 border border-h2h-pink-primary/30 text-h2h-pink-deep font-display font-bold text-xs uppercase tracking-wider mb-2.5 shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
             <span>Chapter 02 • Eight Hearts</span>
           </div>
-          <h2 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight">
+          <h2 className="font-display font-black text-3xl sm:text-4xl text-h2h-blue-deep tracking-tight">
             Meet The 8 Hearts
           </h2>
-          <p className="text-xs sm:text-sm font-sans font-medium text-white/60 mt-1.5">
-            하츠투하츠 • Continuous Member Showcase
+          <p className="text-xs sm:text-sm font-sans font-medium text-h2h-muted mt-1.5">
+            하츠투하츠 • Scroll through the members
           </p>
         </div>
 
-        {/* Compact Continuous Flow of 8 Members (Unboxed, Seamless with Navy Canvas) */}
-        <div className="w-full max-w-sm mx-auto px-4 pb-12 flex flex-col items-center space-y-8">
+        {/* Compact Continuous Flow of 8 Members (Unboxed, Full Portrait with Uniform Blazer Fade) */}
+        <div className="w-full max-w-sm mx-auto px-4 pb-4 flex flex-col items-center">
           {MEMBERS_DATA.map((member, index) => (
-            <div key={member.id} className="w-full flex flex-col items-center">
-              {/* Member Index & Role Cue Bar */}
-              <div className="w-full flex items-center justify-between text-xs font-display font-bold text-white/70 mb-2 px-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-h2h-pink-primary font-black text-sm">0{index + 1}</span>
-                  <span className="text-white/30">/</span>
-                  <span className="text-white/50 text-xs">08</span>
-                  <span className="text-white/80 uppercase tracking-wider ml-1 text-[11px]">
-                    {member.roleCue}
-                  </span>
+            <React.Fragment key={member.id}>
+              {/* Connector line between members */}
+              {index > 0 && (
+                <div className="flex flex-col items-center py-2" aria-hidden="true">
+                  <div className="w-[1.5px] h-6 bg-gradient-to-b from-h2h-pink-primary/40 to-h2h-blue-primary/40 rounded-full" />
+                  <Heart className="w-3 h-3 text-h2h-pink-primary/50 my-1 fill-h2h-pink-primary/30" />
+                  <div className="w-[1.5px] h-6 bg-gradient-to-b from-h2h-blue-primary/40 to-h2h-pink-primary/40 rounded-full" />
                 </div>
-                <div className="flex items-center gap-1.5 text-xs text-white/60 font-sans">
-                  <span>{member.hangul}</span>
-                  <span className="text-base">{member.symbol}</span>
-                </div>
-              </div>
+              )}
 
-              {/* Unboxed Full Portrait (object-top ensures face is 100% visible) */}
-              <div className="relative w-full aspect-[3/4] max-h-[400px] rounded-2xl overflow-hidden shadow-2xl bg-[#0c1222]">
+              {/* Unboxed Full Portrait (object-top ensures 100% visible face, blazer fade holds bio) */}
+              <div className="relative w-full max-w-[320px] xs:max-w-[340px] rounded-3xl overflow-hidden shadow-xl bg-[#080d1a]">
                 <AssetSlot
                   assetKey={member.portraitAssetKey}
-                  aspectRatio="auto"
+                  aspectRatio="3/4"
                   imageClassName="w-full h-full object-cover object-top"
-                  className="w-full h-full"
-                  roundedClassName="rounded-2xl"
+                  roundedClassName="rounded-3xl"
                   showPlaceholderLabel={false}
                 />
 
-                {/* Dark Navy Uniform Fade (#0c1222 matching blazer) - Only bottom 32% */}
-                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0c1222] via-[#0c1222]/90 to-transparent flex flex-col justify-end p-4 text-left pointer-events-none">
-                  <h3 className="font-display font-black text-2xl xs:text-3xl text-white tracking-tight leading-none">
+                {/* Dark Navy Uniform Blazer Fade (#080d1a) - Only covers bottom 38% blazer area */}
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#080d1a] via-[#080d1a]/85 to-transparent flex flex-col justify-end p-4 text-left pointer-events-none">
+                  {/* Role and Symbol Header */}
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[11px] font-display font-extrabold uppercase tracking-wider text-h2h-pink-primary bg-white/10 backdrop-blur-xs px-2.5 py-0.5 rounded-full border border-white/15">
+                      0{index + 1} • {member.roleCue}
+                    </span>
+                    <span className="text-lg leading-none" role="img" aria-label="symbol">
+                      {member.symbol}
+                    </span>
+                  </div>
+
+                  {/* Member Name */}
+                  <h3 className="font-display font-black text-2xl xs:text-3xl text-white tracking-tight leading-tight">
                     {member.stageName}{' '}
-                    <span className="font-sans font-semibold text-base text-white/70 ml-1">
+                    <span className="font-sans font-semibold text-sm xs:text-base text-white/70 ml-1">
                       {member.hangul}
                     </span>
                   </h3>
+
+                  {/* Compact Bio Line */}
                   <p className="text-xs text-white/80 font-sans mt-1 leading-snug">
-                    {member.realName} • {member.birthday} • {member.zodiac} • {member.mbti} • {member.nationality || 'South Korea'}
+                    {member.realName} • {member.birthday} • {member.zodiac} • {member.mbti}
                   </p>
                 </div>
               </div>
-            </div>
+            </React.Fragment>
           ))}
         </div>
 
-        {/* Continuous Exit from Deep Navy into Chapter 3 */}
-        <div className="w-full bg-gradient-to-b from-[#0c1222] to-[#FFFCF8] pt-8 pb-14 px-4 text-center">
-          <div className="w-0.5 h-10 bg-gradient-to-b from-h2h-pink-primary/60 to-h2h-blue-primary/60 mx-auto mb-3 rounded-full" />
-          <p className="text-xs font-display font-bold uppercase tracking-wider text-h2h-pink-deep">
-            Meet the people → Discover what they create
-          </p>
-          <p className="font-display font-black text-2xl text-h2h-blue-deep mt-1">
-            Chapter 03 • Discography
-          </p>
-          <p className="text-xs font-sans font-bold text-h2h-muted mt-1">
-            Continue scrolling to explore releases ↓
-          </p>
+        {/* Seamless Minimal Transition into Chapter 3 */}
+        <div className="w-full pt-4 pb-12 flex flex-col items-center justify-center text-center">
+          <div className="w-[1.5px] h-10 bg-gradient-to-b from-h2h-pink-primary/50 to-h2h-blue-primary/50 rounded-full mb-3" />
+          <span className="text-[11px] font-display font-bold uppercase tracking-widest text-h2h-muted">
+            Scroll to Discography ↓
+          </span>
         </div>
       </div>
 

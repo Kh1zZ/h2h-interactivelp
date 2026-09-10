@@ -16,7 +16,15 @@ interface AssetLoadingGateProps {
  * - Smoothly transitions into main experience once prepared.
  */
 export const AssetLoadingGate: React.FC<AssetLoadingGateProps> = ({ progress, children }) => {
-  if (progress.isReady) {
+  const [hasLoaded, setHasLoaded] = React.useState(false);
+
+  React.useEffect(() => {
+    if (progress.isReady) {
+      setHasLoaded(true);
+    }
+  }, [progress.isReady]);
+
+  if (hasLoaded || progress.isReady) {
     return <>{children}</>;
   }
 

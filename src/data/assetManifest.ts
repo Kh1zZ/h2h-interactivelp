@@ -20,16 +20,6 @@ export const ASSET_MANIFEST: AssetItem[] = [
     fallbackDescription: 'Hearts2Hearts Official Group Visual',
     aspectRatio: '16/9',
   },
-  {
-    key: 'hero-logo-wordmark',
-    src: '/assets/images/branding/logo-wordmark.svg',
-    type: 'image',
-    scene: 'hero',
-    priority: 'high',
-    required: false,
-    fallbackDescription: 'Hearts2Hearts Official Wordmark',
-    aspectRatio: '3/1',
-  },
 
   // Member Portraits (Scene 2: Eight Hearts)
   {
@@ -175,17 +165,6 @@ export const ASSET_MANIFEST: AssetItem[] = [
     aspectRatio: '1/1',
   },
 
-  // Visual World Assets (Scene 4)
-  {
-    key: 'visual-world-ambient-1',
-    src: '/assets/images/branding/visual-world-1.webp',
-    type: 'image',
-    scene: 'visualWorld',
-    priority: 'low',
-    required: false,
-    fallbackDescription: 'Visual World Motif 1',
-    aspectRatio: '16/9',
-  },
 ];
 
 export const getAssetByKey = (key: string): AssetItem | undefined => {

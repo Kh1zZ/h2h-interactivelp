@@ -73,6 +73,11 @@ export function useAssetLoader() {
       const currentPercent = Math.min(100, Math.round((completedCount / totalItems) * 100));
 
       setProgress((prev) => {
+        // Once ready, never revert to unready
+        if (prev.isReady) {
+          return prev;
+        }
+
         const nextLoaded = prev.loaded + (success ? 1 : 0);
         const nextFailed = prev.failed + (success ? 0 : 1);
         const isFinished = completedCount >= totalItems;
