@@ -46,16 +46,6 @@ export const VisualWorldScene: React.FC = () => {
   const card2Y = useTransform(smoothProgress, [0, 1], ['-15px', '25px']);
   const card3Y = useTransform(smoothProgress, [0, 1], ['25px', '-15px']);
 
-  const fadeUp = (delay = 0) =>
-    shouldAnimate
-      ? {
-          initial: { opacity: 0, y: 20 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, margin: '-40px' },
-          transition: { duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-        }
-      : {};
-
   return (
     <section
       ref={containerRef}
@@ -65,7 +55,10 @@ export const VisualWorldScene: React.FC = () => {
       <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto flex flex-col items-center">
         {/* Section Heading */}
         <motion.div
-          {...fadeUp(0)}
+          initial={!shouldAnimate ? {} : { opacity: 0, y: 20 }}
+          whileInView={!shouldAnimate ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           className="text-center max-w-3xl mx-auto mb-10 sm:mb-16"
         >
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-h2h-pink-soft/70 border border-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-3 sm:mb-4">
@@ -86,7 +79,10 @@ export const VisualWorldScene: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 w-full max-w-6xl mx-auto mb-10 sm:mb-16">
           {/* Card 1: The Debut Lore ('The Chase') */}
           <motion.article
-            {...fadeUp(0.06)}
+            initial={!shouldAnimate ? {} : { opacity: 0, y: 20 }}
+            whileInView={!shouldAnimate ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.06, ease: 'easeOut' }}
             style={!shouldParallax ? {} : { y: card1Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
@@ -121,7 +117,10 @@ export const VisualWorldScene: React.FC = () => {
 
           {/* Card 2: Signature Daylight World */}
           <motion.article
-            {...fadeUp(0.12)}
+            initial={!shouldAnimate ? {} : { opacity: 0, y: 20 }}
+            whileInView={!shouldAnimate ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.12, ease: 'easeOut' }}
             style={!shouldParallax ? {} : { y: card2Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
@@ -156,7 +155,10 @@ export const VisualWorldScene: React.FC = () => {
 
           {/* Card 3: S2U Fandom Galaxy */}
           <motion.article
-            {...fadeUp(0.18)}
+            initial={!shouldAnimate ? {} : { opacity: 0, y: 20 }}
+            whileInView={!shouldAnimate ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.18, ease: 'easeOut' }}
             style={!shouldParallax ? {} : { y: card3Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/60 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >

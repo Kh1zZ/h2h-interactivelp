@@ -17,26 +17,6 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 export const IntroScene: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
 
-  const fadeUp = (delay = 0) =>
-    prefersReducedMotion
-      ? {}
-      : {
-          initial: { opacity: 0, y: 18 },
-          whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, margin: '-40px' },
-          transition: { duration: 0.45, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-        };
-
-  const scaleIn = (delay = 0) =>
-    prefersReducedMotion
-      ? {}
-      : {
-          initial: { opacity: 0, scale: 0.94 },
-          whileInView: { opacity: 1, scale: 1 },
-          viewport: { once: true, margin: '-40px' },
-          transition: { duration: 0.4, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-        };
-
   return (
     <section
       id="scene-intro"
@@ -46,7 +26,10 @@ export const IntroScene: React.FC = () => {
       <div className="w-full max-w-6xl mx-auto flex flex-col items-center text-center z-10">
         {/* Eyebrow Pill */}
         <motion.div
-          {...fadeUp(0)}
+          initial={prefersReducedMotion ? {} : { opacity: 0, y: 18 }}
+          whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45, ease: 'easeOut' }}
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-4 sm:mb-6 shadow-2xs"
         >
           <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary" />
@@ -55,7 +38,10 @@ export const IntroScene: React.FC = () => {
 
         {/* Grand Headline Lines */}
         <motion.div
-          {...fadeUp(0.08)}
+          initial={prefersReducedMotion ? {} : { opacity: 0, y: 18 }}
+          whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45, delay: 0.08, ease: 'easeOut' }}
           className="space-y-1 sm:space-y-2 mb-6 sm:mb-8"
         >
           <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-h2h-blue-primary leading-tight">
@@ -70,7 +56,10 @@ export const IntroScene: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 max-w-5xl w-full mx-auto mb-8 text-left">
           {/* Left Card: The Hearts2Hearts Story */}
           <motion.div
-            {...fadeUp(0.12)}
+            initial={prefersReducedMotion ? {} : { opacity: 0, y: 18 }}
+            whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: 0.12, ease: 'easeOut' }}
             className="lg:col-span-6 p-6 sm:p-7 rounded-3xl bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col justify-between space-y-4"
           >
             <div className="space-y-3">
@@ -93,7 +82,10 @@ export const IntroScene: React.FC = () => {
 
           {/* Right Card: SM Entertainment */}
           <motion.div
-            {...fadeUp(0.18)}
+            initial={prefersReducedMotion ? {} : { opacity: 0, y: 18 }}
+            whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: 0.18, ease: 'easeOut' }}
             className="lg:col-span-6 p-6 sm:p-7 rounded-3xl bg-white/95 border-2 border-h2h-blue-sky/80 shadow-cute flex flex-col justify-between space-y-4"
           >
             <div className="space-y-3">
@@ -125,7 +117,10 @@ export const IntroScene: React.FC = () => {
           ].map((stat, i) => (
             <motion.div
               key={stat.sub}
-              {...scaleIn(0.08 * i + 0.22)}
+              initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.94 }}
+              whileInView={prefersReducedMotion ? {} : { opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.08 * i + 0.22, ease: 'easeOut' }}
               className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white/95 border-2 ${stat.border} shadow-cute flex flex-col items-center justify-center text-center hover:scale-102 transition-transform`}
             >
               <span className="text-2xl sm:text-3xl mb-1 sm:mb-1.5" role="img">{stat.emoji}</span>

@@ -98,7 +98,7 @@ export const DebutVideoPlayer: React.FC = () => {
             Hearts2Hearts
           </span>
           <span className="block text-white font-display font-black text-sm sm:text-base leading-tight">
-            'Chase Your Choice' Debut Trailer
+            &apos;Chase Your Choice&apos; Debut Trailer
           </span>
         </div>
 
