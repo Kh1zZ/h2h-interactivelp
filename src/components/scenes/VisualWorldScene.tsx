@@ -51,7 +51,7 @@ export const VisualWorldScene: React.FC = () => {
           </h2>
 
           <p className="font-sans text-base sm:text-lg text-h2h-muted mt-3 max-w-2xl mx-auto leading-relaxed">
-            Menyelami 3 pilar utama identitas Hearts2Hearts: narasi debut <strong className="text-h2h-ink font-semibold">&apos;The Chase&apos;</strong>, estetika <strong className="text-h2h-ink font-semibold">Daylight Pastel</strong> yang menyegarkan, dan ikatan emosional bersama fandom <strong className="text-h2h-ink font-semibold">S2U</strong>.
+            Discover the three core pillars of Hearts2Hearts&apos; artistic identity: the debut storyline of <strong className="text-h2h-ink font-semibold">&apos;The Chase&apos;</strong>, the refreshing <strong className="text-h2h-ink font-semibold">Daylight Pastel</strong> aesthetic, and the heartfelt connection with their global fandom, <strong className="text-h2h-ink font-semibold">S2U</strong>.
           </p>
         </div>
 
@@ -68,20 +68,20 @@ export const VisualWorldScene: React.FC = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider">
-                  Pilar 01 • Narrative Lore
+                  Pillar 01 • Narrative Lore
                 </span>
                 <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-primary">
                   The Chase
                 </h3>
               </div>
               <p className="font-sans text-sm sm:text-base text-h2h-ink/80 leading-relaxed">
-                Kisah 8 gadis dengan latar belakang berbeda yang disatukan oleh satu impian murni. Di era serba instan, <em>The Chase</em> melambangkan keberanian mengejar jati diri yang autentik dengan semangat remaja tanpa rasa takut.
+                The story of eight girls from diverse backgrounds united by a single pure dream. In a fast-paced world, <em>The Chase</em> symbolizes the courage to pursue authentic identity with fearless youthful enthusiasm.
               </p>
             </div>
 
             <div className="pt-6 border-t border-h2h-blue-sky/30 mt-6 space-y-2">
               <div className="text-xs font-display font-bold text-h2h-blue-deep uppercase">
-                Palette Harmoni
+                Harmonic Palette
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-[#6FA8FF] border-2 border-white shadow-xs" title="Sky Blue #6FA8FF" />
@@ -102,20 +102,20 @@ export const VisualWorldScene: React.FC = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-xs font-display font-bold text-h2h-pink-deep uppercase tracking-wider">
-                  Pilar 02 • Visual Identity
+                  Pillar 02 • Visual Identity
                 </span>
                 <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-primary">
                   Daylight Pastel
                 </h3>
               </div>
               <p className="font-sans text-sm sm:text-base text-h2h-ink/80 leading-relaxed">
-                Menolak visual gelap dan distopia cyberpunk, Hearts2Hearts hadir dengan estetika siang hari yang hangat, awan lembut, dan warna pastel ceria. Dunia visual yang nyaman dan menghadirkan harapan positif bagi penikmatnya.
+                Steering away from dark palettes and cyberpunk dystopias, Hearts2Hearts introduces a sunlit warmth with airy clouds and cheerful pastels—a welcoming, comforting space filled with radiant optimism.
               </p>
             </div>
 
             <div className="pt-6 border-t border-h2h-pink-soft/40 mt-6 space-y-2">
               <div className="text-xs font-display font-bold text-h2h-pink-deep uppercase">
-                Palette Harmoni
+                Harmonic Palette
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-[#FFA6D9] border-2 border-white shadow-xs" title="Blossom Pink #FFA6D9" />
@@ -136,20 +136,20 @@ export const VisualWorldScene: React.FC = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider">
-                  Pilar 03 • Community Universe
+                  Pillar 03 • Community Universe
                 </span>
                 <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-primary">
                   S2U (Hearts to You)
                 </h3>
               </div>
               <p className="font-sans text-sm sm:text-base text-h2h-ink/80 leading-relaxed">
-                Nama fandom resmi <strong className="text-h2h-ink font-semibold">S2U</strong> (dibaca <em>Hearts to You</em> / 에스투유). Menggambarkan koneksi dua arah tanpa batas antara member dan penggemar di seluruh dunia: dari hati ke hati.
+                The official fandom name <strong className="text-h2h-ink font-semibold">S2U</strong> (pronounced <em>Hearts to You</em> / 에스투유) reflects a boundless two-way emotional connection between the members and fans worldwide: heart to heart.
               </p>
             </div>
 
             <div className="pt-6 border-t border-h2h-blue-sky/30 mt-6 space-y-2">
               <div className="text-xs font-display font-bold text-h2h-blue-deep uppercase">
-                Palette Harmoni
+                Harmonic Palette
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-[#FFFCF8] border-2 border-gray-300 shadow-xs" title="Warm Cream #FFFCF8" />

@@ -151,7 +151,7 @@ export const ASSET_MANIFEST: AssetItem[] = [
     scene: 'discography',
     priority: 'medium',
     required: false,
-    fallbackDescription: 'RUDE - Global Hit Official Artwork',
+    fallbackDescription: 'RUDE! - Official Artwork',
     aspectRatio: '1/1',
   },
   {

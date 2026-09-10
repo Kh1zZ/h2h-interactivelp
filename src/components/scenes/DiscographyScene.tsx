@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'fra
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { DISCOGRAPHY_DATA } from '@/data/discographyData';
 import { AssetSlot } from '@/components/ui/AssetSlot';
-import { Disc3, Calendar, Music, Sparkles, Play, Pause } from 'lucide-react';
+import { Disc3, Calendar, Music, Sparkles, Play, Pause, X } from 'lucide-react';
 
 /**
  * Chapter 03: The Pastel Toy Turntable (DiscographyScene)
@@ -15,6 +15,7 @@ import { Disc3, Calendar, Music, Sparkles, Play, Pause } from 'lucide-react';
  * - 6 Official Releases (including RUDE Global Hit and Iconic Heart Japan Debut)
  * - Interactive 20-Second Audio Preview player for all 6 tracks
  * - Spinning vinyl turntable with interactive center Play/Pause disc
+ * - Dynamic Concept & Story Box with zero layout shifts and complete story modal
  */
 export const DiscographyScene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -24,6 +25,19 @@ export const DiscographyScene: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(20);
+  const [activeTab, setActiveTab] = useState<'concept' | 'info'>('concept');
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isStoryModalOpen) {
+        setIsStoryModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isStoryModalOpen]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -39,15 +53,18 @@ export const DiscographyScene: React.FC = () => {
   // Vinyl rotation driven by scroll (0deg to 720deg)
   const vinylRotate = useTransform(smoothProgress, [0, 1], [0, 720]);
 
-  // Map progress to active release index (0 to 5 for 6 releases)
+  // Map progress to active release index (0 to 5 for 6 releases) with entrance and exit dwell cushions
   useEffect(() => {
     if (prefersReducedMotion) return;
 
     const unsubscribe = smoothProgress.on('change', (latest) => {
       const totalReleases = DISCOGRAPHY_DATA.length;
+      // Dwell cushions: 0.00 - 0.05 keeps Release 01 locked; 0.95 - 1.00 keeps Release 06 locked before natural unpin
+      const clamped = Math.max(0.05, Math.min(0.95, latest));
+      const normalized = (clamped - 0.05) / (0.95 - 0.05);
       const index = Math.min(
         totalReleases - 1,
-        Math.max(0, Math.floor(latest * totalReleases))
+        Math.max(0, Math.floor(normalized * totalReleases))
       );
       setActiveReleaseIdx(index);
     });
@@ -62,7 +79,8 @@ export const DiscographyScene: React.FC = () => {
     const el = containerRef.current;
     if (!el) return;
     const totalReleases = DISCOGRAPHY_DATA.length;
-    const targetProgress = (index + 0.4) / totalReleases;
+    const normalized = (index + 0.5) / totalReleases;
+    const targetProgress = 0.05 + normalized * (0.95 - 0.05);
     const rect = el.getBoundingClientRect();
     const containerTop = window.scrollY + rect.top;
     const scrollDistance = el.offsetHeight - window.innerHeight;
@@ -140,7 +158,7 @@ export const DiscographyScene: React.FC = () => {
     <section
       ref={containerRef}
       id="scene-discography"
-      className={`relative w-full ${prefersReducedMotion ? 'min-h-screen py-24' : 'h-[240vh]'}`}
+      className={`relative w-full scroll-mt-6 ${prefersReducedMotion ? 'min-h-screen py-16' : 'h-[380vh]'}`}
     >
       {/* Hidden Audio Element */}
       <audio ref={audioRef} src={activeRelease.audioSrc} preload="metadata" />
@@ -148,31 +166,31 @@ export const DiscographyScene: React.FC = () => {
       <div
         className={`${
           prefersReducedMotion
-            ? 'relative max-w-6xl mx-auto py-12'
+            ? 'relative max-w-6xl mx-auto py-16'
             : 'sticky top-0 h-screen flex flex-col justify-center items-center'
-        } w-full px-6 sm:px-12 max-w-7xl mx-auto z-10`}
+        } w-full px-4 sm:px-8 max-w-6xl mx-auto z-10 pt-20 sm:pt-24 pb-6`}
       >
-        {/* Section Eyebrow */}
-        <div className="text-center max-w-2xl mx-auto mb-6 shrink-0">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-2">
-            <Disc3 className="w-4 h-4 text-h2h-blue-primary" />
+        {/* Section Eyebrow Header */}
+        <div className="text-center max-w-2xl mx-auto mb-3 sm:mb-4 shrink-0">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs tracking-wider uppercase mb-1.5">
+            <Disc3 className="w-3.5 h-3.5 text-h2h-blue-primary" />
             <span>Chapter 03 • Musical Turntable</span>
           </div>
 
-          <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-h2h-blue-primary leading-tight">
+          <h2 className="font-display font-black text-2xl sm:text-4xl lg:text-5xl text-h2h-blue-primary leading-tight">
             The Sound of Hearts
           </h2>
-          <p className="font-sans text-sm sm:text-base text-h2h-muted mt-1">
+          <p className="font-sans text-xs sm:text-sm text-h2h-muted mt-0.5 max-w-lg mx-auto">
             Scroll to spin the pastel turntable and listen to official 20-second music highlights.
           </p>
         </div>
 
-        {/* The Turntable & Sleeve Showcase */}
-        <div className="w-full max-w-5xl bg-white/95 border-2 border-h2h-blue-sky/70 rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-cute-lg">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
-            {/* Left: Pastel Toy Turntable (5 cols) */}
-            <div className="md:col-span-5 flex flex-col items-center justify-center relative">
-              <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full bg-gradient-to-br from-h2h-blue-sky/40 via-white to-h2h-pink-soft/50 border-4 border-white shadow-cute flex items-center justify-center p-4">
+        {/* The Turntable & Sleeve Showcase Card */}
+        <div className="w-full max-w-4xl bg-white/95 border-2 border-h2h-blue-sky/70 rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-7 shadow-cute-lg max-h-[calc(100vh-12rem)] md:max-h-none overflow-y-auto md:overflow-visible">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+            {/* Left: Pastel Toy Turntable (5 cols on lg) */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+              <div className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full bg-gradient-to-br from-h2h-blue-sky/40 via-white to-h2h-pink-soft/50 border-4 border-white shadow-cute flex items-center justify-center p-3 sm:p-4">
                 {/* Spinning Pastel Vinyl Disc */}
                 <motion.div
                   style={prefersReducedMotion ? {} : { rotate: vinylRotate }}
@@ -186,14 +204,14 @@ export const DiscographyScene: React.FC = () => {
                         onClick={togglePlay}
                         aria-label={isPlaying ? 'Pause preview' : 'Play 20s preview'}
                         title={isPlaying ? 'Pause preview' : 'Play 20s preview'}
-                        className="w-20 h-20 rounded-full bg-h2h-pink-soft border-2 border-white flex flex-col items-center justify-center text-center p-1 shadow-xs hover:scale-105 transition-transform cursor-pointer group"
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-h2h-pink-soft border-2 border-white flex flex-col items-center justify-center text-center p-1 shadow-xs hover:scale-105 transition-transform cursor-pointer group"
                       >
                         {isPlaying ? (
-                          <Pause className="w-6 h-6 text-h2h-pink-deep fill-h2h-pink-deep" />
+                          <Pause className="w-5 h-5 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep" />
                         ) : (
-                          <Play className="w-6 h-6 text-h2h-pink-deep fill-h2h-pink-deep ml-0.5" />
+                          <Play className="w-5 h-5 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep ml-0.5" />
                         )}
-                        <span className="font-display text-[9px] font-black text-h2h-ink tracking-wider mt-0.5">
+                        <span className="font-display text-[8px] sm:text-[9px] font-black text-h2h-ink tracking-wider mt-0.5">
                           {isPlaying ? 'PAUSE' : 'PLAY 20s'}
                         </span>
                       </button>
@@ -203,19 +221,19 @@ export const DiscographyScene: React.FC = () => {
 
                 {/* Cute Toy Tonearm */}
                 <div
-                  className={`absolute -top-2 right-4 w-4 h-28 bg-white border-2 border-h2h-pink-soft rounded-full shadow-xs origin-top transition-transform duration-500 pointer-events-none ${
+                  className={`absolute -top-1.5 right-2 sm:right-4 w-3.5 sm:w-4 h-24 sm:h-28 bg-white border-2 border-h2h-pink-soft rounded-full shadow-xs origin-top transition-transform duration-500 pointer-events-none ${
                     isPlaying ? 'rotate-20' : 'rotate-12'
                   }`}
                 />
               </div>
 
-              {/* Release Selector Pills for Quick Tap (01 to 06) */}
-              <div className="mt-6 flex gap-2 flex-wrap justify-center">
+              {/* Release Selector Pills (01 to 06) */}
+              <div className="mt-4 sm:mt-5 flex gap-1.5 sm:gap-2 flex-wrap justify-center">
                 {DISCOGRAPHY_DATA.map((rel, i) => (
                   <button
                     key={rel.id}
                     onClick={() => jumpToRelease(i)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-display font-bold transition-all cursor-pointer ${
+                    className={`px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-display font-bold transition-all cursor-pointer ${
                       activeReleaseIdx === i
                         ? 'bg-h2h-blue-primary text-white shadow-xs scale-105'
                         : 'bg-h2h-blue-sky/50 text-h2h-blue-deep hover:bg-h2h-blue-sky'
@@ -227,50 +245,52 @@ export const DiscographyScene: React.FC = () => {
               </div>
             </div>
 
-            {/* Right: Sleeve Artwork, Metadata & Audio Player (7 cols) */}
-            <div className="md:col-span-7">
-              <AnimatePresence mode="popLayout">
+            {/* Right: Sleeve Artwork, Metadata & Audio Player (7 cols on lg) */}
+            <div className="lg:col-span-7">
+              <AnimatePresence mode="wait">
                 <motion.div
                   key={activeRelease.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.22, ease: 'easeOut' }}
-                  className="flex flex-col sm:flex-row gap-6 items-center"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.18, ease: 'easeOut' }}
+                  className="flex flex-col sm:flex-row gap-5 lg:gap-6 items-center"
                 >
                   {/* Artwork Sleeve Slot */}
-                  <div className="w-48 sm:w-56 shrink-0">
+                  <div className="w-36 sm:w-44 lg:w-48 shrink-0">
                     <AssetSlot
                       assetKey={activeRelease.coverAssetKey}
                       aspectRatio="1/1"
                       alt={`${activeRelease.title} Album Cover`}
-                      roundedClassName="rounded-2xl"
+                      roundedClassName="rounded-2xl shadow-cute"
                     />
                   </div>
 
-                  {/* Metadata & Controls */}
-                  <div className="space-y-3.5 text-center sm:text-left flex-1">
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-h2h-pink-soft text-h2h-pink-deep text-xs font-display font-bold uppercase tracking-wider">
+                  {/* Metadata & Controls (Locked width & stable layout) */}
+                  <div className="space-y-2.5 sm:space-y-3 text-center sm:text-left flex-1 min-w-0 w-full">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-h2h-pink-soft text-h2h-pink-deep text-xs font-display font-bold uppercase tracking-wider">
                       <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
                       <span>{activeRelease.type}</span>
                     </div>
 
-                    <h3 className="font-display font-black text-3xl sm:text-4xl text-h2h-blue-primary leading-tight">
-                      {activeRelease.title}
-                    </h3>
+                    <div className="space-y-0.5">
+                      <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-primary leading-tight truncate">
+                        {activeRelease.title}
+                      </h3>
 
-                    <div className="flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-sm font-sans text-h2h-muted font-semibold">
-                      <Calendar className="w-4 h-4 text-h2h-blue-primary" />
-                      <span>Release: {activeRelease.releaseDate}</span>
+                      <div className="flex items-center justify-center sm:justify-start gap-1.5 text-xs font-sans text-h2h-muted font-semibold">
+                        <Calendar className="w-3.5 h-3.5 text-h2h-blue-primary" />
+                        <span>Release: {activeRelease.releaseDate}</span>
+                      </div>
                     </div>
 
                     {/* Interactive 20s Audio Player Bar */}
-                    <div className="p-3 rounded-2xl bg-white border border-h2h-blue-sky/70 shadow-xs space-y-2">
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-white border border-h2h-blue-sky/70 shadow-xs space-y-1.5">
                       <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2.5">
+                        <div className="flex items-center gap-2">
                           <button
                             onClick={togglePlay}
-                            className="w-9 h-9 rounded-full bg-h2h-blue-primary hover:bg-h2h-blue-deep text-white flex items-center justify-center shadow-xs hover:scale-105 transition-all cursor-pointer"
+                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-h2h-blue-primary hover:bg-h2h-blue-deep text-white flex items-center justify-center shadow-xs hover:scale-105 transition-all cursor-pointer shrink-0"
                             aria-label={isPlaying ? 'Pause' : 'Play'}
                           >
                             {isPlaying ? (
@@ -283,13 +303,13 @@ export const DiscographyScene: React.FC = () => {
                             <span className="text-xs font-display font-bold text-h2h-blue-primary block leading-none">
                               {isPlaying ? 'Playing 20s Highlight' : '20s Audio Highlight'}
                             </span>
-                            <span className="text-[11px] font-sans text-h2h-muted">
+                            <span className="text-[10px] sm:text-[11px] font-sans text-h2h-muted">
                               Official Master • AAC Stereo
                             </span>
                           </div>
                         </div>
 
-                        <span className="text-xs font-sans font-bold text-h2h-ink">
+                        <span className="text-xs font-sans font-bold text-h2h-ink shrink-0">
                           {formatTime(currentTime)} / {formatTime(duration || 20)}
                         </span>
                       </div>
@@ -305,21 +325,72 @@ export const DiscographyScene: React.FC = () => {
                       </div>
                     </div>
 
-                    <p className="font-sans text-sm sm:text-base text-h2h-ink/85 leading-relaxed font-normal">
-                      {activeRelease.description}
-                    </p>
+                    {/* Dynamic Concept & Description Box (Fixed height: zero layout shifts) */}
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-h2h-blue-light/50 border border-h2h-blue-sky/70 text-left space-y-1.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => setActiveTab('concept')}
+                            className={`text-[11px] font-display font-bold px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
+                              activeTab === 'concept'
+                                ? 'bg-h2h-blue-primary text-white shadow-xs'
+                                : 'text-h2h-blue-deep hover:text-h2h-blue-primary'
+                            }`}
+                          >
+                            Concept Story
+                          </button>
+                          <button
+                            onClick={() => setActiveTab('info')}
+                            className={`text-[11px] font-display font-bold px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
+                              activeTab === 'info'
+                                ? 'bg-h2h-blue-primary text-white shadow-xs'
+                                : 'text-h2h-blue-deep hover:text-h2h-blue-primary'
+                            }`}
+                          >
+                            Release Info
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => setIsStoryModalOpen(true)}
+                          className="text-[11px] font-display font-bold text-h2h-pink-deep hover:text-h2h-ink flex items-center gap-1 transition-colors cursor-pointer group"
+                          title="View complete liner notes"
+                        >
+                          <span>Full Story</span>
+                          <Sparkles className="w-3 h-3 group-hover:rotate-12 transition-transform" />
+                        </button>
+                      </div>
+
+                      {/* Fixed-Height Scrollable Description Container */}
+                      <div className="h-14 sm:h-16 overflow-y-auto pr-1 text-xs font-sans text-h2h-ink/85 leading-relaxed font-normal">
+                        {activeTab === 'concept' ? (
+                          <p>{activeRelease.description}</p>
+                        ) : (
+                          <div className="space-y-1 text-[11px] text-h2h-muted">
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold text-h2h-blue-deep">Format:</span>
+                              <span>{activeRelease.type}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold text-h2h-blue-deep">Distribution:</span>
+                              <span className="truncate ml-2">{activeRelease.streamingHint || 'Digital Streaming'}</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
 
                     {/* Tracklist Pills */}
                     <div className="pt-2 border-t border-h2h-blue-sky/40">
-                      <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider block mb-2 flex items-center justify-center sm:justify-start gap-1.5">
+                      <span className="text-[11px] sm:text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider block mb-1.5 flex items-center justify-center sm:justify-start gap-1.5">
                         <Music className="w-3.5 h-3.5 text-h2h-blue-primary" />
                         Official Tracklist
                       </span>
-                      <div className="flex flex-wrap justify-center sm:justify-start gap-2">
+                      <div className="flex flex-wrap justify-center sm:justify-start gap-1.5">
                         {activeRelease.tracks.map((t, idx) => (
                           <span
                             key={idx}
-                            className="px-3 py-1 bg-h2h-blue-sky/40 border border-h2h-blue-sky/60 rounded-xl text-xs sm:text-sm font-sans font-bold text-h2h-ink"
+                            className="px-2.5 py-0.5 bg-h2h-blue-sky/40 border border-h2h-blue-sky/60 rounded-lg text-xs font-sans font-bold text-h2h-ink"
                           >
                             {t}
                           </span>
@@ -333,6 +404,94 @@ export const DiscographyScene: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Dynamic Full Story Modal (Accessible & Non-Intrusive) */}
+      <AnimatePresence>
+        {isStoryModalOpen && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-h2h-blue-deep/40 backdrop-blur-sm"
+            onClick={() => setIsStoryModalOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 12 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg bg-white border-2 border-h2h-pink-soft rounded-3xl p-6 sm:p-7 shadow-cute-lg relative space-y-4 max-h-[85vh] overflow-y-auto"
+            >
+              <button
+                onClick={() => setIsStoryModalOpen(false)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-h2h-blue-sky/50 hover:bg-h2h-pink-soft text-h2h-ink flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close story"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-xs">
+                  <AssetSlot
+                    assetKey={activeRelease.coverAssetKey}
+                    aspectRatio="1/1"
+                    alt={activeRelease.title}
+                    roundedClassName="rounded-2xl"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-xs font-display font-bold text-h2h-pink-deep uppercase tracking-wider block">
+                    {activeRelease.type}
+                  </span>
+                  <h4 className="font-display font-black text-2xl text-h2h-blue-primary truncate">
+                    {activeRelease.title}
+                  </h4>
+                  <span className="text-xs font-sans text-h2h-muted">
+                    Released: {activeRelease.releaseDate}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-h2h-blue-light/50 border border-h2h-blue-sky/50 space-y-2">
+                <span className="text-xs font-display font-bold uppercase tracking-wider text-h2h-blue-deep flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-h2h-pink-deep" />
+                  Full Album Concept & Story
+                </span>
+                <p className="font-sans text-sm sm:text-base text-h2h-ink leading-relaxed">
+                  {activeRelease.description}
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <span className="text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider block">
+                  Official Tracklist
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {activeRelease.tracks.map((t, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 bg-h2h-blue-sky/30 border border-h2h-blue-sky/60 rounded-xl text-xs font-sans font-bold text-h2h-ink"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-h2h-blue-sky/40 flex items-center justify-between text-xs font-sans text-h2h-muted">
+                <span className="truncate mr-2">{activeRelease.streamingHint || 'Available on all streaming platforms'}</span>
+                <button
+                  onClick={() => setIsStoryModalOpen(false)}
+                  className="px-4 py-1.5 bg-h2h-blue-primary hover:bg-h2h-blue-deep text-white font-display font-bold rounded-full transition-colors cursor-pointer shrink-0"
+                >
+                  Close Note
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
+
