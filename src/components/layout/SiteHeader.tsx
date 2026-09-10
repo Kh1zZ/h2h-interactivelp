@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Heart, Menu, X } from 'lucide-react';
 import { useLenis } from '@/components/layout/SmoothScrollProvider';
 
@@ -49,8 +50,15 @@ export const SiteHeader: React.FC = () => {
           className="flex items-center gap-2.5 text-left group focus:outline-hidden focus:ring-2 focus:ring-h2h-pink-primary rounded-xl px-1 cursor-pointer"
           aria-label="Hearts2Hearts Home"
         >
-          <div className="w-10 h-10 rounded-full bg-h2h-pink-soft flex items-center justify-center text-h2h-pink-primary group-hover:scale-105 transition-transform border border-h2h-pink-primary/30">
-            <Heart className="w-5 h-5 fill-h2h-pink-primary" />
+          <div className="w-10 h-10 rounded-full overflow-hidden bg-h2h-pink-soft flex items-center justify-center text-h2h-pink-primary group-hover:scale-105 transition-transform border border-h2h-pink-primary/30 shadow-2xs">
+            <Image
+              src="/assets/images/branding/logo.webp"
+              alt="Hearts2Hearts Logo"
+              width={40}
+              height={40}
+              className="w-full h-full object-cover"
+              priority
+            />
           </div>
           <span className="font-display font-black text-2xl text-h2h-blue-primary tracking-tight">
             Hearts<span className="text-h2h-pink-primary">2</span>Hearts

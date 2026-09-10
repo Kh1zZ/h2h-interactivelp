@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Heart, Sparkles } from 'lucide-react';
 import { AssetLoadingProgress } from '@/types';
 
@@ -38,10 +39,17 @@ export const AssetLoadingGate: React.FC<AssetLoadingGateProps> = ({ progress, ch
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-h2h-cream via-h2h-blue-sky/30 to-h2h-pink-soft/40 px-6 select-none transition-opacity duration-700"
     >
       <div className="flex flex-col items-center max-w-sm w-full text-center space-y-6">
-        {/* Animated Heart Motif */}
+        {/* Animated Brand Logo Motif */}
         <div className="relative">
-          <div className="w-24 h-24 rounded-full bg-white/80 shadow-cute-lg flex items-center justify-center border-2 border-h2h-pink-soft animate-bounce">
-            <Heart className="w-12 h-12 text-h2h-pink-primary fill-h2h-pink-primary" />
+          <div className="w-24 h-24 rounded-full overflow-hidden bg-white/90 shadow-cute-lg flex items-center justify-center border-2 border-h2h-pink-soft animate-bounce p-1">
+            <Image
+              src="/assets/images/branding/logo.webp"
+              alt="Hearts2Hearts Official Logo"
+              width={96}
+              height={96}
+              className="w-full h-full object-cover rounded-full"
+              priority
+            />
           </div>
           <Sparkles className="w-6 h-6 text-h2h-blue-primary absolute -top-1 -right-1 animate-spin" />
         </div>

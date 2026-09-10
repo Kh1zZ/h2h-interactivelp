@@ -9,6 +9,18 @@ import { AssetItem } from '@/types';
  * - Missing assets gracefully render structural AssetSlot placeholders.
  */
 export const ASSET_MANIFEST: AssetItem[] = [
+  // Brand Logo
+  {
+    key: 'brand-logo',
+    src: '/assets/images/branding/logo.webp',
+    type: 'image',
+    scene: 'hero',
+    priority: 'high',
+    required: true,
+    fallbackDescription: 'Hearts2Hearts Official Logo',
+    aspectRatio: '1/1',
+  },
+
   // Hero Assets
   {
     key: 'hero-group-visual',

@@ -185,7 +185,7 @@ export const VisualWorldScene: React.FC = () => {
           <div className="pt-6 pb-2 text-center space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider">
               <Users className="w-4 h-4 text-h2h-blue-primary" />
-              <span>Hearts2Hearts Official Debut Era • SM Entertainment</span>
+              <span>Hearts2Hearts Official Debut Era • The Chase Universe</span>
             </div>
             <p className="font-sans text-sm text-h2h-muted">
               Jiwoo • Carmen • Yuha • Stella • Juun • A-na • Ian • Ye-on

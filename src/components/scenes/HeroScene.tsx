@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { AssetSlot } from '@/components/ui/AssetSlot';
@@ -74,10 +75,18 @@ export const HeroScene: React.FC = () => {
           className="relative z-10 w-full text-center my-auto flex flex-col items-center"
         >
           {/* Eyebrow Pill */}
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-white/95 border border-h2h-blue-sky shadow-cute mb-3 sm:mb-6">
-            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-h2h-pink-primary text-h2h-pink-primary" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:py-2 rounded-full bg-white/95 border border-h2h-blue-sky shadow-cute mb-3 sm:mb-6">
+            <div className="w-5 h-5 rounded-full overflow-hidden border border-h2h-pink-soft shrink-0">
+              <Image
+                src="/assets/images/branding/logo.webp"
+                alt="Logo"
+                width={20}
+                height={20}
+                className="w-full h-full object-cover"
+              />
+            </div>
             <span className="font-display font-bold text-xs sm:text-sm text-h2h-blue-deep tracking-wider uppercase">
-              SM Entertainment • 8 Hearts As One
+              Official Debut Era • 8 Hearts As One
             </span>
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary" />
           </div>

@@ -14,7 +14,7 @@ export const MEMBERS_DATA: Member[] = [
     accentColor: '#6FA8FF',
     portraitAssetKey: 'member-portrait-jiwoo',
     symbol: '🌸',
-    bio: 'Leader of Hearts2Hearts who trained at SM Entertainment for 6 years after being scouted in sixth grade. With 6–7 years of classical ballet background, she brings impeccable stage posture, gentle warmth, and dependable leadership to the team.',
+    bio: 'Leader of Hearts2Hearts who trained diligently for 6 years after being scouted in sixth grade. With 6–7 years of classical ballet background, she brings impeccable stage posture, gentle warmth, and dependable leadership to the team.',
   },
   {
     id: 'carmen',
@@ -29,7 +29,7 @@ export const MEMBERS_DATA: Member[] = [
     accentColor: '#FFA6D9',
     portraitAssetKey: 'member-portrait-carmen',
     symbol: '🌴',
-    bio: "The historic first Indonesian idol to debut under SM Entertainment. Born in Bali, Carmen passed her audition over Zoom after singing nearly 100 songs, inspired by Girls' Generation's 'The Boys'. Her vibrant multilingual spark (Indonesian, English, Korean) and infectious positivity connect H2H globally.",
+    bio: "The historic first Indonesian idol in the group. Born in Bali, Carmen passed her audition over Zoom after singing nearly 100 songs, inspired by Girls' Generation's 'The Boys'. Her vibrant multilingual spark (Indonesian, English, Korean) and infectious positivity connect H2H globally.",
   },
   {
     id: 'yuha',
@@ -44,7 +44,7 @@ export const MEMBERS_DATA: Member[] = [
     accentColor: '#6FA8FF',
     portraitAssetKey: 'member-portrait-yuha',
     symbol: '⭐',
-    bio: "Considered the definitive 'All-Rounder' of Hearts2Hearts. Yuha trained for 8 years after being street-cast by SM on three separate occasions. Blessed with perfect pitch and keen artistic focus, her crystal vocals and sharp choreography anchor the group's performance foundation.",
+    bio: "Considered the definitive 'All-Rounder' of Hearts2Hearts. Yuha trained for 8 years after being street-cast on three separate occasions. Blessed with perfect pitch and keen artistic focus, her crystal vocals and sharp choreography anchor the group's performance foundation.",
   },
   {
     id: 'stella',
@@ -74,7 +74,7 @@ export const MEMBERS_DATA: Member[] = [
     accentColor: '#6FA8FF',
     portraitAssetKey: 'member-portrait-juun',
     symbol: '🌙',
-    bio: "The group's resident dance powerhouse and choreographer. Inspired by BoA and Red Velvet's Seulgi, Juun was scouted by SM via Instagram DMs after her dance videos went viral. Renowned as the quickest choreography learner in H2H, her delicate musicality infuses every beat with emotion.",
+    bio: "The group's resident dance powerhouse and choreographer. Inspired by BoA and Red Velvet's Seulgi, Juun was scouted via Instagram DMs after her dance videos went viral. Renowned as the quickest choreography learner in H2H, her delicate musicality infuses every beat with emotion.",
   },
   {
     id: 'a-na',
@@ -89,7 +89,7 @@ export const MEMBERS_DATA: Member[] = [
     accentColor: '#FFA6D9',
     portraitAssetKey: 'member-portrait-a-na',
     symbol: '🌻',
-    bio: 'Standing tall as the tallest member at 171 cm, A-na is the visual and rap powerhouse of Hearts2Hearts. Joining SM in late 2022, she delivers dynamic rhythmic energy, bold delivery, and a cheerful sunshine aura that instantly captivates the audience.',
+    bio: 'Standing tall as the tallest member at 171 cm, A-na is the visual and rap powerhouse of Hearts2Hearts. Starting her formal training in late 2022, she delivers dynamic rhythmic energy, bold delivery, and a cheerful sunshine aura that instantly captivates the audience.',
   },
   {
     id: 'ian',
@@ -104,7 +104,7 @@ export const MEMBERS_DATA: Member[] = [
     accentColor: '#6FA8FF',
     portraitAssetKey: 'member-portrait-ian',
     symbol: '🫛',
-    bio: "Hearts2Hearts' sparkling Center and beloved mood-maker. A former child model scouted in 2022, Ian previously appeared in SM Entertainment's 30th-anniversary film 'The Future'. Her playful wit, quick stage agility, and refreshing charm make every performance buoyant and uplifting.",
+    bio: "Hearts2Hearts' sparkling Center and beloved mood-maker. A former child model scouted in 2022, Ian previously appeared in the agency's 30th-anniversary film 'The Future'. Her playful wit, quick stage agility, and refreshing charm make every performance buoyant and uplifting.",
   },
   {
     id: 'ye-on',
@@ -119,6 +119,6 @@ export const MEMBERS_DATA: Member[] = [
     accentColor: '#FFA6D9',
     portraitAssetKey: 'member-portrait-ye-on',
     symbol: '😊',
-    bio: "The golden-voiced Maknae (youngest member) of Hearts2Hearts. Singing passionately since age 5 and scouted by SM in sixth grade, Ye-on's crystal-clear vocal range and sincere emotional sweetness tie the group's lush vocal harmonies together.",
+    bio: "The golden-voiced Maknae (youngest member) of Hearts2Hearts. Singing passionately since age 5 and scouted in sixth grade, Ye-on's crystal-clear vocal range and sincere emotional sweetness tie the group's lush vocal harmonies together.",
   },
 ];

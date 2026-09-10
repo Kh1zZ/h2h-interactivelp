@@ -19,7 +19,7 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   title: 'Hearts2Hearts — Meet the Group',
   description:
-    'An immersive, fan-made interactive introduction to Hearts2Hearts (하츠투하츠), the 8-member girl group under SM Entertainment. Explore the members, debut single album The Chase, discography, and their cheerful visual universe.',
+    'An immersive, fan-made interactive introduction to Hearts2Hearts (하츠투하츠), the 8-member girl group. Explore the members, debut single album The Chase, discography, and their cheerful visual universe.',
   keywords: [
     'Hearts2Hearts',
     '하츠투하츠',
