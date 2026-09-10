@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Sparkles, Heart } from 'lucide-react';
@@ -13,6 +13,14 @@ import { Sparkles, Heart } from 'lucide-react';
 export const IntroScene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -34,18 +42,20 @@ export const IntroScene: React.FC = () => {
   const statsScale = useTransform(smoothProgress, [0.35, 0.7], [0.9, 1]);
   const statsOpacity = useTransform(smoothProgress, [0.35, 0.7], [0, 1]);
 
+  const shouldAnimate = isDesktop && !prefersReducedMotion;
+
   return (
     <div
       ref={containerRef}
       id="scene-intro"
-      className={`relative w-full ${prefersReducedMotion ? 'min-h-[100dvh] py-16' : 'min-h-[100dvh] md:h-[190vh] py-12 md:py-0'}`}
+      className={`relative w-full ${!shouldAnimate ? 'py-16 sm:py-24 min-h-[100dvh] flex flex-col justify-center items-center' : 'min-h-[100dvh] lg:h-[190vh]'}`}
     >
       <div
         className={`${
-          prefersReducedMotion
-            ? 'relative'
-            : 'relative md:sticky md:top-0 min-h-[100dvh] md:h-screen flex flex-col justify-center items-center'
-        } w-full px-4 sm:px-8 lg:px-12 max-w-6xl mx-auto text-center z-10 py-10 md:py-0`}
+          !shouldAnimate
+            ? 'relative flex flex-col justify-center items-center'
+            : 'sticky top-0 h-screen flex flex-col justify-center items-center'
+        } w-full px-4 sm:px-8 lg:px-12 max-w-6xl mx-auto text-center z-10 py-8 lg:py-0`}
       >
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-4 sm:mb-8">
@@ -56,14 +66,14 @@ export const IntroScene: React.FC = () => {
         {/* Grand Headline Lines */}
         <div className="space-y-1 sm:space-y-3 mb-4 sm:mb-8">
           <motion.h2
-            style={prefersReducedMotion ? {} : { y: line1Y, opacity: line1Opacity }}
+            style={!shouldAnimate ? {} : { y: line1Y, opacity: line1Opacity }}
             className="font-display font-black text-3xl sm:text-5xl lg:text-7xl text-h2h-blue-primary leading-tight"
           >
             Eight cheerful voices.
           </motion.h2>
 
           <motion.h2
-            style={prefersReducedMotion ? {} : { y: line2Y, opacity: line2Opacity }}
+            style={!shouldAnimate ? {} : { y: line2Y, opacity: line2Opacity }}
             className="font-display font-black text-3xl sm:text-5xl lg:text-7xl text-h2h-blue-deep leading-tight"
           >
             One sweet harmony.
@@ -71,7 +81,7 @@ export const IntroScene: React.FC = () => {
         </div>
 
         <motion.p
-          style={prefersReducedMotion ? {} : { opacity: line2Opacity }}
+          style={!shouldAnimate ? {} : { opacity: line2Opacity }}
           className="font-sans text-sm sm:text-base lg:text-xl text-h2h-ink/85 max-w-3xl mx-auto leading-relaxed font-normal mb-6 sm:mb-10 px-2"
         >
           <span className="font-bold text-h2h-ink">Hearts2Hearts (하츠투하츠)</span> is an eight-member girl group formed under{' '}
@@ -82,7 +92,7 @@ export const IntroScene: React.FC = () => {
 
         {/* 4 Large Candy Stat Badges */}
         <motion.div
-          style={prefersReducedMotion ? {} : { scale: statsScale, opacity: statsOpacity }}
+          style={!shouldAnimate ? {} : { scale: statsScale, opacity: statsOpacity }}
           className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 w-full max-w-4xl mx-auto"
         >
           <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col items-center">

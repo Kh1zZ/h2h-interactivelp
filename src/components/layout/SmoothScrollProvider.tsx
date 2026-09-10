@@ -24,12 +24,17 @@ export const SmoothScrollProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
 
   useEffect(() => {
+    // Disable Lenis on mobile screens (< 1024px) to allow native 120Hz momentum and CSS scroll-snap
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
+      touchMultiplier: 1.0,
     });
 
     setLenisInstance(lenis);

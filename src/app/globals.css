@@ -53,3 +53,15 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Mobile Vertical Scroll Lock for Member Journey */
+@media (max-width: 1023px) {
+  html {
+    scroll-snap-type: y proximity;
+    scroll-padding-top: 4.5rem;
+  }
+  .mobile-snap-item {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}

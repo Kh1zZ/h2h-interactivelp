@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useLenis } from '@/components/layout/SmoothScrollProvider';
 import { MEMBERS_DATA } from '@/data/membersData';
@@ -58,8 +58,6 @@ export const MemberJourneyScene: React.FC = () => {
     { clamp: true }
   );
 
-  // Touch gesture support for mobile photocard
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   // Sync activeIdx with scroll progress for header tabs and counter
   useEffect(() => {
@@ -122,23 +120,6 @@ export const MemberJourneyScene: React.FC = () => {
     }
   }, [activeIdx, jumpToMember]);
 
-  // Touch handlers for mobile card swipe
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX - touchEndX;
-
-    if (diff > 45) {
-      handleNext();
-    } else if (diff < -45) {
-      handlePrev();
-    }
-    setTouchStartX(null);
-  };
 
   // Keyboard navigation
   useEffect(() => {
@@ -162,203 +143,127 @@ export const MemberJourneyScene: React.FC = () => {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [handleNext, handlePrev]);
 
-  const currentMember = MEMBERS_DATA[activeIdx] || MEMBERS_DATA[0];
-
   return (
     <section
       ref={containerRef}
       id="scene-members"
-      className="relative w-full bg-h2h-cream select-none lg:h-[750vh] min-h-[100dvh]"
+      className="relative w-full bg-h2h-cream select-none lg:h-[750vh]"
       aria-label="Hearts2Hearts Member Showcase"
     >
       {/* ========================================================================= */}
-      {/* 1. MOBILE VIEW (< lg): Screen-Filling Photocard with Fading Brief Bio    */}
+      {/* 1. MOBILE VIEW (< lg): Long Vertical Scroll-Locked Member Journey Cards   */}
       {/* ========================================================================= */}
-      <div className="block lg:hidden w-full px-4 sm:px-6 pt-20 pb-12 flex flex-col justify-between min-h-[100dvh] max-w-md mx-auto">
-        {/* Top Header Rail (Counter + Fast Jump Tabs) */}
-        <div className="w-full space-y-3 mb-3 shrink-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-baseline gap-2">
-              <span className="font-display font-black text-3xl text-h2h-pink-deep leading-none">
-                0{activeIdx + 1}
-              </span>
-              <span className="text-h2h-muted text-lg font-bold">/</span>
-              <span className="text-h2h-muted text-lg font-bold">08</span>
-              <span className="text-h2h-blue-deep font-display font-bold text-xs uppercase tracking-wider ml-1">
-                Member Spotlight
-              </span>
-            </div>
-
-            {/* Quick Hangul Badge */}
-            <div className="px-3 py-1 rounded-full bg-white/95 border border-h2h-blue-sky/80 shadow-2xs text-xs font-display font-bold text-h2h-blue-deep">
-              {currentMember.stageName} ({currentMember.hangul})
-            </div>
+      <div className="block lg:hidden w-full">
+        {/* Top Section Intro */}
+        <div className="w-full text-center pt-24 pb-6 px-4 max-w-md mx-auto">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs uppercase tracking-wider mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-h2h-blue-primary" />
+            <span>Chapter 02 • Member Showcase</span>
           </div>
-
-          {/* Quick-Jump 8 Member Tabs (Touch Horizontal Scroll) */}
-          <nav
-            className="flex items-center gap-1.5 p-1 rounded-full bg-white/95 border border-h2h-blue-sky/70 shadow-2xs overflow-x-auto scrollbar-none"
-            aria-label="Member selection rail mobile"
-          >
-            {MEMBERS_DATA.map((member, i) => {
-              const isActive = activeIdx === i;
-              return (
-                <button
-                  key={member.id}
-                  onClick={() => jumpToMember(i)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-display font-bold transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 ${
-                    isActive
-                      ? 'bg-h2h-blue-primary text-white shadow-xs scale-105'
-                      : 'text-h2h-ink/70 hover:bg-h2h-blue-sky/40'
-                  }`}
-                >
-                  {member.stageName}
-                </button>
-              );
-            })}
-          </nav>
+          <h2 className="font-display font-black text-3xl sm:text-4xl text-h2h-blue-deep tracking-tight">
+            Meet The 8 Hearts
+          </h2>
+          <p className="text-xs sm:text-sm font-sans font-bold text-h2h-muted mt-1.5">
+            Scroll down to explore each member photocard ↓
+          </p>
         </div>
 
-        {/* Photocard Staging (Screen-Filling Idol Card with Bottom Fading Gradient) */}
-        <div
-          className="relative w-full flex-1 flex items-center justify-center my-1"
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          <AnimatePresence mode="wait">
-            <motion.article
-              key={currentMember.id}
-              initial={{ opacity: 0, scale: 0.96, y: 8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: -8 }}
-              transition={{ duration: 0.22, ease: 'easeOut' }}
-              className="relative w-full h-[73vh] max-h-[610px] min-h-[500px] rounded-[2.5rem] overflow-hidden border-2 border-h2h-pink-soft shadow-cute-lg bg-slate-900 flex flex-col justify-between"
-              aria-label={`Profile card for ${currentMember.stageName}`}
+        {/* 8 Full-Screen Vertical Locked Photocards */}
+        <div className="w-full flex flex-col items-center">
+          {MEMBERS_DATA.map((member, index) => (
+            <div
+              key={member.id}
+              className="w-full min-h-[100dvh] flex flex-col items-center justify-center px-4 py-6 mobile-snap-item"
             >
-              {/* Screen-Filling Member Photo */}
-              <AssetSlot
-                assetKey={currentMember.portraitAssetKey}
-                aspectRatio="auto"
-                alt={`Official portrait of ${currentMember.stageName}`}
-                className="absolute inset-0 w-full h-full"
-                roundedClassName="rounded-[2.4rem]"
-                showPlaceholderLabel={false}
-              />
+              <article
+                className="relative w-full max-w-[360px] xs:max-w-[380px] h-[78dvh] max-h-[640px] min-h-[500px] rounded-[2.5rem] overflow-hidden border-2 border-h2h-pink-soft shadow-cute-lg bg-slate-900 flex flex-col justify-between"
+                aria-label={`Profile card for ${member.stageName}`}
+              >
+                {/* Screen-Filling Member Photo */}
+                <AssetSlot
+                  assetKey={member.portraitAssetKey}
+                  aspectRatio="auto"
+                  alt={`Official portrait of ${member.stageName}`}
+                  className="absolute inset-0 w-full h-full"
+                  roundedClassName="rounded-[2.4rem]"
+                  showPlaceholderLabel={false}
+                />
 
-              {/* Top Floating Badges */}
-              <div className="relative z-10 p-4 flex items-center justify-between w-full pointer-events-none">
-                <div className="px-3.5 py-1 bg-black/45 backdrop-blur-md rounded-full border border-white/20 text-white/90 text-xs font-sans font-bold shadow-xs">
-                  하츠투하츠 • {currentMember.hangul}
-                </div>
+                {/* Top Floating Badges */}
+                <div className="relative z-10 p-4 flex items-center justify-between w-full pointer-events-none">
+                  <div className="px-3.5 py-1 bg-black/50 backdrop-blur-md rounded-full border border-white/20 text-white/90 text-xs font-sans font-bold shadow-xs">
+                    하츠투하츠 • {member.hangul}
+                  </div>
 
-                <div className="px-3.5 py-1 bg-white/95 backdrop-blur-md rounded-full border border-h2h-pink-soft text-h2h-blue-deep text-xs font-display font-black shadow-xs flex items-center gap-1.5">
-                  <span className="text-base" role="img" aria-label="symbol">
-                    {currentMember.symbol}
-                  </span>
-                  <span>0{activeIdx + 1}</span>
-                </div>
-              </div>
-
-              {/* Bottom Vignette Fading Overlay with Brief Biography */}
-              <div className="relative z-10 pt-28 pb-5 px-5 bg-gradient-to-t from-[#0e122b]/95 via-[#0e122b]/75 via-50% to-transparent flex flex-col justify-end gap-2.5">
-                {/* Role Cue Pill */}
-                <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-h2h-pink-primary text-xs font-display font-bold uppercase tracking-wider">
-                  <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
-                  <span>{currentMember.roleCue}</span>
-                </div>
-
-                {/* Stage Name & Korean Name */}
-                <div className="flex items-baseline justify-between gap-2">
-                  <h3 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight leading-none">
-                    {currentMember.stageName}
-                  </h3>
-                  <span className="font-sans font-bold text-xl text-h2h-pink-primary">
-                    {currentMember.hangul}
-                  </span>
-                </div>
-
-                {/* Compact Biography Profile Facts (No long description paragraph) */}
-                <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
-                  <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
-                    <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
-                      <User className="w-3 h-3 text-h2h-blue-primary" /> Real Name
+                  <div className="px-3.5 py-1 bg-white/95 backdrop-blur-md rounded-full border border-h2h-pink-soft text-h2h-blue-deep text-xs font-display font-black shadow-xs flex items-center gap-1.5">
+                    <span className="text-base" role="img" aria-label="symbol">
+                      {member.symbol}
                     </span>
-                    <span className="font-sans font-bold text-white truncate text-xs">
-                      {currentMember.realName}
+                    <span>0{index + 1}</span>
+                    <span className="text-h2h-muted text-[10px] font-bold">/ 08</span>
+                  </div>
+                </div>
+
+                {/* Bottom Vignette Fading Overlay with Brief Biography */}
+                <div className="relative z-10 pt-24 pb-5 px-5 bg-gradient-to-t from-[#0e122b]/95 via-[#0e122b]/80 via-45% to-transparent flex flex-col justify-end gap-2">
+                  {/* Role Cue Pill */}
+                  <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-h2h-pink-primary text-xs font-display font-bold uppercase tracking-wider">
+                    <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
+                    <span>{member.roleCue}</span>
+                  </div>
+
+                  {/* Stage Name & Korean Name */}
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight leading-none">
+                      {member.stageName}
+                    </h3>
+                    <span className="font-sans font-bold text-xl text-h2h-pink-primary">
+                      {member.hangul}
                     </span>
                   </div>
 
-                  <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
-                    <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-h2h-pink-primary" /> Birthday
-                    </span>
-                    <span className="font-sans font-bold text-white truncate text-xs">
-                      {currentMember.birthday}
-                    </span>
-                  </div>
+                  {/* Compact Biography Profile Facts (No long description paragraph) */}
+                  <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
+                    <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
+                      <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
+                        <User className="w-3 h-3 text-h2h-blue-primary" /> Real Name
+                      </span>
+                      <span className="font-sans font-bold text-white truncate text-xs">
+                        {member.realName}
+                      </span>
+                    </div>
 
-                  <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
-                    <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
-                      <Star className="w-3 h-3 text-h2h-blue-primary" /> Zodiac • MBTI
-                    </span>
-                    <span className="font-sans font-bold text-white truncate text-xs">
-                      {currentMember.zodiac} • {currentMember.mbti}
-                    </span>
-                  </div>
+                    <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
+                      <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-h2h-pink-primary" /> Birthday
+                      </span>
+                      <span className="font-sans font-bold text-white truncate text-xs">
+                        {member.birthday}
+                      </span>
+                    </div>
 
-                  <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
-                    <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-h2h-pink-primary" /> Origin
-                    </span>
-                    <span className="font-sans font-bold text-white truncate text-xs">
-                      {currentMember.nationality || 'South Korea'}
-                    </span>
+                    <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
+                      <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
+                        <Star className="w-3 h-3 text-h2h-blue-primary" /> Zodiac • MBTI
+                      </span>
+                      <span className="font-sans font-bold text-white truncate text-xs">
+                        {member.zodiac} • {member.mbti}
+                      </span>
+                    </div>
+
+                    <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
+                      <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-h2h-pink-primary" /> Origin
+                      </span>
+                      <span className="font-sans font-bold text-white truncate text-xs">
+                        {member.nationality || 'South Korea'}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.article>
-          </AnimatePresence>
-        </div>
-
-        {/* Mobile Bottom Navigation Bar (Prev / Next + Dot Indicators) */}
-        <div className="w-full pt-3 flex items-center justify-between gap-3 shrink-0">
-          <button
-            onClick={handlePrev}
-            disabled={activeIdx === 0}
-            className={`p-3 rounded-full bg-white/95 border border-h2h-blue-sky/80 text-h2h-blue-deep shadow-2xs transition-all ${
-              activeIdx === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:scale-105 active:scale-95 cursor-pointer'
-            }`}
-            aria-label="Previous member"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-
-          {/* 8 Hearts Dot Indicator */}
-          <div className="flex items-center gap-1.5" aria-hidden="true">
-            {MEMBERS_DATA.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => jumpToMember(i)}
-                aria-label={`Jump to member 0${i + 1}`}
-                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  activeIdx === i ? 'w-6 bg-h2h-pink-primary' : 'w-2 bg-h2h-blue-sky/80'
-                }`}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={handleNext}
-            disabled={activeIdx === totalMembers - 1}
-            className={`p-3 rounded-full bg-white/95 border border-h2h-blue-sky/80 text-h2h-blue-deep shadow-2xs transition-all ${
-              activeIdx === totalMembers - 1
-                ? 'opacity-30 cursor-not-allowed'
-                : 'hover:scale-105 active:scale-95 cursor-pointer'
-            }`}
-            aria-label="Next member"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+              </article>
+            </div>
+          ))}
         </div>
       </div>
 
