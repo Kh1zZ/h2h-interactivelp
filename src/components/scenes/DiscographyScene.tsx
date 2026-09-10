@@ -58,6 +58,9 @@ export const DiscographyScene: React.FC = () => {
     if (prefersReducedMotion) return;
 
     const unsubscribe = smoothProgress.on('change', (latest) => {
+      // Only drive release switching via scroll when on desktop screens
+      if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
+
       const totalReleases = DISCOGRAPHY_DATA.length;
       // Dwell cushions: 0.00 - 0.05 keeps Release 01 locked; 0.95 - 1.00 keeps Release 06 locked before natural unpin
       const clamped = Math.max(0.05, Math.min(0.95, latest));
@@ -76,19 +79,23 @@ export const DiscographyScene: React.FC = () => {
 
   const jumpToRelease = (index: number) => {
     setActiveReleaseIdx(index);
-    const el = containerRef.current;
-    if (!el) return;
-    const totalReleases = DISCOGRAPHY_DATA.length;
-    const normalized = (index + 0.5) / totalReleases;
-    const targetProgress = 0.05 + normalized * (0.95 - 0.05);
-    const rect = el.getBoundingClientRect();
-    const containerTop = window.scrollY + rect.top;
-    const scrollDistance = el.offsetHeight - window.innerHeight;
-    const targetScroll = containerTop + targetProgress * scrollDistance;
-    if (typeof window !== 'undefined' && (window as any).__lenis) {
-      (window as any).__lenis.scrollTo(targetScroll, { duration: 0.6 });
-    } else {
-      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+
+    // Only scroll the vertical container track when on desktop
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+      const el = containerRef.current;
+      if (!el) return;
+      const totalReleases = DISCOGRAPHY_DATA.length;
+      const normalized = (index + 0.5) / totalReleases;
+      const targetProgress = 0.05 + normalized * (0.95 - 0.05);
+      const rect = el.getBoundingClientRect();
+      const containerTop = window.scrollY + rect.top;
+      const scrollDistance = el.offsetHeight - window.innerHeight;
+      const targetScroll = containerTop + targetProgress * scrollDistance;
+      if (typeof window !== 'undefined' && (window as any).__lenis) {
+        (window as any).__lenis.scrollTo(targetScroll, { duration: 0.6 });
+      } else {
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
     }
   };
 
@@ -158,7 +165,7 @@ export const DiscographyScene: React.FC = () => {
     <section
       ref={containerRef}
       id="scene-discography"
-      className={`relative w-full scroll-mt-6 ${prefersReducedMotion ? 'min-h-screen py-16' : 'h-[380vh]'}`}
+      className={`relative w-full scroll-mt-6 ${prefersReducedMotion ? 'min-h-[100dvh] py-16' : 'min-h-[100dvh] lg:h-[380vh] py-16 lg:py-0'}`}
     >
       {/* Hidden Audio Element */}
       <audio ref={audioRef} src={activeRelease.audioSrc} preload="metadata" />
@@ -167,8 +174,8 @@ export const DiscographyScene: React.FC = () => {
         className={`${
           prefersReducedMotion
             ? 'relative max-w-6xl mx-auto py-16'
-            : 'sticky top-0 h-screen flex flex-col justify-center items-center'
-        } w-full px-4 sm:px-8 max-w-6xl mx-auto z-10 pt-20 sm:pt-24 pb-6`}
+            : 'relative lg:sticky lg:top-0 min-h-[100dvh] lg:h-screen flex flex-col justify-center items-center'
+        } w-full px-4 sm:px-8 max-w-6xl mx-auto z-10 pt-20 sm:pt-24 pb-8 lg:pb-6`}
       >
         {/* Section Eyebrow Header */}
         <div className="text-center max-w-2xl mx-auto mb-3 sm:mb-4 shrink-0">
@@ -181,16 +188,16 @@ export const DiscographyScene: React.FC = () => {
             The Sound of Hearts
           </h2>
           <p className="font-sans text-xs sm:text-sm text-h2h-muted mt-0.5 max-w-lg mx-auto">
-            Scroll to spin the pastel turntable and listen to official 20-second music highlights.
+            Scroll or tap releases to spin the pastel turntable and listen to official highlights.
           </p>
         </div>
 
         {/* The Turntable & Sleeve Showcase Card */}
-        <div className="w-full max-w-4xl bg-white/95 border-2 border-h2h-blue-sky/70 rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-7 shadow-cute-lg max-h-[calc(100vh-12rem)] md:max-h-none overflow-y-auto md:overflow-visible">
+        <div className="w-full max-w-4xl bg-white/95 border-2 border-h2h-blue-sky/70 rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-7 shadow-cute-lg relative">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
             {/* Left: Pastel Toy Turntable (5 cols on lg) */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-              <div className="relative w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full bg-gradient-to-br from-h2h-blue-sky/40 via-white to-h2h-pink-soft/50 border-4 border-white shadow-cute flex items-center justify-center p-3 sm:p-4">
+              <div className="relative w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full bg-gradient-to-br from-h2h-blue-sky/40 via-white to-h2h-pink-soft/50 border-4 border-white shadow-cute flex items-center justify-center p-2.5 sm:p-4">
                 {/* Spinning Pastel Vinyl Disc */}
                 <motion.div
                   style={prefersReducedMotion ? {} : { rotate: vinylRotate }}
@@ -204,14 +211,14 @@ export const DiscographyScene: React.FC = () => {
                         onClick={togglePlay}
                         aria-label={isPlaying ? 'Pause preview' : 'Play 20s preview'}
                         title={isPlaying ? 'Pause preview' : 'Play 20s preview'}
-                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-h2h-pink-soft border-2 border-white flex flex-col items-center justify-center text-center p-1 shadow-xs hover:scale-105 transition-transform cursor-pointer group"
+                        className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-h2h-pink-soft border-2 border-white flex flex-col items-center justify-center text-center p-1 shadow-xs hover:scale-105 transition-transform cursor-pointer group"
                       >
                         {isPlaying ? (
-                          <Pause className="w-5 h-5 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep" />
+                          <Pause className="w-4 h-4 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep" />
                         ) : (
-                          <Play className="w-5 h-5 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep ml-0.5" />
+                          <Play className="w-4 h-4 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep ml-0.5" />
                         )}
-                        <span className="font-display text-[8px] sm:text-[9px] font-black text-h2h-ink tracking-wider mt-0.5">
+                        <span className="font-display text-[7px] sm:text-[9px] font-black text-h2h-ink tracking-wider mt-0.5">
                           {isPlaying ? 'PAUSE' : 'PLAY 20s'}
                         </span>
                       </button>
@@ -221,14 +228,14 @@ export const DiscographyScene: React.FC = () => {
 
                 {/* Cute Toy Tonearm */}
                 <div
-                  className={`absolute -top-1.5 right-2 sm:right-4 w-3.5 sm:w-4 h-24 sm:h-28 bg-white border-2 border-h2h-pink-soft rounded-full shadow-xs origin-top transition-transform duration-500 pointer-events-none ${
+                  className={`absolute -top-1 right-1 sm:right-4 w-3 sm:w-4 h-20 sm:h-28 bg-white border-2 border-h2h-pink-soft rounded-full shadow-xs origin-top transition-transform duration-500 pointer-events-none ${
                     isPlaying ? 'rotate-20' : 'rotate-12'
                   }`}
                 />
               </div>
 
               {/* Release Selector Pills (01 to 06) */}
-              <div className="mt-4 sm:mt-5 flex gap-1.5 sm:gap-2 flex-wrap justify-center">
+              <div className="mt-3 sm:mt-5 flex gap-1.5 sm:gap-2 flex-wrap justify-center">
                 {DISCOGRAPHY_DATA.map((rel, i) => (
                   <button
                     key={rel.id}
@@ -257,7 +264,7 @@ export const DiscographyScene: React.FC = () => {
                   className="flex flex-col sm:flex-row gap-5 lg:gap-6 items-center"
                 >
                   {/* Artwork Sleeve Slot */}
-                  <div className="w-36 sm:w-44 lg:w-48 shrink-0">
+                  <div className="w-28 sm:w-44 lg:w-48 shrink-0">
                     <AssetSlot
                       assetKey={activeRelease.coverAssetKey}
                       aspectRatio="1/1"

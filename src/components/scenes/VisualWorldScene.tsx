@@ -36,31 +36,31 @@ export const VisualWorldScene: React.FC = () => {
     <section
       ref={containerRef}
       id="scene-world"
-      className="relative w-full min-h-screen py-24 sm:py-32 overflow-hidden z-10 bg-h2h-cream/50"
+      className="relative w-full min-h-screen py-16 sm:py-24 lg:py-32 overflow-hidden z-10 bg-h2h-cream/50"
     >
-      <div className="w-full px-6 sm:px-12 max-w-7xl mx-auto flex flex-col items-center">
+      <div className="w-full px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto flex flex-col items-center">
         {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-h2h-pink-soft/70 border border-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-4">
-            <Sparkles className="w-4 h-4 text-h2h-pink-primary" />
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-h2h-pink-soft/70 border border-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-3 sm:mb-4">
+            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-pink-primary" />
             <span>Chapter 04 • Concept Lore & Aesthetic Universe</span>
           </div>
 
-          <h2 className="font-display font-black text-4xl sm:text-6xl text-h2h-blue-primary leading-tight">
+          <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-h2h-blue-primary leading-tight">
             The Aesthetic Universe
           </h2>
 
-          <p className="font-sans text-base sm:text-lg text-h2h-muted mt-3 max-w-2xl mx-auto leading-relaxed">
+          <p className="font-sans text-sm sm:text-base lg:text-lg text-h2h-muted mt-2 sm:mt-3 max-w-2xl mx-auto leading-relaxed px-2">
             Discover the three core pillars of Hearts2Hearts&apos; artistic identity: the debut storyline of <strong className="text-h2h-ink font-semibold">&apos;The Chase&apos;</strong>, the refreshing <strong className="text-h2h-ink font-semibold">Daylight Pastel</strong> aesthetic, and the heartfelt connection with their global fandom, <strong className="text-h2h-ink font-semibold">S2U</strong>.
           </p>
         </div>
 
         {/* 3 Pillars Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 w-full max-w-6xl mx-auto mb-10 sm:mb-16">
           {/* Card 1: The Debut Lore ('The Chase') */}
           <motion.article
             style={prefersReducedMotion ? {} : { y: card1Y }}
-            className="p-8 rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
+            className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-h2h-blue-sky/40 border border-h2h-blue-sky flex items-center justify-center text-h2h-blue-deep">
@@ -94,7 +94,7 @@ export const VisualWorldScene: React.FC = () => {
           {/* Card 2: Signature Daylight World */}
           <motion.article
             style={prefersReducedMotion ? {} : { y: card2Y }}
-            className="p-8 rounded-[2.5rem] bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
+            className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-h2h-pink-soft/50 border border-h2h-pink-soft flex items-center justify-center text-h2h-pink-deep">
@@ -128,7 +128,7 @@ export const VisualWorldScene: React.FC = () => {
           {/* Card 3: S2U Fandom Galaxy */}
           <motion.article
             style={prefersReducedMotion ? {} : { y: card3Y }}
-            className="p-8 rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/60 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
+            className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/60 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-500">
@@ -161,7 +161,7 @@ export const VisualWorldScene: React.FC = () => {
         </div>
 
         {/* Official Era Group Visual Staging */}
-        <div className="w-full max-w-5xl mx-auto rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/70 p-4 sm:p-6 shadow-cute-lg flex flex-col items-center">
+        <div className="w-full max-w-5xl mx-auto rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/70 p-3 sm:p-6 shadow-cute-lg flex flex-col items-center">
           <div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm">
             <AssetSlot
               assetKey="hero-group-visual"

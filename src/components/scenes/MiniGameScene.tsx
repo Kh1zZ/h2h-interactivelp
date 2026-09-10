@@ -121,20 +121,20 @@ export const MiniGameScene: React.FC = () => {
     <section
       id="scene-game"
       aria-label="Hearts2Hearts Mini-Game"
-      className="relative min-h-screen py-28 px-6 sm:px-12 flex flex-col justify-center"
+      className="relative min-h-screen py-16 sm:py-28 px-4 sm:px-8 lg:px-12 flex flex-col justify-center"
     >
       <div className="max-w-5xl mx-auto w-full z-10">
         {/* Header with Skip Option */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-10 pb-6 border-b border-h2h-blue-sky/40">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 pb-4 sm:pb-6 border-b border-h2h-blue-sky/40">
           <div>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-h2h-blue-sky/50 text-h2h-blue-deep font-display font-bold text-sm tracking-wider uppercase mb-2">
-              <Gamepad2 className="w-4 h-4 text-h2h-blue-primary" />
+            <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-h2h-blue-sky/50 text-h2h-blue-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-2">
+              <Gamepad2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary" />
               <span>Chapter 05 • Candy Playroom</span>
             </div>
-            <h2 className="font-display font-black text-4xl sm:text-5xl text-h2h-blue-primary">
+            <h2 className="font-display font-black text-3xl sm:text-5xl text-h2h-blue-primary">
               Hearts Playroom
             </h2>
-            <p className="font-sans text-base sm:text-lg text-h2h-muted mt-1">
+            <p className="font-sans text-sm sm:text-base lg:text-lg text-h2h-muted mt-1">
               Reinforce what you learned! 100% optional, sweet, and purely for fun.
             </p>
           </div>
@@ -142,20 +142,20 @@ export const MiniGameScene: React.FC = () => {
           {/* Skip Button */}
           <button
             onClick={handleSkipToClosing}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-h2h-blue-sky/30 text-h2h-ink font-display text-sm font-bold border-2 border-h2h-blue-sky/70 shadow-xs transition-all cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary shrink-0"
+            className="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white hover:bg-h2h-blue-sky/30 text-h2h-ink font-display text-xs sm:text-sm font-bold border-2 border-h2h-blue-sky/70 shadow-xs transition-all cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary shrink-0"
             aria-label="Skip mini-game and jump to closing section"
           >
             <span>Skip to Finale</span>
-            <ArrowDown className="w-4 h-4" />
+            <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex justify-center mb-10">
-          <div className="inline-flex p-1.5 rounded-2xl bg-h2h-blue-sky/40 border border-h2h-blue-sky/60 shadow-xs">
+        <div className="flex justify-center mb-6 sm:mb-10">
+          <div className="inline-flex p-1 sm:p-1.5 rounded-2xl bg-h2h-blue-sky/40 border border-h2h-blue-sky/60 shadow-xs">
             <button
               onClick={() => setActiveTab('match')}
-              className={`px-6 py-3 rounded-xl text-sm sm:text-base font-display font-black transition-all cursor-pointer ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-xs sm:text-base font-display font-black transition-all cursor-pointer ${
                 activeTab === 'match'
                   ? 'bg-white text-h2h-blue-deep shadow-cute'
                   : 'text-h2h-ink/70 hover:text-h2h-ink'
@@ -165,7 +165,7 @@ export const MiniGameScene: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('quiz')}
-              className={`px-6 py-3 rounded-xl text-sm sm:text-base font-display font-black transition-all cursor-pointer ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-xs sm:text-base font-display font-black transition-all cursor-pointer ${
                 activeTab === 'quiz'
                   ? 'bg-white text-h2h-pink-deep shadow-cute'
                   : 'text-h2h-ink/70 hover:text-h2h-ink'
@@ -180,46 +180,46 @@ export const MiniGameScene: React.FC = () => {
         {/* GAME 1: MATCH THE HEART */}
         {/* ==================================================== */}
         {activeTab === 'match' && (
-          <div className="bg-white/95 rounded-3xl p-8 sm:p-12 border-2 border-h2h-blue-sky/70 shadow-cute-lg">
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-h2h-blue-sky/30">
+          <div className="bg-white/95 rounded-3xl p-4 sm:p-8 md:p-12 border-2 border-h2h-blue-sky/70 shadow-cute-lg">
+            <div className="flex items-center justify-between mb-6 sm:mb-8 pb-3 sm:pb-4 border-b border-h2h-blue-sky/30">
               <div>
-                <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-ink">
+                <h3 className="font-display font-black text-xl sm:text-3xl text-h2h-ink">
                   Match Member to Portrait
                 </h3>
-                <p className="font-sans text-sm sm:text-base text-h2h-muted mt-1">
+                <p className="font-sans text-xs sm:text-sm text-h2h-muted mt-0.5">
                   Click a portrait card first, then tap the matching stage name!
                 </p>
               </div>
               <button
                 onClick={resetMatchGame}
-                className="p-3 rounded-2xl bg-h2h-blue-sky/30 text-h2h-blue-deep hover:bg-h2h-pink-soft hover:text-h2h-pink-deep transition-colors cursor-pointer"
+                className="p-2 sm:p-3 rounded-2xl bg-h2h-blue-sky/30 text-h2h-blue-deep hover:bg-h2h-pink-soft hover:text-h2h-pink-deep transition-colors cursor-pointer"
                 title="Reset Game"
                 aria-label="Reset Match Game"
               >
-                <RotateCcw className="w-5 h-5" />
+                <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
             {matchError && (
-              <div className="mb-6 p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-sm font-sans text-center font-bold">
+              <div className="mb-4 sm:mb-6 p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-sans text-center font-bold">
                 {matchError}
               </div>
             )}
 
             {matchedIds.length === matchCandidates.length ? (
-              <div className="text-center py-12 space-y-5">
-                <div className="w-20 h-20 rounded-full bg-h2h-pink-soft text-h2h-pink-deep mx-auto flex items-center justify-center">
-                  <Trophy className="w-10 h-10 text-h2h-pink-primary" />
+              <div className="text-center py-8 sm:py-12 space-y-4 sm:space-y-5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-h2h-pink-soft text-h2h-pink-deep mx-auto flex items-center justify-center">
+                  <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-h2h-pink-primary" />
                 </div>
-                <h4 className="font-display font-black text-3xl sm:text-4xl text-h2h-ink">
+                <h4 className="font-display font-black text-2xl sm:text-4xl text-h2h-ink">
                   Perfect Match! ✨
                 </h4>
-                <p className="font-sans text-base sm:text-lg text-h2h-muted max-w-md mx-auto">
+                <p className="font-sans text-sm sm:text-base text-h2h-muted max-w-md mx-auto">
                   You recognized all member portraits flawlessly! You are officially ready for the S2U family.
                 </p>
                 <button
                   onClick={resetMatchGame}
-                  className="px-8 py-3.5 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-sm shadow-cute hover:bg-h2h-blue-deep transition-all cursor-pointer"
+                  className="px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-xs sm:text-sm shadow-cute hover:bg-h2h-blue-deep transition-all cursor-pointer"
                 >
                   Play Again
                 </button>
@@ -227,7 +227,7 @@ export const MiniGameScene: React.FC = () => {
             ) : (
               <div>
                 {/* Step 1: Portraits Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mb-8">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-5 mb-6 sm:mb-8">
                   {matchCandidates.map((m) => {
                     const isMatched = matchedIds.includes(m.id);
                     const isSelected = selectedCandidate === m.id;
@@ -240,7 +240,7 @@ export const MiniGameScene: React.FC = () => {
                           setSelectedCandidate(m.id);
                           setMatchError(null);
                         }}
-                        className={`relative rounded-3xl p-3 transition-all duration-200 cursor-pointer border-2 ${
+                        className={`relative rounded-2xl sm:rounded-3xl p-2 sm:p-3 transition-all duration-200 cursor-pointer border-2 ${
                           isMatched
                             ? 'opacity-40 border-green-400 bg-green-50 pointer-events-none'
                             : isSelected
@@ -252,12 +252,12 @@ export const MiniGameScene: React.FC = () => {
                         <AssetSlot
                           assetKey={m.portraitAssetKey}
                           aspectRatio="3/4"
-                          roundedClassName="rounded-2xl"
+                          roundedClassName="rounded-xl sm:rounded-2xl"
                           showPlaceholderLabel={false}
                         />
                         {isMatched && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-3xl">
-                            <CheckCircle2 className="w-10 h-10 text-green-500" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-2xl sm:rounded-3xl">
+                            <CheckCircle2 className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
                           </div>
                         )}
                       </button>
@@ -266,11 +266,11 @@ export const MiniGameScene: React.FC = () => {
                 </div>
 
                 {/* Step 2: Large Name Chips */}
-                <div className="border-t border-h2h-blue-sky/40 pt-6">
-                  <span className="block text-sm font-display font-bold text-h2h-blue-deep uppercase tracking-wider mb-4 text-center">
+                <div className="border-t border-h2h-blue-sky/40 pt-4 sm:pt-6">
+                  <span className="block text-xs sm:text-sm font-display font-bold text-h2h-blue-deep uppercase tracking-wider mb-3 sm:mb-4 text-center">
                     Select the matching stage name:
                   </span>
-                  <div className="flex flex-wrap justify-center gap-4">
+                  <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4">
                     {matchCandidates.map((m) => {
                       const isMatched = matchedIds.includes(m.id);
 
@@ -279,7 +279,7 @@ export const MiniGameScene: React.FC = () => {
                           key={m.id}
                           disabled={isMatched}
                           onClick={() => handleNameSelect(m.stageName, m.id)}
-                          className={`px-7 py-3 rounded-2xl font-display font-black text-base sm:text-lg transition-all cursor-pointer border-2 ${
+                          className={`px-4 sm:px-7 py-2 sm:py-3 rounded-xl sm:rounded-2xl font-display font-black text-sm sm:text-lg transition-all cursor-pointer border-2 ${
                             isMatched
                               ? 'bg-gray-100 text-gray-400 border-gray-200 line-through'
                               : 'bg-white text-h2h-ink border-h2h-blue-sky hover:bg-h2h-blue-sky/40 hover:border-h2h-blue-primary shadow-xs hover:shadow-cute'
@@ -300,15 +300,15 @@ export const MiniGameScene: React.FC = () => {
         {/* GAME 2: QUICK QUIZ */}
         {/* ==================================================== */}
         {activeTab === 'quiz' && (
-          <div className="bg-white/95 rounded-3xl p-8 sm:p-12 border-2 border-h2h-pink-soft shadow-cute-lg">
+          <div className="bg-white/95 rounded-3xl p-4 sm:p-8 md:p-12 border-2 border-h2h-pink-soft shadow-cute-lg">
             {!quizFinished ? (
-              <div className="space-y-8">
+              <div className="space-y-5 sm:space-y-8">
                 {/* Progress bar */}
-                <div className="flex items-center justify-between text-sm font-display font-bold text-h2h-muted">
+                <div className="flex items-center justify-between text-xs sm:text-sm font-display font-bold text-h2h-muted">
                   <span>Question {quizIndex + 1} of {QUIZ_QUESTIONS.length}</span>
                   <span>Score: {quizScore}</span>
                 </div>
-                <div className="w-full h-3 bg-h2h-pink-soft/60 rounded-full overflow-hidden">
+                <div className="w-full h-2.5 sm:h-3 bg-h2h-pink-soft/60 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-h2h-pink-primary transition-all duration-300 rounded-full"
                     style={{
@@ -318,18 +318,18 @@ export const MiniGameScene: React.FC = () => {
                 </div>
 
                 {/* Question */}
-                <div className="py-2">
-                  <h3 className="font-display font-black text-2xl sm:text-4xl text-h2h-ink leading-snug">
+                <div className="py-1 sm:py-2">
+                  <h3 className="font-display font-black text-xl sm:text-3xl lg:text-4xl text-h2h-ink leading-snug">
                     {QUIZ_QUESTIONS[quizIndex].question}
                   </h3>
-                  <p className="text-sm sm:text-base font-sans text-h2h-blue-deep font-bold mt-2 flex items-center gap-1.5">
-                    <HelpCircle className="w-4 h-4 text-h2h-blue-primary" />
-                    {QUIZ_QUESTIONS[quizIndex].hint}
+                  <p className="text-xs sm:text-base font-sans text-h2h-blue-deep font-bold mt-1.5 sm:mt-2 flex items-center gap-1.5">
+                    <HelpCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary shrink-0" />
+                    <span>{QUIZ_QUESTIONS[quizIndex].hint}</span>
                   </p>
                 </div>
 
                 {/* Options Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
                   {QUIZ_QUESTIONS[quizIndex].options.map((opt, idx) => {
                     const isSelected = selectedOption === idx;
                     const isCorrect = idx === QUIZ_QUESTIONS[quizIndex].correctIndex;
@@ -351,7 +351,7 @@ export const MiniGameScene: React.FC = () => {
                         key={idx}
                         disabled={selectedOption !== null}
                         onClick={() => handleQuizAnswer(idx)}
-                        className={`p-5 rounded-2xl border-2 text-left font-sans text-base sm:text-lg font-bold transition-all cursor-pointer shadow-xs ${btnStyle}`}
+                        className={`p-3.5 sm:p-5 rounded-2xl border-2 text-left font-sans text-sm sm:text-base lg:text-lg font-bold transition-all cursor-pointer shadow-xs ${btnStyle}`}
                       >
                         {opt}
                       </button>
@@ -360,26 +360,26 @@ export const MiniGameScene: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-12 space-y-5">
-                <div className="w-20 h-20 rounded-full bg-h2h-pink-soft text-h2h-pink-deep mx-auto flex items-center justify-center">
-                  <Sparkles className="w-10 h-10 text-h2h-pink-primary" />
+              <div className="text-center py-8 sm:py-12 space-y-4 sm:space-y-5">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-h2h-pink-soft text-h2h-pink-deep mx-auto flex items-center justify-center">
+                  <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-h2h-pink-primary" />
                 </div>
-                <h4 className="font-display font-black text-3xl sm:text-4xl text-h2h-ink">
+                <h4 className="font-display font-black text-2xl sm:text-4xl text-h2h-ink">
                   Quiz Completed!
                 </h4>
-                <p className="font-sans text-base sm:text-lg text-h2h-muted max-w-md mx-auto">
-                  You scored <span className="font-black text-h2h-pink-deep text-xl">{quizScore} / {QUIZ_QUESTIONS.length}</span>! You know the Hearts2Hearts story inside out.
+                <p className="font-sans text-sm sm:text-base text-h2h-muted max-w-md mx-auto">
+                  You scored <span className="font-black text-h2h-pink-deep text-lg sm:text-xl">{quizScore} / {QUIZ_QUESTIONS.length}</span>! You know the Hearts2Hearts story inside out.
                 </p>
-                <div className="pt-4 flex justify-center gap-4">
+                <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
                   <button
                     onClick={resetQuiz}
-                    className="px-7 py-3 rounded-full bg-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-sm hover:bg-h2h-pink-soft/80 transition-all cursor-pointer"
+                    className="w-full sm:w-auto px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-xs sm:text-sm hover:bg-h2h-pink-soft/80 transition-all cursor-pointer"
                   >
                     Try Again
                   </button>
                   <button
                     onClick={handleSkipToClosing}
-                    className="px-7 py-3 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-sm hover:bg-h2h-blue-deep transition-all cursor-pointer"
+                    className="w-full sm:w-auto px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-xs sm:text-sm hover:bg-h2h-blue-deep transition-all cursor-pointer"
                   >
                     Finish Journey
                   </button>

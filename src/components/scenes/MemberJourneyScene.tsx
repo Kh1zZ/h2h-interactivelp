@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useLenis } from '@/components/layout/SmoothScrollProvider';
 import { MEMBERS_DATA } from '@/data/membersData';
@@ -58,11 +58,17 @@ export const MemberJourneyScene: React.FC = () => {
     { clamp: true }
   );
 
+  // Touch gesture support for mobile photocard
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
   // Sync activeIdx with scroll progress for header tabs and counter
   useEffect(() => {
     if (prefersReducedMotion) return;
 
     const unsubscribe = smoothProgress.on('change', (latest) => {
+      // Only drive activeIdx from scroll when on desktop screens
+      if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
+
       const clamped = Math.max(0.03, Math.min(0.93, latest));
       const normalized = (clamped - 0.03) / (0.93 - 0.03); // 0.0 to 1.0
       const idx = Math.min(
@@ -75,25 +81,30 @@ export const MemberJourneyScene: React.FC = () => {
     return () => unsubscribe();
   }, [smoothProgress, prefersReducedMotion, totalMembers]);
 
-  // Jump smoothly to a specific member along the vertical scroll track
+  // Jump smoothly to a specific member
   const jumpToMember = useCallback(
     (targetIdx: number) => {
-      const el = containerRef.current;
-      if (!el) return;
-
       const clampedIdx = Math.max(0, Math.min(totalMembers - 1, targetIdx));
-      const normalized = clampedIdx / (totalMembers - 1);
-      const targetProgress = 0.03 + normalized * (0.93 - 0.03);
+      setActiveIdx(clampedIdx);
 
-      const rect = el.getBoundingClientRect();
-      const containerTop = window.scrollY + rect.top;
-      const scrollDistance = el.offsetHeight - window.innerHeight;
-      const targetScroll = containerTop + targetProgress * scrollDistance;
+      // On desktop, smoothly scroll the vertical container track
+      if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+        const el = containerRef.current;
+        if (!el) return;
 
-      if (lenis) {
-        lenis.scrollTo(targetScroll, { duration: 0.8 });
-      } else {
-        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        const normalized = clampedIdx / (totalMembers - 1);
+        const targetProgress = 0.03 + normalized * (0.93 - 0.03);
+
+        const rect = el.getBoundingClientRect();
+        const containerTop = window.scrollY + rect.top;
+        const scrollDistance = el.offsetHeight - window.innerHeight;
+        const targetScroll = containerTop + targetProgress * scrollDistance;
+
+        if (lenis) {
+          lenis.scrollTo(targetScroll, { duration: 0.8 });
+        } else {
+          window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        }
       }
     },
     [lenis, totalMembers]
@@ -111,13 +122,31 @@ export const MemberJourneyScene: React.FC = () => {
     }
   }, [activeIdx, jumpToMember]);
 
+  // Touch handlers for mobile card swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+
+    if (diff > 45) {
+      handleNext();
+    } else if (diff < -45) {
+      handlePrev();
+    }
+    setTouchStartX(null);
+  };
+
   // Keyboard navigation
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const el = containerRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const inView = rect.top <= 50 && rect.bottom >= window.innerHeight - 50;
+      const inView = rect.top <= 100 && rect.bottom >= 100;
       if (!inView) return;
 
       if (e.key === 'ArrowRight') {
@@ -133,17 +162,211 @@ export const MemberJourneyScene: React.FC = () => {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [handleNext, handlePrev]);
 
+  const currentMember = MEMBERS_DATA[activeIdx] || MEMBERS_DATA[0];
+
   return (
     <section
       ref={containerRef}
       id="scene-members"
-      className={`relative w-full ${
-        prefersReducedMotion ? 'min-h-screen py-16' : 'h-[750vh]'
-      } bg-h2h-cream select-none`}
+      className="relative w-full bg-h2h-cream select-none lg:h-[750vh] min-h-[100dvh]"
       aria-label="Hearts2Hearts Member Showcase"
     >
+      {/* ========================================================================= */}
+      {/* 1. MOBILE VIEW (< lg): Screen-Filling Photocard with Fading Brief Bio    */}
+      {/* ========================================================================= */}
+      <div className="block lg:hidden w-full px-4 sm:px-6 pt-20 pb-12 flex flex-col justify-between min-h-[100dvh] max-w-md mx-auto">
+        {/* Top Header Rail (Counter + Fast Jump Tabs) */}
+        <div className="w-full space-y-3 mb-3 shrink-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-baseline gap-2">
+              <span className="font-display font-black text-3xl text-h2h-pink-deep leading-none">
+                0{activeIdx + 1}
+              </span>
+              <span className="text-h2h-muted text-lg font-bold">/</span>
+              <span className="text-h2h-muted text-lg font-bold">08</span>
+              <span className="text-h2h-blue-deep font-display font-bold text-xs uppercase tracking-wider ml-1">
+                Member Spotlight
+              </span>
+            </div>
+
+            {/* Quick Hangul Badge */}
+            <div className="px-3 py-1 rounded-full bg-white/95 border border-h2h-blue-sky/80 shadow-2xs text-xs font-display font-bold text-h2h-blue-deep">
+              {currentMember.stageName} ({currentMember.hangul})
+            </div>
+          </div>
+
+          {/* Quick-Jump 8 Member Tabs (Touch Horizontal Scroll) */}
+          <nav
+            className="flex items-center gap-1.5 p-1 rounded-full bg-white/95 border border-h2h-blue-sky/70 shadow-2xs overflow-x-auto scrollbar-none"
+            aria-label="Member selection rail mobile"
+          >
+            {MEMBERS_DATA.map((member, i) => {
+              const isActive = activeIdx === i;
+              return (
+                <button
+                  key={member.id}
+                  onClick={() => jumpToMember(i)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-display font-bold transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 ${
+                    isActive
+                      ? 'bg-h2h-blue-primary text-white shadow-xs scale-105'
+                      : 'text-h2h-ink/70 hover:bg-h2h-blue-sky/40'
+                  }`}
+                >
+                  {member.stageName}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Photocard Staging (Screen-Filling Idol Card with Bottom Fading Gradient) */}
+        <div
+          className="relative w-full flex-1 flex items-center justify-center my-1"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <AnimatePresence mode="wait">
+            <motion.article
+              key={currentMember.id}
+              initial={{ opacity: 0, scale: 0.96, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: -8 }}
+              transition={{ duration: 0.22, ease: 'easeOut' }}
+              className="relative w-full h-[73vh] max-h-[610px] min-h-[500px] rounded-[2.5rem] overflow-hidden border-2 border-h2h-pink-soft shadow-cute-lg bg-slate-900 flex flex-col justify-between"
+              aria-label={`Profile card for ${currentMember.stageName}`}
+            >
+              {/* Screen-Filling Member Photo */}
+              <AssetSlot
+                assetKey={currentMember.portraitAssetKey}
+                aspectRatio="auto"
+                alt={`Official portrait of ${currentMember.stageName}`}
+                className="absolute inset-0 w-full h-full"
+                roundedClassName="rounded-[2.4rem]"
+                showPlaceholderLabel={false}
+              />
+
+              {/* Top Floating Badges */}
+              <div className="relative z-10 p-4 flex items-center justify-between w-full pointer-events-none">
+                <div className="px-3.5 py-1 bg-black/45 backdrop-blur-md rounded-full border border-white/20 text-white/90 text-xs font-sans font-bold shadow-xs">
+                  하츠투하츠 • {currentMember.hangul}
+                </div>
+
+                <div className="px-3.5 py-1 bg-white/95 backdrop-blur-md rounded-full border border-h2h-pink-soft text-h2h-blue-deep text-xs font-display font-black shadow-xs flex items-center gap-1.5">
+                  <span className="text-base" role="img" aria-label="symbol">
+                    {currentMember.symbol}
+                  </span>
+                  <span>0{activeIdx + 1}</span>
+                </div>
+              </div>
+
+              {/* Bottom Vignette Fading Overlay with Brief Biography */}
+              <div className="relative z-10 pt-28 pb-5 px-5 bg-gradient-to-t from-[#0e122b]/95 via-[#0e122b]/75 via-50% to-transparent flex flex-col justify-end gap-2.5">
+                {/* Role Cue Pill */}
+                <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-h2h-pink-primary text-xs font-display font-bold uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
+                  <span>{currentMember.roleCue}</span>
+                </div>
+
+                {/* Stage Name & Korean Name */}
+                <div className="flex items-baseline justify-between gap-2">
+                  <h3 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight leading-none">
+                    {currentMember.stageName}
+                  </h3>
+                  <span className="font-sans font-bold text-xl text-h2h-pink-primary">
+                    {currentMember.hangul}
+                  </span>
+                </div>
+
+                {/* Compact Biography Profile Facts (No long description paragraph) */}
+                <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
+                  <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
+                    <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
+                      <User className="w-3 h-3 text-h2h-blue-primary" /> Real Name
+                    </span>
+                    <span className="font-sans font-bold text-white truncate text-xs">
+                      {currentMember.realName}
+                    </span>
+                  </div>
+
+                  <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
+                    <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-h2h-pink-primary" /> Birthday
+                    </span>
+                    <span className="font-sans font-bold text-white truncate text-xs">
+                      {currentMember.birthday}
+                    </span>
+                  </div>
+
+                  <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
+                    <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
+                      <Star className="w-3 h-3 text-h2h-blue-primary" /> Zodiac • MBTI
+                    </span>
+                    <span className="font-sans font-bold text-white truncate text-xs">
+                      {currentMember.zodiac} • {currentMember.mbti}
+                    </span>
+                  </div>
+
+                  <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
+                    <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-h2h-pink-primary" /> Origin
+                    </span>
+                    <span className="font-sans font-bold text-white truncate text-xs">
+                      {currentMember.nationality || 'South Korea'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </motion.article>
+          </AnimatePresence>
+        </div>
+
+        {/* Mobile Bottom Navigation Bar (Prev / Next + Dot Indicators) */}
+        <div className="w-full pt-3 flex items-center justify-between gap-3 shrink-0">
+          <button
+            onClick={handlePrev}
+            disabled={activeIdx === 0}
+            className={`p-3 rounded-full bg-white/95 border border-h2h-blue-sky/80 text-h2h-blue-deep shadow-2xs transition-all ${
+              activeIdx === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:scale-105 active:scale-95 cursor-pointer'
+            }`}
+            aria-label="Previous member"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          {/* 8 Hearts Dot Indicator */}
+          <div className="flex items-center gap-1.5" aria-hidden="true">
+            {MEMBERS_DATA.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => jumpToMember(i)}
+                aria-label={`Jump to member 0${i + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  activeIdx === i ? 'w-6 bg-h2h-pink-primary' : 'w-2 bg-h2h-blue-sky/80'
+                }`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={handleNext}
+            disabled={activeIdx === totalMembers - 1}
+            className={`p-3 rounded-full bg-white/95 border border-h2h-blue-sky/80 text-h2h-blue-deep shadow-2xs transition-all ${
+              activeIdx === totalMembers - 1
+                ? 'opacity-30 cursor-not-allowed'
+                : 'hover:scale-105 active:scale-95 cursor-pointer'
+            }`}
+            aria-label="Next member"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 2. DESKTOP VIEW (lg+): Pinned Continuous Widescreen Scrollytelling        */}
+      {/* ========================================================================= */}
       {!prefersReducedMotion ? (
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
+        <div className="hidden lg:flex sticky top-0 h-screen w-full overflow-hidden flex-col justify-between">
           {/* Top Fixed Header Rail */}
           <header className="w-full max-w-7xl mx-auto px-6 sm:px-12 pt-20 sm:pt-24 pb-2 flex flex-col sm:flex-row items-center justify-between gap-4 z-30 shrink-0">
             {/* Counter */}
@@ -364,7 +587,7 @@ export const MemberJourneyScene: React.FC = () => {
         </div>
       ) : (
         /* Reduced Motion Fallback: Accessible Vertical Grid */
-        <div className="w-full max-w-7xl mx-auto space-y-20 px-6 sm:px-12 py-20">
+        <div className="hidden lg:block w-full max-w-7xl mx-auto space-y-20 px-6 sm:px-12 py-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="font-display font-black text-4xl sm:text-6xl text-h2h-blue-primary">
               Meet the Eight Hearts

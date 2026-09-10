@@ -38,11 +38,11 @@ export const SiteHeader: React.FC = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled
-          ? 'py-3.5 bg-white/90 backdrop-blur-md shadow-xs border-b border-h2h-blue-sky/40'
-          : 'py-6 bg-transparent'
+          ? 'py-2.5 sm:py-3.5 bg-white/95 backdrop-blur-md shadow-xs border-b border-h2h-blue-sky/40'
+          : 'py-3.5 sm:py-6 bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-12 flex items-center justify-between">
         {/* Brand Wordmark / Small Logo */}
         <button
           onClick={() => (lenis ? lenis.scrollTo(0, { duration: 1.2 }) : window.scrollTo({ top: 0, behavior: 'smooth' }))}
@@ -108,36 +108,41 @@ export const SiteHeader: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white/98 backdrop-blur-lg border-b border-h2h-blue-sky/40 px-8 py-6 space-y-4 shadow-cute animate-in fade-in slide-in-from-top-2">
+        <div className="md:hidden bg-white/98 backdrop-blur-xl border-b border-h2h-blue-sky/40 px-5 py-4 space-y-1.5 shadow-cute animate-in fade-in slide-in-from-top-2">
           <button
             onClick={() => scrollToSection('scene-intro')}
-            className="block w-full text-left py-2 font-display text-base font-bold text-h2h-ink hover:text-h2h-blue-deep"
+            className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-ink hover:bg-h2h-blue-sky/30 hover:text-h2h-blue-deep transition-all cursor-pointer"
           >
-            About Hearts2Hearts
+            <span>About Hearts2Hearts</span>
+            <span className="text-[11px] text-h2h-muted font-mono">01</span>
           </button>
           <button
             onClick={() => scrollToSection('scene-members')}
-            className="block w-full text-left py-2 font-display text-base font-bold text-h2h-ink hover:text-h2h-pink-deep"
+            className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-ink hover:bg-h2h-pink-soft/40 hover:text-h2h-pink-deep transition-all cursor-pointer"
           >
-            Eight Members
+            <span>Eight Members (Cards)</span>
+            <span className="text-[11px] text-h2h-pink-deep font-mono font-bold">02</span>
           </button>
           <button
             onClick={() => scrollToSection('scene-discography')}
-            className="block w-full text-left py-2 font-display text-base font-bold text-h2h-ink hover:text-h2h-blue-deep"
+            className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-ink hover:bg-h2h-blue-sky/30 hover:text-h2h-blue-deep transition-all cursor-pointer"
           >
-            Music
+            <span>Music & Turntable</span>
+            <span className="text-[11px] text-h2h-muted font-mono">03</span>
           </button>
           <button
             onClick={() => scrollToSection('scene-world')}
-            className="block w-full text-left py-2 font-display text-base font-bold text-h2h-ink hover:text-h2h-blue-deep"
+            className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-ink hover:bg-h2h-blue-sky/30 hover:text-h2h-blue-deep transition-all cursor-pointer"
           >
-            Visual World
+            <span>Visual World & Lore</span>
+            <span className="text-[11px] text-h2h-muted font-mono">04</span>
           </button>
           <button
             onClick={() => scrollToSection('scene-game')}
-            className="block w-full text-left py-2 font-display text-base font-bold text-h2h-pink-deep"
+            className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-pink-deep bg-h2h-pink-soft/40 hover:bg-h2h-pink-soft transition-all cursor-pointer"
           >
-            Play Mini-Game
+            <span>Candy Playroom</span>
+            <span className="text-[11px] text-h2h-pink-deep font-mono font-bold">05</span>
           </button>
         </div>
       )}

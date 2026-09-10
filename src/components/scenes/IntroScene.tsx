@@ -38,33 +38,33 @@ export const IntroScene: React.FC = () => {
     <div
       ref={containerRef}
       id="scene-intro"
-      className={`relative ${prefersReducedMotion ? 'min-h-screen py-28' : 'h-[190vh]'}`}
+      className={`relative w-full ${prefersReducedMotion ? 'min-h-[100dvh] py-16' : 'min-h-[100dvh] md:h-[190vh] py-12 md:py-0'}`}
     >
       <div
         className={`${
           prefersReducedMotion
             ? 'relative'
-            : 'sticky top-0 h-screen flex flex-col justify-center items-center'
-        } w-full px-6 sm:px-12 max-w-6xl mx-auto text-center z-10`}
+            : 'relative md:sticky md:top-0 min-h-[100dvh] md:h-screen flex flex-col justify-center items-center'
+        } w-full px-4 sm:px-8 lg:px-12 max-w-6xl mx-auto text-center z-10 py-10 md:py-0`}
       >
         {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-sm tracking-wider uppercase mb-8">
-          <Sparkles className="w-4 h-4 text-h2h-blue-primary" />
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs sm:text-sm tracking-wider uppercase mb-4 sm:mb-8">
+          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary" />
           <span>Chapter 01 • Introduction</span>
         </div>
 
         {/* Grand Headline Lines */}
-        <div className="space-y-3 mb-8">
+        <div className="space-y-1 sm:space-y-3 mb-4 sm:mb-8">
           <motion.h2
             style={prefersReducedMotion ? {} : { y: line1Y, opacity: line1Opacity }}
-            className="font-display font-black text-5xl sm:text-7xl lg:text-8xl text-h2h-blue-primary leading-tight"
+            className="font-display font-black text-3xl sm:text-5xl lg:text-7xl text-h2h-blue-primary leading-tight"
           >
             Eight cheerful voices.
           </motion.h2>
 
           <motion.h2
             style={prefersReducedMotion ? {} : { y: line2Y, opacity: line2Opacity }}
-            className="font-display font-black text-5xl sm:text-7xl lg:text-8xl text-h2h-blue-deep leading-tight"
+            className="font-display font-black text-3xl sm:text-5xl lg:text-7xl text-h2h-blue-deep leading-tight"
           >
             One sweet harmony.
           </motion.h2>
@@ -72,7 +72,7 @@ export const IntroScene: React.FC = () => {
 
         <motion.p
           style={prefersReducedMotion ? {} : { opacity: line2Opacity }}
-          className="font-sans text-xl sm:text-2xl text-h2h-ink/85 max-w-3xl mx-auto leading-relaxed font-normal mb-12"
+          className="font-sans text-sm sm:text-base lg:text-xl text-h2h-ink/85 max-w-3xl mx-auto leading-relaxed font-normal mb-6 sm:mb-10 px-2"
         >
           <span className="font-bold text-h2h-ink">Hearts2Hearts (하츠투하츠)</span> is an eight-member girl group formed under{' '}
           <span className="font-bold text-h2h-blue-deep">SM Entertainment</span>. Debuting on{' '}
@@ -83,37 +83,37 @@ export const IntroScene: React.FC = () => {
         {/* 4 Large Candy Stat Badges */}
         <motion.div
           style={prefersReducedMotion ? {} : { scale: statsScale, opacity: statsOpacity }}
-          className="grid grid-cols-2 sm:grid-cols-4 gap-5 w-full max-w-4xl mx-auto"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 w-full max-w-4xl mx-auto"
         >
-          <div className="p-6 rounded-3xl bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col items-center">
-            <span className="text-3xl mb-2">🌸</span>
-            <span className="font-display font-black text-3xl sm:text-4xl text-h2h-blue-deep">8 Hearts</span>
-            <span className="text-sm font-sans font-bold text-h2h-muted uppercase tracking-wider mt-1">Members</span>
+          <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col items-center">
+            <span className="text-2xl sm:text-3xl mb-1 sm:mb-2">🌸</span>
+            <span className="font-display font-black text-2xl sm:text-4xl text-h2h-blue-deep">8 Hearts</span>
+            <span className="text-xs sm:text-sm font-sans font-bold text-h2h-muted uppercase tracking-wider mt-0.5 sm:mt-1">Members</span>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col items-center">
-            <span className="text-3xl mb-2">📅</span>
-            <span className="font-display font-black text-3xl sm:text-4xl text-h2h-pink-deep">24 Feb</span>
-            <span className="text-sm font-sans font-bold text-h2h-muted uppercase tracking-wider mt-1">2025 Debut</span>
+          <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col items-center">
+            <span className="text-2xl sm:text-3xl mb-1 sm:mb-2">📅</span>
+            <span className="font-display font-black text-2xl sm:text-4xl text-h2h-pink-deep">24 Feb</span>
+            <span className="text-xs sm:text-sm font-sans font-bold text-h2h-muted uppercase tracking-wider mt-0.5 sm:mt-1">2025 Debut</span>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col items-center">
-            <span className="text-3xl mb-2">🏢</span>
-            <span className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-deep truncate max-w-[150px]">SM Ent</span>
-            <span className="text-sm font-sans font-bold text-h2h-muted uppercase tracking-wider mt-1">Agency</span>
+          <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col items-center">
+            <span className="text-2xl sm:text-3xl mb-1 sm:mb-2">🏢</span>
+            <span className="font-display font-black text-xl sm:text-3xl text-h2h-blue-deep truncate max-w-[140px]">SM Ent</span>
+            <span className="text-xs sm:text-sm font-sans font-bold text-h2h-muted uppercase tracking-wider mt-0.5 sm:mt-1">Agency</span>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col items-center">
-            <span className="text-3xl mb-2">💖</span>
-            <span className="font-display font-black text-3xl sm:text-4xl text-h2h-pink-primary">S2U</span>
-            <span className="text-sm font-sans font-bold text-h2h-muted uppercase tracking-wider mt-1">Official Fandom</span>
+          <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col items-center">
+            <span className="text-2xl sm:text-3xl mb-1 sm:mb-2">💖</span>
+            <span className="font-display font-black text-2xl sm:text-4xl text-h2h-pink-primary">S2U</span>
+            <span className="text-xs sm:text-sm font-sans font-bold text-h2h-muted uppercase tracking-wider mt-0.5 sm:mt-1">Official Fandom</span>
           </div>
         </motion.div>
 
         {/* Scroll forward hint */}
-        <div className="mt-10 flex items-center justify-center gap-2 text-sm font-display font-bold text-h2h-muted">
-          <span>Scroll to meet each member fullscreen</span>
-          <Heart className="w-4 h-4 fill-h2h-pink-primary text-h2h-pink-primary" />
+        <div className="mt-6 sm:mt-10 flex items-center justify-center gap-2 text-xs sm:text-sm font-display font-bold text-h2h-muted">
+          <span>Scroll to meet each member</span>
+          <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-h2h-pink-primary text-h2h-pink-primary" />
         </div>
       </div>
     </div>
