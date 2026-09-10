@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { AssetSlot } from '@/components/ui/AssetSlot';
@@ -15,6 +15,14 @@ import { Heart, Sparkles, ChevronDown } from 'lucide-react';
 export const HeroScene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -32,6 +40,8 @@ export const HeroScene: React.FC = () => {
   const cardScale = useTransform(smoothProgress, [0, 0.8, 1], [1, 1.04, 0.96]);
   const scrollCueOpacity = useTransform(smoothProgress, [0, 0.2], [1, 0]);
 
+  const shouldAnimate = isDesktop && !prefersReducedMotion;
+
   const handleScrollCue = () => {
     const nextSection = document.getElementById('scene-intro');
     if (nextSection) {
@@ -43,13 +53,13 @@ export const HeroScene: React.FC = () => {
     <div
       ref={containerRef}
       id="scene-hero"
-      className={`relative w-full ${prefersReducedMotion ? 'min-h-[100dvh] py-16' : 'min-h-[100dvh] md:h-[180vh]'}`}
+      className={`relative w-full ${!shouldAnimate ? 'min-h-[100dvh] py-14 sm:py-16' : 'min-h-[100dvh] lg:h-[180vh]'}`}
     >
       <div
         className={`${
-          prefersReducedMotion
-            ? 'relative'
-            : 'relative md:sticky md:top-0 min-h-[100dvh] md:h-screen md:overflow-hidden flex flex-col justify-between items-center'
+          !shouldAnimate
+            ? 'relative min-h-[100dvh] flex flex-col justify-between items-center'
+            : 'sticky top-0 h-screen overflow-hidden flex flex-col justify-between items-center'
         } w-full pt-20 sm:pt-28 pb-6 sm:pb-10 px-4 sm:px-8 max-w-7xl mx-auto`}
       >
         {/* Soft, Clean Ambient Background Glows */}
@@ -60,7 +70,7 @@ export const HeroScene: React.FC = () => {
 
         {/* Brand & Wordmark Area */}
         <motion.div
-          style={prefersReducedMotion ? {} : { y: titleY, scale: titleScale }}
+          style={!shouldAnimate ? undefined : { y: titleY, scale: titleScale }}
           className="relative z-10 w-full text-center my-auto flex flex-col items-center"
         >
           {/* Eyebrow Pill */}
@@ -87,7 +97,7 @@ export const HeroScene: React.FC = () => {
 
           {/* Group Visual Card in Grand Scale */}
           <motion.div
-            style={prefersReducedMotion ? {} : { scale: cardScale }}
+            style={!shouldAnimate ? undefined : { scale: cardScale }}
             className="w-full max-w-xs sm:max-w-md md:max-w-2xl mx-auto rounded-2xl sm:rounded-3xl p-2.5 sm:p-4 bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute-lg"
           >
             <AssetSlot
@@ -101,7 +111,7 @@ export const HeroScene: React.FC = () => {
 
         {/* Scroll Cue Button */}
         <motion.div
-          style={prefersReducedMotion ? {} : { opacity: scrollCueOpacity }}
+          style={!shouldAnimate ? undefined : { opacity: scrollCueOpacity }}
           className="relative z-10 pt-3 sm:pt-4"
         >
           <button

@@ -11,6 +11,7 @@ interface AssetSlotProps {
   className?: string;
   roundedClassName?: string;
   showPlaceholderLabel?: boolean;
+  imageClassName?: string;
 }
 
 /**
@@ -29,6 +30,7 @@ export const AssetSlot: React.FC<AssetSlotProps> = ({
   className = '',
   roundedClassName = 'rounded-3xl',
   showPlaceholderLabel = true,
+  imageClassName = '',
 }) => {
   const asset = getAssetByKey(assetKey);
   const [loadState, setLoadState] = useState<'pending' | 'loaded' | 'error'>('pending');
@@ -77,7 +79,7 @@ export const AssetSlot: React.FC<AssetSlotProps> = ({
         <img
           src={asset.src}
           alt={alt || asset.fallbackDescription}
-          className="w-full h-full object-cover object-center transition-opacity duration-500"
+          className={imageClassName || "w-full h-full object-cover object-center transition-opacity duration-500"}
           loading="lazy"
         />
       </div>
