@@ -151,119 +151,103 @@ export const MemberJourneyScene: React.FC = () => {
       aria-label="Hearts2Hearts Member Showcase"
     >
       {/* ========================================================================= */}
-      {/* 1. MOBILE VIEW (< lg): Long Vertical Scroll-Locked Member Journey Cards   */}
+      {/* 1. MOBILE VIEW (< lg): Continuous Fluid Vertical Member Journey Roster     */}
       {/* ========================================================================= */}
-      <div className="block lg:hidden w-full">
+      <div className="block lg:hidden w-full py-12 px-4 sm:px-6">
         {/* Top Section Intro */}
-        <div className="w-full text-center pt-24 pb-6 px-4 max-w-md mx-auto">
+        <div className="w-full text-center pt-10 pb-8 max-w-md mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-h2h-blue-sky/60 border border-h2h-blue-sky text-h2h-blue-deep font-display font-bold text-xs uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5 text-h2h-blue-primary" />
-            <span>Chapter 02 • Member Showcase</span>
+            <span>Chapter 02 • Eight Hearts</span>
           </div>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-h2h-blue-deep tracking-tight">
             Meet The 8 Hearts
           </h2>
-          <p className="text-xs sm:text-sm font-sans font-bold text-h2h-muted mt-1.5">
-            Scroll down to explore each member photocard ↓
+          <p className="text-xs sm:text-sm font-sans font-bold text-h2h-muted mt-2">
+            하츠투하츠의 여덟 가지 빛깔 • Continuous Member Showcase
           </p>
         </div>
 
-        {/* 8 Full-Screen Vertical Locked Photocards */}
-        <div className="w-full flex flex-col items-center">
+        {/* Continuous Flow of 8 Member Cards (Uncropped 3:4 + Black Fading Bio) */}
+        <div className="w-full max-w-md mx-auto flex flex-col items-center space-y-10 sm:space-y-12">
           {MEMBERS_DATA.map((member, index) => (
-            <div
-              key={member.id}
-              className="w-full min-h-[100dvh] flex flex-col items-center justify-center px-4 py-6 mobile-snap-item"
-            >
+            <React.Fragment key={member.id}>
+              {index > 0 && (
+                <div className="w-0.5 h-8 bg-gradient-to-b from-h2h-pink-primary/40 to-h2h-blue-sky/60 rounded-full" />
+              )}
+
               <article
-                className="relative w-full max-w-[360px] xs:max-w-[380px] h-[78dvh] max-h-[640px] min-h-[500px] rounded-[2.5rem] overflow-hidden border-2 border-h2h-pink-soft shadow-cute-lg bg-slate-900 flex flex-col justify-between"
+                className="relative w-full aspect-[3/4] rounded-[2rem] overflow-hidden shadow-cute-lg bg-black border-2 border-white/20 flex flex-col justify-between"
                 aria-label={`Profile card for ${member.stageName}`}
               >
-                {/* Screen-Filling Member Photo */}
+                {/* Full 3:4 Member Photo (100% visible, zero cropping) */}
                 <AssetSlot
                   assetKey={member.portraitAssetKey}
-                  aspectRatio="auto"
+                  aspectRatio="3/4"
                   alt={`Official portrait of ${member.stageName}`}
                   className="absolute inset-0 w-full h-full"
-                  roundedClassName="rounded-[2.4rem]"
+                  roundedClassName="rounded-[1.9rem]"
                   showPlaceholderLabel={false}
                 />
 
                 {/* Top Floating Badges */}
                 <div className="relative z-10 p-4 flex items-center justify-between w-full pointer-events-none">
-                  <div className="px-3.5 py-1 bg-black/50 backdrop-blur-md rounded-full border border-white/20 text-white/90 text-xs font-sans font-bold shadow-xs">
+                  <div className="px-3.5 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/20 text-white/95 text-xs font-sans font-bold shadow-xs">
                     하츠투하츠 • {member.hangul}
                   </div>
 
-                  <div className="px-3.5 py-1 bg-white/95 backdrop-blur-md rounded-full border border-h2h-pink-soft text-h2h-blue-deep text-xs font-display font-black shadow-xs flex items-center gap-1.5">
-                    <span className="text-base" role="img" aria-label="symbol">
-                      {member.symbol}
-                    </span>
+                  <div className="px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/20 text-white text-xs font-display font-black shadow-xs flex items-center gap-1.5">
+                    <span className="text-sm">{member.symbol}</span>
                     <span>0{index + 1}</span>
-                    <span className="text-h2h-muted text-[10px] font-bold">/ 08</span>
+                    <span className="text-white/60 text-[10px] font-normal">/ 08</span>
                   </div>
                 </div>
 
-                {/* Bottom Vignette Fading Overlay with Brief Biography */}
-                <div className="relative z-10 pt-24 pb-5 px-5 bg-gradient-to-t from-[#0e122b]/95 via-[#0e122b]/80 via-45% to-transparent flex flex-col justify-end gap-2">
+                {/* Bottom Black Fading Gradient with Simple Typography (NO boxes!) */}
+                <div className="relative z-10 pt-28 pb-5 px-5 bg-gradient-to-t from-black via-black/85 via-50% to-transparent flex flex-col justify-end text-left pointer-events-none">
                   {/* Role Cue Pill */}
-                  <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-h2h-pink-primary text-xs font-display font-bold uppercase tracking-wider">
-                    <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
+                  <div className="inline-flex items-center gap-1.5 self-start px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-h2h-pink-primary text-[11px] font-display font-bold uppercase tracking-wider mb-1.5">
+                    <Sparkles className="w-3 h-3 text-h2h-pink-primary" />
                     <span>{member.roleCue}</span>
                   </div>
 
                   {/* Stage Name & Korean Name */}
-                  <div className="flex items-baseline justify-between gap-2">
+                  <div className="flex items-baseline gap-2 mb-1.5">
                     <h3 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight leading-none">
                       {member.stageName}
                     </h3>
-                    <span className="font-sans font-bold text-xl text-h2h-pink-primary">
+                    <span className="font-sans font-bold text-lg text-white/80">
                       {member.hangul}
                     </span>
                   </div>
 
-                  {/* Compact Biography Profile Facts (No long description paragraph) */}
-                  <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
-                    <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
-                      <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
-                        <User className="w-3 h-3 text-h2h-blue-primary" /> Real Name
-                      </span>
-                      <span className="font-sans font-bold text-white truncate text-xs">
-                        {member.realName}
-                      </span>
-                    </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
-                      <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-h2h-pink-primary" /> Birthday
-                      </span>
-                      <span className="font-sans font-bold text-white truncate text-xs">
-                        {member.birthday}
-                      </span>
-                    </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
-                      <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
-                        <Star className="w-3 h-3 text-h2h-blue-primary" /> Zodiac • MBTI
-                      </span>
-                      <span className="font-sans font-bold text-white truncate text-xs">
-                        {member.zodiac} • {member.mbti}
-                      </span>
-                    </div>
-
-                    <div className="px-3 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col">
-                      <span className="text-[10px] uppercase font-display font-bold text-white/70 tracking-wider flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-h2h-pink-primary" /> Origin
-                      </span>
-                      <span className="font-sans font-bold text-white truncate text-xs">
-                        {member.nationality || 'South Korea'}
-                      </span>
-                    </div>
+                  {/* Simple Clean Biography (No noisy boxes!) */}
+                  <div className="text-xs text-white/90 font-sans leading-relaxed pt-2 border-t border-white/25">
+                    <p className="font-semibold text-white">
+                      {member.realName} • {member.birthday}
+                    </p>
+                    <p className="text-white/75 text-[11px] mt-0.5">
+                      {member.zodiac} • MBTI: {member.mbti} • {member.nationality || 'South Korea'}
+                    </p>
                   </div>
                 </div>
               </article>
-            </div>
+            </React.Fragment>
           ))}
+        </div>
+
+        {/* Continuity Transition into Chapter 03 */}
+        <div className="w-full text-center pt-12 pb-6 max-w-md mx-auto">
+          <div className="w-0.5 h-10 bg-gradient-to-b from-h2h-pink-primary/50 to-h2h-blue-primary/50 mx-auto mb-4 rounded-full" />
+          <p className="text-xs font-display font-bold uppercase tracking-wider text-h2h-pink-deep">
+            Meet the people → Discover what they create
+          </p>
+          <p className="font-display font-black text-2xl text-h2h-blue-deep mt-1">
+            Chapter 03 • Discography
+          </p>
+          <p className="text-xs font-sans font-bold text-h2h-muted mt-1">
+            Continue scrolling to spin the turntable ↓
+          </p>
         </div>
       </div>
 
