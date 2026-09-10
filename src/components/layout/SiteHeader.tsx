@@ -82,12 +82,21 @@ export const SiteHeader: React.FC = () => {
           >
             Members
           </button>
-          <button
-            onClick={() => scrollToSection('scene-discography')}
-            className="hover:text-h2h-blue-deep transition-colors focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary rounded-lg px-2 py-1 cursor-pointer"
-          >
-            Music
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => scrollToSection('scene-discography')}
+              className="hover:text-h2h-blue-deep transition-colors focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary rounded-lg px-2 py-1 cursor-pointer"
+            >
+              Music
+            </button>
+            <button
+              onClick={() => scrollToSection('scene-latest-release')}
+              className="px-2 py-0.5 rounded-full bg-h2h-pink-soft text-h2h-pink-deep text-[10px] font-extrabold uppercase tracking-wider hover:bg-h2h-pink-primary hover:text-white transition-all cursor-pointer animate-pulse"
+              title="Jump to latest release: MOONRIDE"
+            >
+              New
+            </button>
+          </div>
           <button
             onClick={() => scrollToSection('scene-world')}
             className="hover:text-h2h-blue-deep transition-colors focus:outline-hidden focus:ring-2 focus:ring-h2h-blue-primary rounded-lg px-2 py-1 cursor-pointer"
@@ -137,6 +146,16 @@ export const SiteHeader: React.FC = () => {
           >
             <span>Music & Turntable</span>
             <span className="text-[11px] text-h2h-muted font-mono">03</span>
+          </button>
+          <button
+            onClick={() => scrollToSection('scene-latest-release')}
+            className="flex items-center justify-between w-full text-left py-2.5 px-3.5 rounded-2xl font-display text-sm font-bold text-h2h-pink-deep bg-h2h-pink-soft/30 hover:bg-h2h-pink-soft/60 transition-all cursor-pointer"
+          >
+            <div className="flex items-center gap-2">
+              <span>Latest Drop (MOONRIDE)</span>
+              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-h2h-pink-primary text-white">NEW</span>
+            </div>
+            <span className="text-[11px] text-h2h-pink-deep font-mono font-bold">★</span>
           </button>
           <button
             onClick={() => scrollToSection('scene-world')}

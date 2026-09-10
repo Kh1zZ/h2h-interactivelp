@@ -176,7 +176,16 @@ export const ASSET_MANIFEST: AssetItem[] = [
     fallbackDescription: 'Iconic Heart - Japan Debut Single Album Artwork',
     aspectRatio: '1/1',
   },
-
+  {
+    key: 'release-cover-moonride',
+    src: '/assets/images/releases/moonride.webp',
+    type: 'image',
+    scene: 'discography',
+    priority: 'high',
+    required: true,
+    fallbackDescription: 'MOONRIDE - Hearts2Hearts × Kia Collaboration Single Artwork',
+    aspectRatio: '1/1',
+  },
 ];
 
 export const getAssetByKey = (key: string): AssetItem | undefined => {

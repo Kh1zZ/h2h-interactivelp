@@ -10,6 +10,7 @@ import { HeroScene } from '@/components/scenes/HeroScene';
 import { IntroScene } from '@/components/scenes/IntroScene';
 import { MemberJourneyScene } from '@/components/scenes/MemberJourneyScene';
 import { DiscographyScene } from '@/components/scenes/DiscographyScene';
+import { LatestReleaseScene } from '@/components/scenes/LatestReleaseScene';
 import { VisualWorldScene } from '@/components/scenes/VisualWorldScene';
 import { MiniGameScene } from '@/components/scenes/MiniGameScene';
 import { ClosingScene } from '@/components/scenes/ClosingScene';
@@ -48,6 +49,9 @@ export default function Home() {
 
             {/* Scene 3: Discography (Spinning Pastel Turntable) */}
             <DiscographyScene />
+
+            {/* Scene 3.5: Latest Single Spotlight (New Drop) */}
+            <LatestReleaseScene />
 
             {/* Scene 4: Visual World */}
             <VisualWorldScene />
