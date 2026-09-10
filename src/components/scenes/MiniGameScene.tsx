@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { MEMBERS_DATA } from '@/data/membersData';
 import { QUIZ_QUESTIONS } from '@/data/quizData';
+import { QuizQuestion } from '@/types';
 import { AssetSlot } from '@/components/ui/AssetSlot';
 import confetti from 'canvas-confetti';
 import {
@@ -13,15 +14,31 @@ import {
   ArrowDown,
   HelpCircle,
   Trophy,
+  Shuffle,
+  Layers,
 } from 'lucide-react';
+
+const MATCH_COMBOS = [
+  { id: 'combo-vocal', label: 'Vocal Line', ids: ['member-jiwoo', 'member-carmen', 'member-yuha', 'member-stella'] },
+  { id: 'combo-rhythm', label: 'Rhythm Line', ids: ['member-juun', 'member-a-na', 'member-ian', 'member-ye-on'] },
+  { id: 'combo-sunshine', label: 'Sunshine Mix', ids: ['member-jiwoo', 'member-yuha', 'member-a-na', 'member-ye-on'] },
+  { id: 'combo-chic', label: 'Chic Quad', ids: ['member-carmen', 'member-stella', 'member-juun', 'member-ian'] },
+];
+
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 /**
  * Scene 5 — Optional Mini-Game (PRD v5 Section 13)
  * Features BOTH:
- * 1. "Match the Heart" (Member portrait matching)
- * 2. "Quick Quiz" (Interactive 4-question introductory trivia)
- * 
- * Upgraded with large legible typography, grand scale, and zero unreadable text.
+ * 1. "Match the Heart" (Member portrait matching with multiple combinations + shuffle)
+ * 2. "Quick Quiz" (Interactive 5-question trivia randomized from a 20-question bank)
  */
 export const MiniGameScene: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'match' | 'quiz'>('match');
@@ -34,12 +51,55 @@ export const MiniGameScene: React.FC = () => {
   };
 
   // ----------------------------------------------------
-  // Match the Heart State
+  // Match the Heart State (Multiple Combinations + Shuffle)
   // ----------------------------------------------------
-  const matchCandidates = MEMBERS_DATA.slice(0, 4);
+  const [selectedComboIdx, setSelectedComboIdx] = useState(0);
+  const [matchCandidates, setMatchCandidates] = useState(() => {
+    const ids = MATCH_COMBOS[0].ids;
+    return MEMBERS_DATA.filter((m) => ids.includes(m.id));
+  });
+  const [shuffledNames, setShuffledNames] = useState(() => {
+    const ids = MATCH_COMBOS[0].ids;
+    const candidates = MEMBERS_DATA.filter((m) => ids.includes(m.id));
+    return shuffleArray(candidates);
+  });
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
   const [matchedIds, setMatchedIds] = useState<string[]>([]);
   const [matchError, setMatchError] = useState<string | null>(null);
+
+  const applyCombo = (comboIdx: number) => {
+    setSelectedComboIdx(comboIdx);
+    const ids = MATCH_COMBOS[comboIdx].ids;
+    const candidates = MEMBERS_DATA.filter((m) => ids.includes(m.id));
+    setMatchCandidates(candidates);
+    setShuffledNames(shuffleArray(candidates));
+    setSelectedCandidate(null);
+    setMatchedIds([]);
+    setMatchError(null);
+  };
+
+  const shuffleRandomCombo = () => {
+    setSelectedComboIdx(-1);
+    const randomized = shuffleArray(MEMBERS_DATA).slice(0, 4);
+    setMatchCandidates(randomized);
+    setShuffledNames(shuffleArray(randomized));
+    setSelectedCandidate(null);
+    setMatchedIds([]);
+    setMatchError(null);
+  };
+
+  const resetMatchGame = () => {
+    if (selectedComboIdx >= 0) {
+      applyCombo(selectedComboIdx);
+    } else {
+      shuffleRandomCombo();
+    }
+  };
+
+  const handleNextCombo = () => {
+    const nextIdx = (selectedComboIdx + 1) % MATCH_COMBOS.length;
+    applyCombo(nextIdx);
+  };
 
   const handleNameSelect = (name: string, memberId: string) => {
     if (!selectedCandidate) {
@@ -69,15 +129,12 @@ export const MiniGameScene: React.FC = () => {
     }
   };
 
-  const resetMatchGame = () => {
-    setMatchedIds([]);
-    setSelectedCandidate(null);
-    setMatchError(null);
-  };
-
   // ----------------------------------------------------
-  // Quick Quiz State
+  // Quick Quiz State (5 Randomized Questions from 20-bank)
   // ----------------------------------------------------
+  const [activeQuestions, setActiveQuestions] = useState<QuizQuestion[]>(() =>
+    shuffleArray(QUIZ_QUESTIONS).slice(0, 5)
+  );
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -87,13 +144,13 @@ export const MiniGameScene: React.FC = () => {
     if (selectedOption !== null) return;
     setSelectedOption(optionIdx);
 
-    const currentQ = QUIZ_QUESTIONS[quizIndex];
+    const currentQ = activeQuestions[quizIndex];
     if (optionIdx === currentQ.correctIndex) {
       setQuizScore((prev) => prev + 1);
     }
 
     setTimeout(() => {
-      if (quizIndex + 1 < QUIZ_QUESTIONS.length) {
+      if (quizIndex + 1 < activeQuestions.length) {
         setQuizIndex((prev) => prev + 1);
         setSelectedOption(null);
       } else {
@@ -111,11 +168,14 @@ export const MiniGameScene: React.FC = () => {
   };
 
   const resetQuiz = () => {
+    setActiveQuestions(shuffleArray(QUIZ_QUESTIONS).slice(0, 5));
     setQuizIndex(0);
     setQuizScore(0);
     setSelectedOption(null);
     setQuizFinished(false);
   };
+
+  const currentQuizQ = activeQuestions[quizIndex];
 
   return (
     <section
@@ -171,7 +231,7 @@ export const MiniGameScene: React.FC = () => {
                   : 'text-h2h-ink/70 hover:text-h2h-ink'
               }`}
             >
-              2. Quick Quiz
+              2. Quick Quiz (5 of 20)
             </button>
           </div>
         </div>
@@ -181,7 +241,7 @@ export const MiniGameScene: React.FC = () => {
         {/* ==================================================== */}
         {activeTab === 'match' && (
           <div className="bg-white/95 rounded-3xl p-4 sm:p-8 md:p-12 border-2 border-h2h-blue-sky/70 shadow-cute-lg">
-            <div className="flex items-center justify-between mb-6 sm:mb-8 pb-3 sm:pb-4 border-b border-h2h-blue-sky/30">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-3 border-b border-h2h-blue-sky/30">
               <div>
                 <h3 className="font-display font-black text-xl sm:text-3xl text-h2h-ink">
                   Match Member to Portrait
@@ -190,13 +250,54 @@ export const MiniGameScene: React.FC = () => {
                   Click a portrait card first, then tap the matching stage name!
                 </p>
               </div>
+              <div className="flex items-center gap-2 self-end sm:self-auto">
+                <button
+                  onClick={shuffleRandomCombo}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-h2h-pink-soft/60 hover:bg-h2h-pink-soft text-h2h-pink-deep text-xs font-display font-bold transition-colors cursor-pointer"
+                  title="Randomize Combination"
+                >
+                  <Shuffle className="w-3.5 h-3.5" />
+                  <span>Shuffle</span>
+                </button>
+                <button
+                  onClick={resetMatchGame}
+                  className="p-2 rounded-xl bg-h2h-blue-sky/30 text-h2h-blue-deep hover:bg-h2h-pink-soft hover:text-h2h-pink-deep transition-colors cursor-pointer"
+                  title="Reset Game"
+                  aria-label="Reset Match Game"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Combination Selector Bar */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 sm:gap-2 mb-6">
+              <span className="text-[11px] sm:text-xs font-display font-extrabold uppercase tracking-wider text-h2h-muted mr-1 flex items-center gap-1">
+                <Layers className="w-3 h-3 text-h2h-blue-primary" />
+                Sets:
+              </span>
+              {MATCH_COMBOS.map((combo, idx) => (
+                <button
+                  key={combo.id}
+                  onClick={() => applyCombo(idx)}
+                  className={`px-3 py-1 rounded-full text-xs font-display font-bold transition-all cursor-pointer ${
+                    selectedComboIdx === idx
+                      ? 'bg-h2h-blue-primary text-white shadow-xs scale-105'
+                      : 'bg-h2h-blue-sky/40 text-h2h-blue-deep hover:bg-h2h-blue-sky/70'
+                  }`}
+                >
+                  {combo.label}
+                </button>
+              ))}
               <button
-                onClick={resetMatchGame}
-                className="p-2 sm:p-3 rounded-2xl bg-h2h-blue-sky/30 text-h2h-blue-deep hover:bg-h2h-pink-soft hover:text-h2h-pink-deep transition-colors cursor-pointer"
-                title="Reset Game"
-                aria-label="Reset Match Game"
+                onClick={shuffleRandomCombo}
+                className={`px-3 py-1 rounded-full text-xs font-display font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                  selectedComboIdx === -1
+                    ? 'bg-h2h-pink-primary text-white shadow-xs scale-105'
+                    : 'bg-h2h-pink-soft/50 text-h2h-pink-deep hover:bg-h2h-pink-soft'
+                }`}
               >
-                <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span>🔀 Random 4</span>
               </button>
             </div>
 
@@ -215,14 +316,28 @@ export const MiniGameScene: React.FC = () => {
                   Perfect Match! ✨
                 </h4>
                 <p className="font-sans text-sm sm:text-base text-h2h-muted max-w-md mx-auto">
-                  You recognized all member portraits flawlessly! You are officially ready for the S2U family.
+                  You matched all portraits flawlessly! Try another combination or challenge yourself with a random mix.
                 </p>
-                <button
-                  onClick={resetMatchGame}
-                  className="px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-xs sm:text-sm shadow-cute hover:bg-h2h-blue-deep transition-all cursor-pointer"
-                >
-                  Play Again
-                </button>
+                <div className="pt-2 flex flex-wrap justify-center gap-3">
+                  <button
+                    onClick={handleNextCombo}
+                    className="px-6 py-2.5 sm:py-3 rounded-full bg-h2h-blue-primary text-white font-display font-bold text-xs sm:text-sm shadow-cute hover:bg-h2h-blue-deep transition-all cursor-pointer"
+                  >
+                    Next Combination →
+                  </button>
+                  <button
+                    onClick={shuffleRandomCombo}
+                    className="px-6 py-2.5 sm:py-3 rounded-full bg-h2h-pink-primary text-white font-display font-bold text-xs sm:text-sm shadow-cute hover:bg-h2h-pink-deep transition-all cursor-pointer"
+                  >
+                    🔀 Shuffle Random 4
+                  </button>
+                  <button
+                    onClick={resetMatchGame}
+                    className="px-5 py-2.5 sm:py-3 rounded-full bg-h2h-blue-sky/40 text-h2h-blue-deep font-display font-bold text-xs sm:text-sm hover:bg-h2h-blue-sky/70 transition-all cursor-pointer"
+                  >
+                    Replay Set
+                  </button>
+                </div>
               </div>
             ) : (
               <div>
@@ -252,6 +367,7 @@ export const MiniGameScene: React.FC = () => {
                         <AssetSlot
                           assetKey={m.portraitAssetKey}
                           aspectRatio="3/4"
+                          imageClassName="w-full h-full object-cover object-top"
                           roundedClassName="rounded-xl sm:rounded-2xl"
                           showPlaceholderLabel={false}
                         />
@@ -265,13 +381,13 @@ export const MiniGameScene: React.FC = () => {
                   })}
                 </div>
 
-                {/* Step 2: Large Name Chips */}
+                {/* Step 2: Scrambled Name Chips */}
                 <div className="border-t border-h2h-blue-sky/40 pt-4 sm:pt-6">
                   <span className="block text-xs sm:text-sm font-display font-bold text-h2h-blue-deep uppercase tracking-wider mb-3 sm:mb-4 text-center">
                     Select the matching stage name:
                   </span>
                   <div className="flex flex-wrap justify-center gap-2.5 sm:gap-4">
-                    {matchCandidates.map((m) => {
+                    {shuffledNames.map((m) => {
                       const isMatched = matchedIds.includes(m.id);
 
                       return (
@@ -281,7 +397,7 @@ export const MiniGameScene: React.FC = () => {
                           onClick={() => handleNameSelect(m.stageName, m.id)}
                           className={`px-4 sm:px-7 py-2 sm:py-3 rounded-xl sm:rounded-2xl font-display font-black text-sm sm:text-lg transition-all cursor-pointer border-2 ${
                             isMatched
-                              ? 'bg-gray-100 text-gray-400 border-gray-200 line-through'
+                              ? 'bg-gray-100 text-gray-400 border-gray-200 line-through pointer-events-none'
                               : 'bg-white text-h2h-ink border-h2h-blue-sky hover:bg-h2h-blue-sky/40 hover:border-h2h-blue-primary shadow-xs hover:shadow-cute'
                           }`}
                         >
@@ -297,22 +413,22 @@ export const MiniGameScene: React.FC = () => {
         )}
 
         {/* ==================================================== */}
-        {/* GAME 2: QUICK QUIZ */}
+        {/* GAME 2: QUICK QUIZ (5 Randomized from 20-bank) */}
         {/* ==================================================== */}
         {activeTab === 'quiz' && (
           <div className="bg-white/95 rounded-3xl p-4 sm:p-8 md:p-12 border-2 border-h2h-pink-soft shadow-cute-lg">
-            {!quizFinished ? (
+            {!quizFinished && currentQuizQ ? (
               <div className="space-y-5 sm:space-y-8">
                 {/* Progress bar */}
                 <div className="flex items-center justify-between text-xs sm:text-sm font-display font-bold text-h2h-muted">
-                  <span>Question {quizIndex + 1} of {QUIZ_QUESTIONS.length}</span>
+                  <span>Question {quizIndex + 1} of {activeQuestions.length}</span>
                   <span>Score: {quizScore}</span>
                 </div>
                 <div className="w-full h-2.5 sm:h-3 bg-h2h-pink-soft/60 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-h2h-pink-primary transition-all duration-300 rounded-full"
                     style={{
-                      width: `${((quizIndex + 1) / QUIZ_QUESTIONS.length) * 100}%`,
+                      width: `${((quizIndex + 1) / activeQuestions.length) * 100}%`,
                     }}
                   />
                 </div>
@@ -320,19 +436,19 @@ export const MiniGameScene: React.FC = () => {
                 {/* Question */}
                 <div className="py-1 sm:py-2">
                   <h3 className="font-display font-black text-xl sm:text-3xl lg:text-4xl text-h2h-ink leading-snug">
-                    {QUIZ_QUESTIONS[quizIndex].question}
+                    {currentQuizQ.question}
                   </h3>
                   <p className="text-xs sm:text-base font-sans text-h2h-blue-deep font-bold mt-1.5 sm:mt-2 flex items-center gap-1.5">
                     <HelpCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-h2h-blue-primary shrink-0" />
-                    <span>{QUIZ_QUESTIONS[quizIndex].hint}</span>
+                    <span>{currentQuizQ.hint}</span>
                   </p>
                 </div>
 
                 {/* Options Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
-                  {QUIZ_QUESTIONS[quizIndex].options.map((opt, idx) => {
+                  {currentQuizQ.options.map((opt, idx) => {
                     const isSelected = selectedOption === idx;
-                    const isCorrect = idx === QUIZ_QUESTIONS[quizIndex].correctIndex;
+                    const isCorrect = idx === currentQuizQ.correctIndex;
                     let btnStyle =
                       'bg-white border-h2h-pink-soft hover:border-h2h-pink-primary hover:bg-h2h-pink-soft/30 text-h2h-ink';
 
@@ -365,17 +481,23 @@ export const MiniGameScene: React.FC = () => {
                   <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-h2h-pink-primary" />
                 </div>
                 <h4 className="font-display font-black text-2xl sm:text-4xl text-h2h-ink">
-                  Quiz Completed!
+                  {quizScore === 5
+                    ? 'True S2U Superfan! 💖'
+                    : quizScore >= 4
+                    ? 'Hearts Harmony Master! 🌸'
+                    : quizScore >= 3
+                    ? 'Rising Star Heart! ✨'
+                    : 'Sweet Explorer! 🐰'}
                 </h4>
                 <p className="font-sans text-sm sm:text-base text-h2h-muted max-w-md mx-auto">
-                  You scored <span className="font-black text-h2h-pink-deep text-lg sm:text-xl">{quizScore} / {QUIZ_QUESTIONS.length}</span>! You know the Hearts2Hearts story inside out.
+                  You scored <span className="font-black text-h2h-pink-deep text-lg sm:text-xl">{quizScore} / {activeQuestions.length}</span>! Questions are randomly sampled from our 20-question bank.
                 </p>
                 <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
                   <button
                     onClick={resetQuiz}
                     className="w-full sm:w-auto px-6 sm:px-7 py-2.5 sm:py-3 rounded-full bg-h2h-pink-soft text-h2h-pink-deep font-display font-bold text-xs sm:text-sm hover:bg-h2h-pink-soft/80 transition-all cursor-pointer"
                   >
-                    Try Again
+                    Try 5 New Questions 🔀
                   </button>
                   <button
                     onClick={handleSkipToClosing}

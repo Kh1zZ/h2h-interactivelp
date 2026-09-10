@@ -53,12 +53,12 @@ export const HeroScene: React.FC = () => {
     <div
       ref={containerRef}
       id="scene-hero"
-      className={`relative w-full ${!shouldAnimate ? 'min-h-[100dvh] py-14 sm:py-16' : 'min-h-[100dvh] lg:h-[180vh]'}`}
+      className={`relative w-full ${!shouldAnimate ? 'min-h-[100svh] py-14 sm:py-16' : 'min-h-[100svh] lg:h-[180vh]'}`}
     >
       <div
         className={`${
           !shouldAnimate
-            ? 'relative min-h-[100dvh] flex flex-col justify-between items-center'
+            ? 'relative min-h-[100svh] flex flex-col justify-between items-center'
             : 'sticky top-0 h-screen overflow-hidden flex flex-col justify-between items-center'
         } w-full pt-20 sm:pt-28 pb-6 sm:pb-10 px-4 sm:px-8 max-w-7xl mx-auto`}
       >

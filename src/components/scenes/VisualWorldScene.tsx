@@ -16,6 +16,16 @@ import { Sparkles, Heart, Compass, Palette, Users } from 'lucide-react';
 export const VisualWorldScene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
+  const [isDesktop, setIsDesktop] = React.useState(false);
+
+  React.useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  const shouldAnimate = isDesktop && !prefersReducedMotion;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -59,7 +69,7 @@ export const VisualWorldScene: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 w-full max-w-6xl mx-auto mb-10 sm:mb-16">
           {/* Card 1: The Debut Lore ('The Chase') */}
           <motion.article
-            style={prefersReducedMotion ? {} : { y: card1Y }}
+            style={!shouldAnimate ? {} : { y: card1Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/70 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">
@@ -93,7 +103,7 @@ export const VisualWorldScene: React.FC = () => {
 
           {/* Card 2: Signature Daylight World */}
           <motion.article
-            style={prefersReducedMotion ? {} : { y: card2Y }}
+            style={!shouldAnimate ? {} : { y: card2Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-pink-soft shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">
@@ -127,7 +137,7 @@ export const VisualWorldScene: React.FC = () => {
 
           {/* Card 3: S2U Fandom Galaxy */}
           <motion.article
-            style={prefersReducedMotion ? {} : { y: card3Y }}
+            style={!shouldAnimate ? {} : { y: card3Y }}
             className="p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] bg-white/95 border-2 border-h2h-blue-sky/60 shadow-cute flex flex-col justify-between relative overflow-hidden group hover:shadow-cute-lg transition-all"
           >
             <div className="space-y-4">

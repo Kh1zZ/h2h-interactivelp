@@ -48,7 +48,7 @@ export const IntroScene: React.FC = () => {
     <div
       ref={containerRef}
       id="scene-intro"
-      className={`relative w-full ${!shouldAnimate ? 'py-16 sm:py-24 min-h-[100dvh] flex flex-col justify-center items-center' : 'min-h-[100dvh] lg:h-[190vh]'}`}
+      className={`relative w-full ${!shouldAnimate ? 'py-16 sm:py-24 min-h-[100svh] flex flex-col justify-center items-center' : 'min-h-[100svh] lg:h-[190vh]'}`}
     >
       <div
         className={`${

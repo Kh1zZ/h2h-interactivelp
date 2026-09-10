@@ -165,7 +165,7 @@ export const DiscographyScene: React.FC = () => {
     <section
       ref={containerRef}
       id="scene-discography"
-      className={`relative w-full scroll-mt-6 ${prefersReducedMotion ? 'min-h-[100dvh] py-16' : 'min-h-[100dvh] lg:h-[380vh] py-16 lg:py-0'}`}
+      className={`relative w-full scroll-mt-6 ${prefersReducedMotion ? 'min-h-[100svh] py-16' : 'min-h-[100svh] lg:h-[380vh] py-16 lg:py-0'}`}
     >
       {/* Hidden Audio Element */}
       <audio ref={audioRef} src={activeRelease.audioSrc} preload="metadata" />
@@ -174,7 +174,7 @@ export const DiscographyScene: React.FC = () => {
         className={`${
           prefersReducedMotion
             ? 'relative max-w-6xl mx-auto py-16'
-            : 'relative lg:sticky lg:top-0 min-h-[100dvh] lg:h-screen flex flex-col justify-center items-center'
+            : 'relative lg:sticky lg:top-0 min-h-[100svh] lg:h-screen flex flex-col justify-center items-center'
         } w-full px-4 sm:px-8 max-w-6xl mx-auto z-10 pt-20 sm:pt-24 pb-8 lg:pb-6`}
       >
         {/* Section Eyebrow Header */}
