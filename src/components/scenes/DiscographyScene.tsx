@@ -199,131 +199,141 @@ export const DiscographyScene: React.FC = () => {
           </p>
         </div>
 
-        {/* The Turntable & Sleeve Showcase Card */}
-        <div className="w-full max-w-4xl bg-white/95 border-2 border-h2h-blue-sky/70 rounded-[2rem] sm:rounded-[2.5rem] p-4 sm:p-6 lg:p-7 shadow-cute-lg relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-            {/* Left: Pastel Toy Turntable (5 cols on lg) */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-              <div className="relative w-40 h-40 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full bg-gradient-to-br from-h2h-blue-sky/40 via-white to-h2h-pink-soft/50 border-4 border-white shadow-cute flex items-center justify-center p-2.5 sm:p-4">
-                {/* Spinning Pastel Vinyl Disc */}
-                <motion.div
-                  style={prefersReducedMotion ? {} : { rotate: vinylRotate }}
-                  className="w-full h-full rounded-full bg-gradient-to-br from-[#24284A] via-[#353A68] to-[#24284A] shadow-md flex items-center justify-center relative border-4 border-h2h-blue-sky/50"
-                >
-                  {/* Vinyl Grooves */}
-                  <div className="w-4/5 h-4/5 rounded-full border border-white/20 flex items-center justify-center">
-                    <div className="w-3/5 h-3/5 rounded-full border border-white/20 flex items-center justify-center">
-                      {/* Center Label (Clickable Play/Pause Button) */}
-                      <button
-                        onClick={togglePlay}
-                        aria-label={isPlaying ? t.discography.pausePreviewAria : t.discography.playPreviewAria}
-                        title={isPlaying ? t.discography.pausePreviewAria : t.discography.playPreviewAria}
-                        className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-h2h-pink-soft border-2 border-white flex flex-col items-center justify-center text-center p-1 shadow-xs hover:scale-105 transition-transform cursor-pointer group"
-                      >
-                        {isPlaying ? (
-                          <Pause className="w-4 h-4 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep" />
-                        ) : (
-                          <Play className="w-4 h-4 sm:w-6 sm:h-6 text-h2h-pink-deep fill-h2h-pink-deep ml-0.5" />
-                        )}
-                        <span className="font-display text-[7px] sm:text-[9px] font-black text-h2h-ink tracking-wider mt-0.5">
-                          {isPlaying ? t.discography.pause : t.discography.play20s}
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
+        {/* Expansive Showcase Container */}
+        <div className="w-full max-w-6xl relative">
+          {/* Decorative Backing Glow */}
+          <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-h2h-blue-sky/30 via-white/50 to-h2h-pink-soft/30 rounded-3xl sm:rounded-[3rem] blur-xl -z-10 pointer-events-none" />
 
-                {/* Cute Toy Tonearm */}
-                <div
-                  className={`absolute -top-1 right-1 sm:right-4 w-3 sm:w-4 h-20 sm:h-28 bg-white border-2 border-h2h-pink-soft rounded-full shadow-xs origin-top transition-transform duration-500 pointer-events-none ${
-                    isPlaying ? 'rotate-20' : 'rotate-12'
-                  }`}
-                />
-              </div>
-
-              {/* Release Selector Pills (01 to 06) */}
-              <div className="mt-3 sm:mt-5 flex gap-1.5 sm:gap-2 flex-wrap justify-center">
-                {discographyData.map((rel, i) => (
-                  <button
-                    key={rel.id}
-                    onClick={() => jumpToRelease(i)}
-                    className={`px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-display font-bold transition-all cursor-pointer ${
-                      activeReleaseIdx === i
-                        ? 'bg-h2h-blue-primary text-white shadow-xs scale-105'
-                        : 'bg-h2h-blue-sky/50 text-h2h-blue-deep hover:bg-h2h-blue-sky'
-                    }`}
+          <div className="w-full bg-white/95 border-2 border-h2h-blue-sky/70 rounded-3xl sm:rounded-[3rem] p-4 sm:p-8 lg:p-10 shadow-cute-lg relative overflow-visible">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-12 items-center">
+              {/* Left Column: Overlapping Large Turntable Vinyl (5 cols on lg) */}
+              <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
+                {/* Turntable Base with Overlapping Disc (Fluid sizing on mobile, massive on desktop) */}
+                <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-84 lg:h-84 xl:w-96 xl:h-96 rounded-full bg-gradient-to-br from-h2h-blue-sky/40 via-white to-h2h-pink-soft/50 border-3 sm:border-4 border-white shadow-cute flex items-center justify-center p-2.5 sm:p-4 lg:p-5 lg:-ml-6 xl:-ml-10">
+                  {/* Spinning Pastel Vinyl Disc */}
+                  <motion.div
+                    style={prefersReducedMotion ? {} : { rotate: vinylRotate }}
+                    className="w-full h-full rounded-full bg-gradient-to-br from-[#1C2038] via-[#2D335A] to-[#1C2038] shadow-xl sm:shadow-2xl flex items-center justify-center relative border-3 sm:border-4 border-h2h-blue-sky/40"
                   >
-                    0{i + 1}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Right: Sleeve Artwork, Metadata & Audio Player (7 cols on lg) */}
-            <div className="lg:col-span-7 min-h-[390px] sm:min-h-[350px] flex items-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeRelease.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15, ease: 'easeOut' }}
-                  className="flex flex-col sm:flex-row gap-5 lg:gap-6 items-center w-full"
-                >
-                  {/* Artwork Sleeve Slot */}
-                  <div className="w-28 sm:w-44 lg:w-48 shrink-0">
-                    <AssetSlot
-                      assetKey={activeRelease.coverAssetKey}
-                      aspectRatio="1/1"
-                      alt={`${activeRelease.title} Album Cover`}
-                      roundedClassName="rounded-2xl shadow-cute"
-                    />
-                  </div>
-
-                  {/* Metadata & Controls (Locked width & stable layout) */}
-                  <div className="space-y-2.5 sm:space-y-3 text-center sm:text-left flex-1 min-w-0 w-full">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-h2h-pink-soft text-h2h-pink-deep text-xs font-display font-bold uppercase tracking-wider">
-                      <Sparkles className="w-3.5 h-3.5 text-h2h-pink-primary" />
-                      <span>{activeRelease.type}</span>
+                    {/* Vinyl Grooves Pattern */}
+                    <div className="w-[88%] h-[88%] rounded-full border border-white/15 flex items-center justify-center">
+                      <div className="w-[76%] h-[76%] rounded-full border border-white/15 flex items-center justify-center">
+                        <div className="w-[62%] h-[62%] rounded-full border border-white/20 flex items-center justify-center">
+                          {/* Center Label (Interactive Play/Pause Disc) */}
+                          <button
+                            onClick={togglePlay}
+                            aria-label={isPlaying ? t.discography.pausePreviewAria : t.discography.playPreviewAria}
+                            title={isPlaying ? t.discography.pausePreviewAria : t.discography.playPreviewAria}
+                            className="w-16 h-16 sm:w-22 sm:h-22 lg:w-28 lg:h-28 rounded-full bg-gradient-to-br from-h2h-pink-soft to-h2h-pink-light border-3 sm:border-4 border-white flex flex-col items-center justify-center text-center p-1 sm:p-1.5 shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer group z-20"
+                          >
+                            {isPlaying ? (
+                              <Pause className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-h2h-pink-deep fill-h2h-pink-deep" />
+                            ) : (
+                              <Play className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-h2h-pink-deep fill-h2h-pink-deep ml-0.5" />
+                            )}
+                            <span className="font-display text-[7px] sm:text-[9px] lg:text-[11px] font-black text-h2h-ink tracking-wider mt-0.5 sm:mt-1">
+                              {isPlaying ? t.discography.pause : t.discography.play20s}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
+                  </motion.div>
 
-                    <div className="space-y-0.5">
-                      <h3 className="font-display font-black text-2xl sm:text-3xl text-h2h-blue-primary leading-tight truncate">
-                        {activeRelease.title}
-                      </h3>
+                  {/* Cute Toy Tonearm */}
+                  <div
+                    className={`absolute -top-2 sm:-top-3 right-1 sm:right-3 lg:right-4 w-3 sm:w-4 lg:w-5 h-20 sm:h-28 lg:h-40 bg-white border-2 border-h2h-pink-soft rounded-full shadow-md origin-top transition-transform duration-500 pointer-events-none z-30 ${
+                      isPlaying ? 'rotate-24' : 'rotate-12'
+                    }`}
+                  />
+                </div>
 
-                      <div className="flex items-center justify-center sm:justify-start gap-1.5 text-xs font-sans text-h2h-muted font-semibold">
-                        <Calendar className="w-3.5 h-3.5 text-h2h-blue-primary" />
-                        <span>Release: {activeRelease.releaseDate}</span>
+                {/* Release Selector Track Pills (01 to 06) */}
+                <div className="mt-3 sm:mt-6 flex gap-1.5 sm:gap-2 flex-wrap justify-center z-10">
+                  {discographyData.map((rel, i) => (
+                    <button
+                      key={rel.id}
+                      onClick={() => jumpToRelease(i)}
+                      className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-display font-black transition-all cursor-pointer ${
+                        activeReleaseIdx === i
+                          ? 'bg-h2h-blue-primary text-white shadow-cute scale-105 ring-2 ring-h2h-blue-sky'
+                          : 'bg-h2h-blue-sky/50 text-h2h-blue-deep hover:bg-h2h-blue-sky hover:scale-102'
+                      }`}
+                    >
+                      0{i + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column: Sleeve Artwork, Metadata, Player & Tracklist (7 cols on lg) */}
+              {/* Locked height on desktop (460px) and stable min-height on mobile so box never shifts */}
+              <div className="lg:col-span-7 lg:h-[460px] min-h-[420px] flex flex-col justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeRelease.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                    className="flex flex-col gap-4 sm:gap-5 h-full justify-between"
+                  >
+                    {/* Top Row: Artwork Sleeve + Title/Badges */}
+                    <div className="flex flex-row items-center gap-3.5 sm:gap-5">
+                      {/* Artwork Sleeve Slot */}
+                      <div className="w-20 h-20 sm:w-28 sm:h-28 lg:w-36 lg:h-36 shrink-0">
+                        <AssetSlot
+                          assetKey={activeRelease.coverAssetKey}
+                          aspectRatio="1/1"
+                          alt={`${activeRelease.title} Album Cover`}
+                          roundedClassName="rounded-2xl sm:rounded-3xl shadow-cute border-2 border-white"
+                        />
+                      </div>
+
+                      {/* Header Details */}
+                      <div className="min-w-0 flex-1 space-y-0.5 sm:space-y-1 text-left">
+                        <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-h2h-pink-soft text-h2h-pink-deep text-[10px] sm:text-xs font-display font-bold uppercase tracking-wider">
+                          <Sparkles className="w-3 h-3 text-h2h-pink-primary" />
+                          <span className="truncate">{activeRelease.type}</span>
+                        </div>
+
+                        <h3 className="font-display font-black text-xl sm:text-2xl lg:text-3xl text-h2h-blue-primary leading-tight truncate">
+                          {activeRelease.title}
+                        </h3>
+
+                        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-sans text-h2h-muted font-semibold">
+                          <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-h2h-blue-primary shrink-0" />
+                          <span className="truncate">Release: {activeRelease.releaseDate}</span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Interactive 20s Audio Player Bar */}
-                    <div className="p-2.5 sm:p-3 rounded-2xl bg-white border border-h2h-blue-sky/70 shadow-xs space-y-1.5">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
+                    {/* Middle: Interactive Audio Player Bar */}
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-white border border-h2h-blue-sky/70 shadow-xs space-y-1.5 sm:space-y-2">
+                      <div className="flex items-center justify-between gap-2.5 sm:gap-3">
+                        <div className="flex items-center gap-2 sm:gap-2.5">
                           <button
                             onClick={togglePlay}
-                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-h2h-blue-primary hover:bg-h2h-blue-deep text-white flex items-center justify-center shadow-xs hover:scale-105 transition-all cursor-pointer shrink-0"
+                            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-h2h-blue-primary hover:bg-h2h-blue-deep text-white flex items-center justify-center shadow-xs hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0"
                             aria-label={isPlaying ? t.discography.pause : t.discography.play20s}
                           >
                             {isPlaying ? (
-                              <Pause className="w-4 h-4 fill-white" />
+                              <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white" />
                             ) : (
-                              <Play className="w-4 h-4 fill-white ml-0.5" />
+                              <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white ml-0.5" />
                             )}
                           </button>
                           <div className="text-left">
-                            <span className="text-xs font-display font-bold text-h2h-blue-primary block leading-none">
+                            <span className="text-[11px] sm:text-xs font-display font-bold text-h2h-blue-primary block leading-none">
                               {isPlaying ? t.discography.playingHighlight : t.discography.audioHighlight}
                             </span>
-                            <span className="text-[10px] sm:text-[11px] font-sans text-h2h-muted">
+                            <span className="text-[9px] sm:text-[11px] font-sans text-h2h-muted">
                               {t.discography.audioMasterQuality}
                             </span>
                           </div>
                         </div>
 
-                        <span className="text-xs font-sans font-bold text-h2h-ink shrink-0">
+                        <span className="text-[11px] sm:text-xs font-sans font-bold text-h2h-ink shrink-0">
                           {formatTime(currentTime)} / {formatTime(duration || 20)}
                         </span>
                       </div>
@@ -339,13 +349,13 @@ export const DiscographyScene: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Dynamic Concept & Description Box */}
+                    {/* Middle-Bottom: Concept Box (Exact fixed height h-20 with scroll) */}
                     <div className="p-2.5 sm:p-3 rounded-2xl bg-h2h-blue-light/50 border border-h2h-blue-sky/70 text-left space-y-1.5">
                       <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1 sm:gap-1.5">
                           <button
                             onClick={() => setActiveTab('concept')}
-                            className={`text-[11px] font-display font-bold px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
+                            className={`text-[10px] sm:text-[11px] font-display font-bold px-2 sm:px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
                               activeTab === 'concept'
                                 ? 'bg-h2h-blue-primary text-white shadow-xs'
                                 : 'text-h2h-blue-deep hover:text-h2h-blue-primary'
@@ -355,7 +365,7 @@ export const DiscographyScene: React.FC = () => {
                           </button>
                           <button
                             onClick={() => setActiveTab('info')}
-                            className={`text-[11px] font-display font-bold px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
+                            className={`text-[10px] sm:text-[11px] font-display font-bold px-2 sm:px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
                               activeTab === 'info'
                                 ? 'bg-h2h-blue-primary text-white shadow-xs'
                                 : 'text-h2h-blue-deep hover:text-h2h-blue-primary'
@@ -367,7 +377,7 @@ export const DiscographyScene: React.FC = () => {
 
                         <button
                           onClick={() => setIsStoryModalOpen(true)}
-                          className="text-[11px] font-display font-bold text-h2h-pink-deep hover:text-h2h-ink flex items-center gap-1 transition-colors cursor-pointer group"
+                          className="text-[10px] sm:text-[11px] font-display font-bold text-h2h-pink-deep hover:text-h2h-ink flex items-center gap-1 transition-colors cursor-pointer group"
                           title="View complete liner notes"
                         >
                           <span>{t.discography.fullStoryBtn}</span>
@@ -375,8 +385,7 @@ export const DiscographyScene: React.FC = () => {
                         </button>
                       </div>
 
-                      {/* Fixed-Height Scrollable Description Container */}
-                      <div className="h-14 sm:h-16 overflow-y-auto pr-1 text-xs font-sans text-h2h-ink/85 leading-relaxed font-normal">
+                      <div className="h-16 sm:h-18 overflow-y-auto pr-1 text-[11px] sm:text-xs font-sans text-h2h-ink/85 leading-relaxed font-normal">
                         {activeTab === 'concept' ? (
                           <p>{activeRelease.description}</p>
                         ) : (
@@ -394,26 +403,26 @@ export const DiscographyScene: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Tracklist Pills */}
-                    <div className="pt-2 border-t border-h2h-blue-sky/40 min-h-[64px] sm:min-h-[60px]">
-                      <span className="text-[11px] sm:text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider block mb-1.5 flex items-center justify-center sm:justify-start gap-1.5">
-                        <Music className="w-3.5 h-3.5 text-h2h-blue-primary" />
+                    {/* Bottom: Tracklist Pills (Exact fixed height h-22 on mobile/desktop with smooth scroll) */}
+                    <div className="pt-2 border-t border-h2h-blue-sky/40 h-22 overflow-y-auto pr-1 flex flex-col justify-start">
+                      <span className="text-[10px] sm:text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider block mb-1.5 flex items-center justify-start gap-1.5 shrink-0">
+                        <Music className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-h2h-blue-primary" />
                         {t.discography.officialTracklist}
                       </span>
-                      <div className="flex flex-wrap justify-center sm:justify-start gap-1.5">
+                      <div className="flex flex-wrap justify-start gap-1 sm:gap-1.5">
                         {activeRelease.tracks.map((tItem, idx) => (
                           <span
                             key={idx}
-                            className="px-2.5 py-0.5 bg-h2h-blue-sky/40 border border-h2h-blue-sky/60 rounded-lg text-xs font-sans font-bold text-h2h-ink"
+                            className="px-2 py-0.5 bg-h2h-blue-sky/40 border border-h2h-blue-sky/60 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-sans font-bold text-h2h-ink whitespace-nowrap"
                           >
                             {tItem}
                           </span>
                         ))}
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </div>
