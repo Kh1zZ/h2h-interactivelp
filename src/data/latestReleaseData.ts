@@ -36,7 +36,7 @@ export const CURRENT_LATEST_RELEASE_EN: LatestReleaseInfo = {
 export const CURRENT_LATEST_RELEASE_ID: LatestReleaseInfo = {
   id: 'moonride',
   title: 'MOONRIDE',
-  type: 'Singel Kolaborasi Spesial',
+  type: 'Single Kolaborasi Spesial',
   releaseDate: '9 September 2026',
   badgeText: 'Rilisan Segar • Drop Terbaru',
   genre: 'Elektropop • Sintesis Dreamy',

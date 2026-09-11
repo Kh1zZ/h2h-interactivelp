@@ -39,7 +39,7 @@ export const id = {
     storyPill: 'Kisah Hearts2Hearts',
     storyTitle: 'Fajar Baru Yang Ceria di Dunia Pop',
     storyDesc:
-      'Hearts2Hearts (하츠투하츠) adalah grup idola delapan member yang memancarkan energi cerah bak sinar mentari, manis berkilau, serta harmoni vokal menyejukkan hati pendengar di seluruh penjuru dunia. Memulai debut resmi pada 24 Februari 2025 dengan album singel The Chase, mereka merayakan hangatnya persahabatan, ketulusan jati diri, dan keterhubungan hati ke hati.',
+      'Hearts2Hearts (하츠투하츠) adalah grup idola delapan member yang memancarkan energi cerah bak sinar mentari, manis berkilau, serta harmoni vokal menyejukkan hati pendengar di seluruh penjuru dunia. Memulai debut resmi pada 24 Februari 2025 dengan album single The Chase, mereka merayakan hangatnya persahabatan, ketulusan jati diri, dan keterhubungan hati ke hati.',
     storySubLeft: '8 Hati Berdetak Sebagai Satu',
     storySubRight: 'Fandom: S2U',
     agencyPill: 'Agensi • SM Entertainment',
@@ -51,7 +51,7 @@ export const id = {
     stats: [
       { emoji: '🌸', label: '8 Hati', sub: 'Member' },
       { emoji: '📅', label: '24 Feb', sub: 'Debut 2025' },
-      { emoji: '💿', label: 'The Chase', sub: 'Singel Debut' },
+      { emoji: '💿', label: 'The Chase', sub: 'Single Debut' },
       { emoji: '💖', label: 'S2U', sub: 'Fandom Resmi' },
     ],
     scrollCue: 'Gulir untuk bertemu tiap member',
@@ -101,7 +101,7 @@ export const id = {
   // Scene 3.5: Latest Release
   latestRelease: {
     eyebrow: 'Rilisan Segar • Drop Terbaru',
-    title: 'Sorotan Singel Terbaru',
+    title: 'Sorotan Single Terbaru',
     subtitle: 'Temukan karya musik terhangat dan proyek kolaborasi istimewa dari Hearts2Hearts.',
     listenPreview: 'Dengarkan Cuplikan 20 Detik',
     paused: 'Dijeda',
@@ -110,7 +110,7 @@ export const id = {
     mute: 'Bisukan',
     unmute: 'Nyalakan Suara',
     specialCollabBadge: 'Proyek Brand Ambassador',
-    highlightsTitle: 'Sorotan Singel',
+    highlightsTitle: 'Sorotan Single',
     viewInDiscography: 'Jelajahi Seluruh Diskografi',
   },
 
@@ -190,7 +190,7 @@ export const id = {
     createdWith: 'Dibuat dengan',
     forH2H: 'untuk Hearts2Hearts & S2U',
     debutDate: 'Debut: 24 Februari 2025',
-    singleAlbum: 'Album Singel: The Chase',
+    singleAlbum: 'Album Single: The Chase',
     officialFandom: 'Fandom Resmi: S2U',
     agencyRightsTitle: 'Agensi Resmi & Hak Cipta',
     agencyRightsDesc:
@@ -199,7 +199,7 @@ export const id = {
     referencesDesc:
       'Halaman showcase interaktif ini merangkum catatan rilis resmi, materi promosi, dan rincian diskografi dari sumber-sumber terverifikasi:',
     source1: 'Arsip Pers SM Entertainment & Profil Artis SMTOWN Resmi',
-    source2: 'Catatan Rilis & Kredit Album Singel Debut The Chase',
+    source2: 'Catatan Rilis & Kredit Album Single Debut The Chase',
     source3: 'Katalog Rilis Digital Resmi (MelOn, Genie, Apple Music, Spotify)',
     source4: 'Database Arsip K-Pop (KpopProfiles & Dokumentasi Komunitas)',
     fanDisclaimer:

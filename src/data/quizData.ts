@@ -175,14 +175,14 @@ export const QUIZ_QUESTIONS_ID: QuizQuestion[] = [
   },
   {
     id: 5,
-    question: 'Apa judul album singel debut Hearts2Hearts yang dirilis pada Februari 2025?',
+    question: 'Apa judul album single debut Hearts2Hearts yang dirilis pada Februari 2025?',
     options: ['STYLE', 'The Chase', 'FOCUS', 'RUDE!'],
     correctIndex: 1,
     hint: 'Melambangkan keberanian mengejar mimpi sejati tanpa rasa ragu.',
   },
   {
     id: 6,
-    question: 'Lagu B-side apa yang mendampingi "The Chase" di album singel debut mereka?',
+    question: 'Lagu B-side apa yang mendampingi "The Chase" di album single debut mereka?',
     options: ['Butterflies', 'Lemon Tang', 'MOONRIDE', 'Iconic Heart'],
     correctIndex: 0,
     hint: 'Kepakan sayap kupu-kupu yang merayakan antusiasme awal yang baru.',
@@ -245,7 +245,7 @@ export const QUIZ_QUESTIONS_ID: QuizQuestion[] = [
   },
   {
     id: 15,
-    question: 'Apa judul singel kolaborasi spesial Hearts2Hearts bersama Kia Korea?',
+    question: 'Apa judul single kolaborasi spesial Hearts2Hearts bersama Kia Korea?',
     options: ['STARLIGHT', 'SUNSHINE', 'MOONRIDE', 'NIGHTGLOW'],
     correctIndex: 2,
     hint: 'Lagu elektropop bertema perjalanan malam untuk merayakan Kia RV Black Edition.',
@@ -259,17 +259,17 @@ export const QUIZ_QUESTIONS_ID: QuizQuestion[] = [
   },
   {
     id: 17,
-    question: 'Apa judul singel digital Hearts2Hearts yang dirilis pada Juni 2025?',
+    question: 'Apa judul single digital Hearts2Hearts yang dirilis pada Juni 2025?',
     options: ['STYLE', 'RUDE!', 'Lemon Tang', 'FOCUS'],
     correctIndex: 0,
     hint: 'Lagu penuh percaya diri yang merayakan gaya autentik diri sendiri.',
   },
   {
     id: 18,
-    question: 'Singel apa yang menandai debut penuh energi Hearts2Hearts di Jepang?',
+    question: 'Single apa yang menandai debut penuh energi Hearts2Hearts di Jepang?',
     options: ['Tokyo Beat', 'ICONIC HEART', 'Cherry Blossom', 'Pure Shine'],
     correctIndex: 1,
-    hint: 'Dirilis pada Agustus 2026 sebagai Album Singel Debut Jepang.',
+    hint: 'Dirilis pada Agustus 2026 sebagai Album Single Debut Jepang.',
   },
   {
     id: 19,

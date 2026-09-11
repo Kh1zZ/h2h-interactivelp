@@ -76,7 +76,7 @@ export const DiscographyScene: React.FC = () => {
         totalReleases - 1,
         Math.max(0, Math.floor(normalized * totalReleases))
       );
-      setActiveReleaseIdx(index);
+      setActiveReleaseIdx((prevIdx) => (prevIdx !== index ? index : prevIdx));
     });
 
     return () => unsubscribe();
@@ -260,15 +260,15 @@ export const DiscographyScene: React.FC = () => {
             </div>
 
             {/* Right: Sleeve Artwork, Metadata & Audio Player (7 cols on lg) */}
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-7 min-h-[390px] sm:min-h-[350px] flex items-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeRelease.id}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.18, ease: 'easeOut' }}
-                  className="flex flex-col sm:flex-row gap-5 lg:gap-6 items-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15, ease: 'easeOut' }}
+                  className="flex flex-col sm:flex-row gap-5 lg:gap-6 items-center w-full"
                 >
                   {/* Artwork Sleeve Slot */}
                   <div className="w-28 sm:w-44 lg:w-48 shrink-0">
@@ -395,7 +395,7 @@ export const DiscographyScene: React.FC = () => {
                     </div>
 
                     {/* Tracklist Pills */}
-                    <div className="pt-2 border-t border-h2h-blue-sky/40">
+                    <div className="pt-2 border-t border-h2h-blue-sky/40 min-h-[64px] sm:min-h-[60px]">
                       <span className="text-[11px] sm:text-xs font-display font-bold text-h2h-blue-deep uppercase tracking-wider block mb-1.5 flex items-center justify-center sm:justify-start gap-1.5">
                         <Music className="w-3.5 h-3.5 text-h2h-blue-primary" />
                         {t.discography.officialTracklist}

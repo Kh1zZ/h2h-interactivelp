@@ -53,16 +53,25 @@ export const MiniGameScene: React.FC = () => {
   // ----------------------------------------------------
   // Match the Heart State (Pure Shuffle Only)
   // ----------------------------------------------------
-  const [matchCandidates, setMatchCandidates] = useState(() =>
+  const [matchCandidates, setMatchCandidates] = useState<typeof currentMembers>(() =>
     shuffleArray(currentMembers).slice(0, 4)
   );
-  const [shuffledNames, setShuffledNames] = useState(() => {
-    const candidates = shuffleArray(currentMembers).slice(0, 4);
-    return shuffleArray(candidates);
-  });
+  const [shuffledNames, setShuffledNames] = useState<typeof currentMembers>(() =>
+    shuffleArray(matchCandidates)
+  );
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
   const [matchedIds, setMatchedIds] = useState<string[]>([]);
   const [matchError, setMatchError] = useState<string | null>(null);
+
+  // Sync candidate names and data when language changes without resetting ongoing game
+  useEffect(() => {
+    setMatchCandidates((prev) =>
+      prev.map((c) => currentMembers.find((m) => m.id === c.id) || c)
+    );
+    setShuffledNames((prev) =>
+      prev.map((c) => currentMembers.find((m) => m.id === c.id) || c)
+    );
+  }, [language]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const shuffleRandomCombo = () => {
     const randomized = shuffleArray(currentMembers).slice(0, 4);
@@ -260,7 +269,7 @@ export const MiniGameScene: React.FC = () => {
               </div>
             )}
 
-            {matchedIds.length === matchCandidates.length ? (
+            {matchCandidates.length > 0 && matchedIds.length === matchCandidates.length ? (
               <div className="text-center py-8 sm:py-12 space-y-4 sm:space-y-5">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-h2h-pink-soft text-h2h-pink-deep mx-auto flex items-center justify-center">
                   <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-h2h-pink-primary" />
